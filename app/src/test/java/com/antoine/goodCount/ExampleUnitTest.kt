@@ -1,4 +1,4 @@
-package com.antoine.goodcount
+package com.antoine.goodCount
 
 import org.junit.Test
 

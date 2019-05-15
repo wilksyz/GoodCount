@@ -1,4 +1,4 @@
-package com.antoine.goodcount
+package com.antoine.goodCount
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

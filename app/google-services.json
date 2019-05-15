@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "512512592680",
+    "firebase_url": "https://goodcount-74611.firebaseio.com",
+    "project_id": "goodcount-74611",
+    "storage_bucket": "goodcount-74611.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512512592680:android:67e481b5813a155d",
+        "android_client_info": {
+          "package_name": "com.antoine.goodCount"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512512592680-khdbqiqvja1oab4kf74isgqemta5chht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.antoine.goodCount",
+            "certificate_hash": "7314b1d781795c3cebc71de6bc37f9c7e53f7279"
+          }
+        },
+        {
+          "client_id": "512512592680-498pfvuh6f2i659cdbpkng73dab5u9nh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDtOjc3jd_L2eUwsl8pS4Qvosf1IAj57k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "512512592680-498pfvuh6f2i659cdbpkng73dab5u9nh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
