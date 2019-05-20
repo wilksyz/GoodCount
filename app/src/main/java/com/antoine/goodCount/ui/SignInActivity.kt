@@ -34,7 +34,7 @@ class SignInActivity : AppCompatActivity() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = mAuth.currentUser
-        updateUI(currentUser)
+        this.updateUI(currentUser)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,10 +43,10 @@ class SignInActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance()
         // Initialize Facebook Login button
-        initFacebookAuth()
+        this.initFacebookAuth()
 
         google_sign_in_button.setOnClickListener {
-            signIn()
+            this.signIn()
         }
         facebook_sign_in_button.setOnClickListener {
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"))
@@ -93,7 +93,7 @@ class SignInActivity : AppCompatActivity() {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)
                     val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
-                    authWithCredential(credential)
+                    this.authWithCredential(credential)
                 } catch (e: ApiException) {
                     // Google Sign In failed, update UI appropriately
                     Snackbar.make(myCoordinatorLayout, "Authentication failed", Snackbar.LENGTH_SHORT).show()
@@ -110,7 +110,7 @@ class SignInActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success
                     val user = mAuth.currentUser
-                    updateUI(user)
+                    this.updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)

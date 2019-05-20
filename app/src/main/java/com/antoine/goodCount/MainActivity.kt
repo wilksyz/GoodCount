@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val userId = intent?.getStringExtra(ID_USER)
-        userId?.let { configureFragment(it) }
+        userId?.let { this.configureFragment(it) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

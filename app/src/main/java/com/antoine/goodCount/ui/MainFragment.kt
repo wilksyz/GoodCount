@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProviders
 
 import com.antoine.goodCount.R
 
@@ -23,9 +24,12 @@ class MainFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         val userId: String = arguments?.get(ID_USER).toString()
+        this.configureViewModel()
 
         return view
     }
 
-
+    private fun configureViewModel(){
+        val mMainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
 }
