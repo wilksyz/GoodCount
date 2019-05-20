@@ -4,5 +4,6 @@
     // Facebook
     <string name="facebook_app_id" translatable="false">360557888140915</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb360557888140915</string>
+    <string name="disconnect">Disconnect</string>
 
 </resources>
