@@ -5,18 +5,21 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.antoine.goodCount.ui.MainFragment
 import com.antoine.goodCount.ui.SignInActivity
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 
+private const val ID_USER = "id user"
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        val userId = intent?.getStringExtra(ID_USER)
+        userId?.let { configureFragment(it) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -31,6 +34,17 @@ class MainActivity : AppCompatActivity() {
         }else -> {
             super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun configureFragment(userId: String){
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        val args = Bundle()
+        args.putString(ID_USER, userId)
+        val mainFragment = MainFragment()
+        mainFragment.arguments = args
+        fragmentTransaction.replace(R.id.fragment_main_container, mainFragment)
+        fragmentTransaction.commit()
     }
 
     private fun disconnect(){
