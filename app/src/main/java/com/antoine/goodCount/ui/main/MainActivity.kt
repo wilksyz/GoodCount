@@ -1,12 +1,12 @@
-package com.antoine.goodCount
+package com.antoine.goodCount.ui.main
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.antoine.goodCount.ui.MainFragment
-import com.antoine.goodCount.ui.SignInActivity
+import com.antoine.goodCount.R
+import com.antoine.goodCount.ui.signin.SignInActivity
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

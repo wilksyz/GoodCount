@@ -36,10 +36,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 
-    // Firebase
+    // Firebase auth
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    // Firestore
+    implementation 'com.google.firebase:firebase-firestore-ktx:19.0.0'
 
     // Facebook login
     implementation 'com.facebook.android:facebook-android-sdk:4.42.0'

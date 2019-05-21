@@ -1,11 +1,11 @@
-package com.antoine.goodCount.ui
+package com.antoine.goodCount.ui.signin
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.antoine.goodCount.MainActivity
+import com.antoine.goodCount.ui.main.MainActivity
 import com.antoine.goodCount.R
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
