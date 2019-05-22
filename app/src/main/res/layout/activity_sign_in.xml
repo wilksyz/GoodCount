@@ -24,7 +24,8 @@
             android:layout_marginStart="32dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/facebook_sign_in_button" android:padding="10dp"/>
+            app:layout_constraintBottom_toTopOf="@+id/facebook_sign_in_button" android:padding="10dp"
+            app:rippleColor="@color/common_google_signin_btn_text_light_pressed"/>
 
     <Button
             android:id="@+id/facebook_sign_in_button"
@@ -41,7 +42,9 @@
             android:layout_marginStart="32dp" android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.9" android:padding="10dp"/>
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.9"
+            android:padding="10dp"
+            app:rippleColor="@color/com_facebook_button_background_color_pressed"/>
 
     <TextView
             android:text="@string/app_name"

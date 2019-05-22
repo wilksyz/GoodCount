@@ -42,9 +42,15 @@ class MainViewModel: ViewModel() {
         val commonPotList : MutableList<CommonPot> = mutableListOf()
         for (id in commonPotIdList){
             mFirebaseRepository.getCommonPot(id).addSnapshotListener { document, e ->
-                val commonPot = document?.toObject(CommonPot::class.java)
-                commonPot?.let { commonPotList.add(it) }
-                mCommonPotList.value = commonPotList
+                if (e != null) {
+                    Log.e(TAG, "Listen failed.", e)
+                    mCommonPotList.value = null
+                }
+                if (document != null){
+                    val commonPot = document.toObject(CommonPot::class.java)
+                    commonPot?.let { commonPotList.add(it) }
+                    mCommonPotList.value = commonPotList
+                }
             }
         }
     }
