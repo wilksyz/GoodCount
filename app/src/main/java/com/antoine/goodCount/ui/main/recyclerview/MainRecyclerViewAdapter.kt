@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
 
-class MainRecyclerViewAdapter: RecyclerView.Adapter<MainRecyclerViewHolder>() {
+class MainRecyclerViewAdapter(private val clickListener: ClickListener): RecyclerView.Adapter<MainRecyclerViewHolder>() {
 
     private var mCommonPotList : List<CommonPot> = ArrayList()
 
@@ -14,7 +14,7 @@ class MainRecyclerViewAdapter: RecyclerView.Adapter<MainRecyclerViewHolder>() {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.recyclerview_activity_main, parent, false)
-        return MainRecyclerViewHolder(view)
+        return MainRecyclerViewHolder(view, clickListener)
     }
 
     override fun getItemCount(): Int {

@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.antoine.goodCount.R
-import com.antoine.goodCount.models.CommonPot
+import com.antoine.goodCount.ui.main.recyclerview.ClickListener
 import com.antoine.goodCount.ui.main.recyclerview.MainRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
  *
  */
 private const val ID_USER = "id user"
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), ClickListener {
 
     private lateinit var viewOfLayout: View
     private lateinit var mAdapter: MainRecyclerViewAdapter
@@ -45,9 +45,10 @@ class MainFragment : Fragment() {
     }
 
     private fun configureRecyclerView(){
-        this.mAdapter = MainRecyclerViewAdapter()
+        this.mAdapter = MainRecyclerViewAdapter(this)
         viewOfLayout.main_fragment_recycler_view.adapter = this.mAdapter
         viewOfLayout.main_fragment_recycler_view.layoutManager = LinearLayoutManager(this.context)
+
     }
 
     private fun getCommonPot(userId: String){
@@ -57,4 +58,15 @@ class MainFragment : Fragment() {
             }
         })
     }
+
+    override fun onClick(position: Int) {
+        Log.e("TAG", "Je test le click position: $position")
+    }
+
+    override fun onLongClick(position: Int): Boolean {
+        Log.e("TAG", "Je test le click long position: $position")
+        return true
+    }
 }
+
+
