@@ -13,7 +13,7 @@ class MainRecyclerViewHolder(itemView: View, private var clickListener: ClickLis
     }
 
     fun updateListOfCommonPots(commonPot: CommonPot){
-        itemView.main_view_holder_tittle_textView.text = commonPot.tittle
+        itemView.main_view_holder_tittle_textView.text = commonPot.title
         itemView.main_view_holder_description_textView.text = commonPot.description
     }
 

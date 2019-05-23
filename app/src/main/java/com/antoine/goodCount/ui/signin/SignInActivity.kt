@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.antoine.goodCount.ui.main.MainActivity
 import com.antoine.goodCount.R
+import com.antoine.goodCount.ui.main.MainActivity
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException

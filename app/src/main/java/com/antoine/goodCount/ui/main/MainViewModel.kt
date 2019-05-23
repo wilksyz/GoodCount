@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.repository.FirestoreRepository
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 
