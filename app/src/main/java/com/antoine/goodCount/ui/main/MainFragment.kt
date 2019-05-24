@@ -14,6 +14,7 @@ import com.antoine.goodCount.R
 import com.antoine.goodCount.ui.main.recyclerview.ClickListener
 import com.antoine.goodCount.ui.main.recyclerview.MainRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_main.view.*
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -60,6 +61,7 @@ class MainFragment : Fragment(), ClickListener {
 
     override fun onClick(position: Int) {
         Log.e("TAG", "Je test le click position: $position")
+        Log.e("TAG","${UUID.randomUUID()}")
     }
 
     override fun onLongClick(position: Int): Boolean {
