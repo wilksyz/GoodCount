@@ -8,5 +8,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_good_count">New Good Count</string>
+    <string name="join_a_good_count">Join a Good Count</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
 
 </resources>

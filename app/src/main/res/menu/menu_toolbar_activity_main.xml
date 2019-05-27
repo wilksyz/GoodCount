@@ -5,5 +5,5 @@
     <item android:id="@+id/disconnect_button"
           android:title="@string/disconnect"
           android:icon="@drawable/ic_exit_to_app"
-          app:showAsAction="never|withText"/>
+          app:showAsAction="ifRoom"/>
 </menu>
