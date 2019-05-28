@@ -12,5 +12,8 @@
     <string name="join_a_good_count">Join a Good Count</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="currency">Currency</string>
+    <string name="add">Add</string>
+    <string name="contributor">Contributor</string>
 
 </resources>
