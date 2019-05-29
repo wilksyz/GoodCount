@@ -6,6 +6,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven {url "https://clojars.org/repo/"}
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'

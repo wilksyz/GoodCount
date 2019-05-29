@@ -98,7 +98,7 @@ class MainFragment : Fragment(), ClickListener {
     }
 
     private fun getCommonPot(userId: String){
-        mMainViewModel.getParticipantCommonPot(userId) .observe(this, Observer {
+        mMainViewModel.getParticipantCommonPot(userId).observe(this, Observer {
             if (it.isNotEmpty()){
                 mAdapter.updateData(it)
             }
