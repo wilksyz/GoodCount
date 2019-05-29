@@ -3,7 +3,10 @@ package com.antoine.goodCount.ui.createAndEdit
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.text.Editable
+import android.text.SpannableStringBuilder
 import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.antoine.goodCount.R
 import android.widget.ArrayAdapter
@@ -17,6 +20,7 @@ import kotlin.collections.ArrayList
 
 class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
 
+    private lateinit var mMenu: Menu
     private lateinit var mCreateViewModel: CreateViewModel
     private var mCurrencyList: List<String> = ArrayList()
     private val mContributorList : MutableList<String> = ArrayList()
@@ -45,21 +49,44 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar_activity_create, menu)
+        menu.setGroupVisible(R.id.create_menu_group, false)
+        mMenu = menu
+        return true
+    }
+
     private fun configureViewModel(){
-        mCreateViewModel = ViewModelProviders.of(this@CreateCommonPotActivity).get(CreateViewModel::class.java)
+        mCreateViewModel = ViewModelProviders.of(this).get(CreateViewModel::class.java)
     }
 
     private fun configureSpinner(){
         mCurrencyList = mCreateViewModel.getAllCurrency()
+        create_activity_spinner.text = SpannableStringBuilder(mCurrencyList[12])
         val adapter = ArrayAdapter(this@CreateCommonPotActivity, R.layout.dropdown_menu_popup_item, mCurrencyList)
         create_activity_spinner.setAdapter(adapter)
+        create_activity_spinner.setOnItemClickListener { parent, view, position, id ->
 
+        }
     }
 
     private fun configureRecyclerView(){
         this.mAdapter = CreateRecyclerViewAdapter(this)
         create_activity_recyclerview.adapter = this.mAdapter
         create_activity_recyclerview.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.create -> {
+            this.createCommonPot()
+            true
+        }else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun createCommonPot(){
+
     }
 
     override fun onClick(position: Int) {

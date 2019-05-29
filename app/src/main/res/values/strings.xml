@@ -17,5 +17,6 @@
     <string name="contributor">Contributor</string>
     <string name="button_for_delete_the_contributor">Button for delete the contributor</string>
     <string name="your_name">Your name</string>
+    <string name="create">Create</string>
 
 </resources>
