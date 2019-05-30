@@ -1,24 +1,22 @@
 package com.antoine.goodCount.ui.createAndEdit
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
-import com.antoine.goodCount.R
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.antoine.goodCount.R
 import com.antoine.goodCount.ui.createAndEdit.recyclerview.ClickListener
 import com.antoine.goodCount.ui.createAndEdit.recyclerview.CreateRecyclerViewAdapter
 import icepick.Icepick
 import icepick.State
 import kotlinx.android.synthetic.main.activity_create_common_pot.*
-import kotlin.collections.ArrayList
 
 class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
 

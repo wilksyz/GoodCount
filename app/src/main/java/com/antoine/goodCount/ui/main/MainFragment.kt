@@ -21,7 +21,6 @@ import com.antoine.goodCount.ui.main.recyclerview.MainRecyclerViewAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
-import java.util.*
 
 /**
  * A simple [Fragment] subclass.
