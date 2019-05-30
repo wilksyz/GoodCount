@@ -18,5 +18,7 @@
     <string name="button_for_delete_the_contributor">Button for delete the contributor</string>
     <string name="your_name">Your name</string>
     <string name="create">Create</string>
+    <string name="tab_title_1">SPENT</string>
+    <string name="tab_title_2">BALANCE</string>
 
 </resources>

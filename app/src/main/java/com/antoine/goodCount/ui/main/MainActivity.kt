@@ -12,13 +12,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 
-private const val ID_USER = "id user"
+private const val USER_ID = "user id"
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val userId = intent?.getStringExtra(ID_USER)
+        val userId = intent?.getStringExtra(USER_ID)
         userId?.let { this.configureFragment(it) }
     }
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         val args = Bundle()
-        args.putString(ID_USER, userId)
+        args.putString(USER_ID, userId)
         val mainFragment = MainFragment()
         mainFragment.arguments = args
         fragmentTransaction.replace(R.id.fragment_main_container, mainFragment)

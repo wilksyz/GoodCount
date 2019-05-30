@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.R
 import com.antoine.goodCount.ui.createAndEdit.CreateCommonPotActivity
+import com.antoine.goodCount.ui.detail.DetailActivity
 import com.antoine.goodCount.ui.main.recyclerview.ClickListener
 import com.antoine.goodCount.ui.main.recyclerview.MainRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -25,7 +26,8 @@ import java.util.*
  * A simple [Fragment] subclass.
  *
  */
-private const val ID_USER = "id user"
+private const val USER_ID = "user id"
+private const val COMMON_POT_ID = "common pot id"
 class MainFragment : Fragment(), ClickListener {
 
     private lateinit var viewOfLayout: View
@@ -42,7 +44,7 @@ class MainFragment : Fragment(), ClickListener {
         savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         viewOfLayout = inflater.inflate(R.layout.fragment_main, container, false)
-        val userId: String = arguments?.get(ID_USER).toString()
+        val userId: String = arguments?.get(USER_ID).toString()
         mFabClose = AnimationUtils.loadAnimation(context, R.anim.fab_close)
         mFabOpen = AnimationUtils.loadAnimation(context, R.anim.fab_open)
         mFabClock = AnimationUtils.loadAnimation(context, R.anim.fab_rotate_clock)
@@ -106,8 +108,10 @@ class MainFragment : Fragment(), ClickListener {
     }
 
     override fun onClick(position: Int) {
-        Log.e("TAG", "Je test le click position: $position")
         Log.e("TAG","${UUID.randomUUID()}")
+        val intent = Intent(context, DetailActivity::class.java)
+        intent.putExtra(COMMON_POT_ID, mAdapter.getCommonPotId(position))
+        startActivity(intent)
     }
 
     override fun onLongClick(position: Int): Boolean {

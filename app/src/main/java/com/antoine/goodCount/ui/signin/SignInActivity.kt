@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_sign_in.*
 import java.util.*
 
 private const val RC_SIGN_IN = 1994
-private const val ID_USER = "id user"
+private const val USER_ID = "user id"
 private const val TAG = "Sign in"
 class SignInActivity : AppCompatActivity() {
 
@@ -122,7 +122,7 @@ class SignInActivity : AppCompatActivity() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             val mainActivityIntent = Intent(this@SignInActivity, MainActivity::class.java)
-            mainActivityIntent.putExtra(ID_USER, user.uid)
+            mainActivityIntent.putExtra(USER_ID, user.uid)
             startActivity(mainActivityIntent)
             finish()
         }

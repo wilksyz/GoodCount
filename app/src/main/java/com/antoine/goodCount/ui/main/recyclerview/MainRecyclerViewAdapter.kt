@@ -29,4 +29,8 @@ class MainRecyclerViewAdapter(private val clickListener: ClickListener): Recycle
         mCommonPotList = commonPotList
         this.notifyDataSetChanged()
     }
+
+    fun getCommonPotId(position: Int): String? {
+        return mCommonPotList[position].id
+    }
 }
