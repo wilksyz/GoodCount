@@ -28,10 +28,18 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.createAndEdit.CreateCommonPotActivity">
+                android:name=".ui.createAndEdit.CreateCommonPotActivity"
+                android:parentActivityName=".ui.main.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.main.MainActivity"/>
         </activity>
         <activity
-                android:name=".ui.detail.DetailActivity">
+                android:name=".ui.detail.DetailActivity"
+                android:parentActivityName=".ui.main.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.main.MainActivity"/>
         </activity>
     </application>
 

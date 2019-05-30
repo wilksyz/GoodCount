@@ -5,6 +5,7 @@ import android.os.PersistableBundle
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.ui.createAndEdit.recyclerview.ClickListener
 import com.antoine.goodCount.ui.createAndEdit.recyclerview.CreateRecyclerViewAdapter
 import icepick.Icepick
+import icepick.State
 import kotlinx.android.synthetic.main.activity_create_common_pot.*
 import kotlin.collections.ArrayList
 
@@ -23,6 +25,7 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
     private lateinit var mMenu: Menu
     private lateinit var mCreateViewModel: CreateViewModel
     private var mCurrencyList: List<String> = ArrayList()
+    @State private var mPositionSpinner:Int = 0
     private val mContributorList : MutableList<String> = ArrayList()
     private lateinit var mAdapter: CreateRecyclerViewAdapter
 
@@ -30,6 +33,7 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_common_pot)
         Icepick.restoreInstanceState(this, savedInstanceState)
+        if (savedInstanceState != null) mPositionSpinner = savedInstanceState.getInt("pos")
         this.configureViewModel()
         this.configureSpinner()
         this.configureRecyclerView()
@@ -62,11 +66,12 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
 
     private fun configureSpinner(){
         mCurrencyList = mCreateViewModel.getAllCurrency()
-        create_activity_spinner.text = SpannableStringBuilder(mCurrencyList[12])
+        create_activity_spinner.text = SpannableStringBuilder(mCurrencyList[mPositionSpinner])
         val adapter = ArrayAdapter(this@CreateCommonPotActivity, R.layout.dropdown_menu_popup_item, mCurrencyList)
         create_activity_spinner.setAdapter(adapter)
         create_activity_spinner.setOnItemClickListener { parent, view, position, id ->
-
+            Log.e("TAG","Passage $position")
+            mPositionSpinner = position
         }
     }
 
@@ -94,8 +99,11 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
         mAdapter.updateData(mContributorList)
     }
 
-    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         Icepick.saveInstanceState(this, outState)
+        outState.run {
+            outState.putInt("pos", mPositionSpinner)
+        }
     }
 }

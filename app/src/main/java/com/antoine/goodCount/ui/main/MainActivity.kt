@@ -1,6 +1,7 @@
 package com.antoine.goodCount.ui.main
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,13 +13,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 
+private const val USER = "user"
 private const val USER_ID = "user id"
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val userId = intent?.getStringExtra(USER_ID)
+        val sharedPref: SharedPreferences = getSharedPreferences(USER, MODE_PRIVATE)
+        val userId = sharedPref.getString(USER_ID, null)
         userId?.let { this.configureFragment(it) }
     }
 

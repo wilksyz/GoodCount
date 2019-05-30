@@ -20,5 +20,7 @@
     <string name="create">Create</string>
     <string name="tab_title_1">SPENT</string>
     <string name="tab_title_2">BALANCE</string>
+    <string name="share">Share</string>
+    <string name="edit">Edit</string>
 
 </resources>

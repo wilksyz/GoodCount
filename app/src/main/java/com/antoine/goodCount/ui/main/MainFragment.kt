@@ -18,6 +18,7 @@ import com.antoine.goodCount.ui.createAndEdit.CreateCommonPotActivity
 import com.antoine.goodCount.ui.detail.DetailActivity
 import com.antoine.goodCount.ui.main.recyclerview.ClickListener
 import com.antoine.goodCount.ui.main.recyclerview.MainRecyclerViewAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import java.util.*
@@ -45,10 +46,7 @@ class MainFragment : Fragment(), ClickListener {
         // Inflate the layout for this fragment
         viewOfLayout = inflater.inflate(R.layout.fragment_main, container, false)
         val userId: String = arguments?.get(USER_ID).toString()
-        mFabClose = AnimationUtils.loadAnimation(context, R.anim.fab_close)
-        mFabOpen = AnimationUtils.loadAnimation(context, R.anim.fab_open)
-        mFabClock = AnimationUtils.loadAnimation(context, R.anim.fab_rotate_clock)
-        mFabAntiClock = AnimationUtils.loadAnimation(context, R.anim.fab_rotate_anticlock)
+        this.configureAnimation()
         this.configureViewModel()
         this.configureRecyclerView()
         this.getCommonPot(userId)
@@ -63,6 +61,7 @@ class MainFragment : Fragment(), ClickListener {
         }
         viewOfLayout.main_fragment_button_join_common_pot.setOnClickListener {
             this.setContextualMenu()
+            view?.let { it1 -> Snackbar.make(it1, "Ask your friends for the pot sharing code", Snackbar.LENGTH_LONG).show() }
         }
         return viewOfLayout
     }
@@ -75,6 +74,13 @@ class MainFragment : Fragment(), ClickListener {
         this.mAdapter = MainRecyclerViewAdapter(this)
         viewOfLayout.main_fragment_recycler_view.adapter = this.mAdapter
         viewOfLayout.main_fragment_recycler_view.layoutManager = LinearLayoutManager(this.context)
+    }
+
+    private fun configureAnimation(){
+        mFabClose = AnimationUtils.loadAnimation(context, R.anim.fab_close)
+        mFabOpen = AnimationUtils.loadAnimation(context, R.anim.fab_open)
+        mFabClock = AnimationUtils.loadAnimation(context, R.anim.fab_rotate_clock)
+        mFabAntiClock = AnimationUtils.loadAnimation(context, R.anim.fab_rotate_anticlock)
     }
 
     private fun setContextualMenu(){
@@ -108,10 +114,9 @@ class MainFragment : Fragment(), ClickListener {
     }
 
     override fun onClick(position: Int) {
-        Log.e("TAG","${UUID.randomUUID()}")
-        val intent = Intent(context, DetailActivity::class.java)
-        intent.putExtra(COMMON_POT_ID, mAdapter.getCommonPotId(position))
-        startActivity(intent)
+        val detailActivityIntent = Intent(context, DetailActivity::class.java)
+        detailActivityIntent.putExtra(COMMON_POT_ID, mAdapter.getCommonPotId(position))
+        startActivity(detailActivityIntent)
     }
 
     override fun onLongClick(position: Int): Boolean {

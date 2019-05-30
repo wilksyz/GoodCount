@@ -2,6 +2,7 @@ package com.antoine.goodCount.ui.signin
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ import java.util.*
 
 private const val RC_SIGN_IN = 1994
 private const val USER_ID = "user id"
+private const val USER = "user"
 private const val TAG = "Sign in"
 class SignInActivity : AppCompatActivity() {
 
@@ -110,6 +112,7 @@ class SignInActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success
                     val user = mAuth.currentUser
+                    user?.let { this.saveIdInShared(it) }
                     this.updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -119,10 +122,16 @@ class SignInActivity : AppCompatActivity() {
             }
     }
 
+    private fun saveIdInShared(user: FirebaseUser){
+        val sharedPref: SharedPreferences = getSharedPreferences(USER, MODE_PRIVATE)
+        val editorShared: SharedPreferences.Editor = sharedPref.edit()
+        editorShared.putString(USER_ID, user.uid)
+        editorShared.apply()
+    }
+
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             val mainActivityIntent = Intent(this@SignInActivity, MainActivity::class.java)
-            mainActivityIntent.putExtra(USER_ID, user.uid)
             startActivity(mainActivityIntent)
             finish()
         }
