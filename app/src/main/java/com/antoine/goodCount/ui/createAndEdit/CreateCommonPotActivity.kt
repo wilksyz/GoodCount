@@ -36,12 +36,18 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
         this.configureSpinner()
         this.configureRecyclerView()
 
-
-        create_activity_contributor_editext.addTextChangedListener(object : TextWatcher{
+        create_activity_title_editext.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                create_activity_add_participant_button.isEnabled = s.toString().isNotEmpty()
+                checkInformationIsEntered()
+            }
+        })
+        create_activity_your_name_editext.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkInformationIsEntered()
             }
         })
         create_activity_add_participant_button.setOnClickListener {
@@ -67,6 +73,7 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
         create_activity_spinner.text = SpannableStringBuilder(mCurrencyList[mPositionSpinner])
         val adapter = ArrayAdapter(this@CreateCommonPotActivity, R.layout.dropdown_menu_popup_item, mCurrencyList)
         create_activity_spinner.setAdapter(adapter)
+
         create_activity_spinner.setOnItemClickListener { parent, view, position, id ->
             Log.e("TAG","Passage $position")
             mPositionSpinner = position
@@ -88,6 +95,14 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
         }
     }
 
+    private fun checkInformationIsEntered(){
+        val title = create_activity_title_editext.toString().isNotEmpty()
+        val name = create_activity_your_name_editext.toString().isNotEmpty()
+        if (title && name){
+            mMenu.setGroupVisible(R.id.create_menu_group, true)
+        }
+    }
+
     private fun createCommonPot(){
 
     }
@@ -103,5 +118,11 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
         outState.run {
             outState.putInt("pos", mPositionSpinner)
         }
+    }
+
+    override fun onStop() {
+        create_activity_spinner.dismissDropDown()
+        super.onStop()
+
     }
 }

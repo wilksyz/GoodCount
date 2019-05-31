@@ -41,6 +41,13 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".ui.main.MainActivity"/>
         </activity>
+        <activity
+                android:name=".ui.createSpent.CreateSpentActivity"
+                android:parentActivityName=".ui.detail.DetailActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.detail.DetailActivity"/>
+        </activity>
     </application>
 
 </manifest>

@@ -22,5 +22,9 @@
     <string name="tab_title_2">BALANCE</string>
     <string name="share">Share</string>
     <string name="edit">Edit</string>
+    <string name="amount">Amount</string>
+    <string name="date">Date</string>
+    <string name="payed_by">Payed by</string>
+    <string name="for_who">For who</string>
 
 </resources>
