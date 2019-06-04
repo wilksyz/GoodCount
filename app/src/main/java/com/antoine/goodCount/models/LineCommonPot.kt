@@ -3,7 +3,7 @@ package com.antoine.goodCount.models
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.*
 
-class LineCommonPot(var id: String?,
+class LineCommonPot(var id: String,
                     var commonPotId: String,
                     var title: String,
                     var amount: Double,

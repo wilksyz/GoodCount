@@ -7,25 +7,22 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.R
-import com.antoine.goodCount.ui.createAndEdit.recyclerview.ClickListener
-import com.antoine.goodCount.ui.createAndEdit.recyclerview.CreateRecyclerViewAdapter
+import com.antoine.goodCount.models.CommonPot
 import icepick.Icepick
 import icepick.State
 import kotlinx.android.synthetic.main.activity_create_common_pot.*
 
-class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
+class CreateCommonPotActivity : AppCompatActivity() {
 
     private lateinit var mMenu: Menu
     private lateinit var mCreateViewModel: CreateViewModel
     private var mCurrencyList: List<String> = ArrayList()
     @State private var mPositionSpinner:Int = 0
-    private val mContributorList : MutableList<String> = ArrayList()
-    private lateinit var mAdapter: CreateRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +31,6 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
         if (savedInstanceState != null) mPositionSpinner = savedInstanceState.getInt("pos")
         this.configureViewModel()
         this.configureSpinner()
-        this.configureRecyclerView()
 
         create_activity_title_editext.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {}
@@ -50,18 +46,9 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
                 checkInformationIsEntered()
             }
         })
-        create_activity_add_participant_button.setOnClickListener {
-            mContributorList.add(create_activity_contributor_editext.text.toString())
-            mAdapter.updateData(mContributorList)
-            create_activity_contributor_editext.text?.clear()
+        create_activity_add_common_pot_button.setOnClickListener {
+            this.createCommonPot()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar_activity_create, menu)
-        menu.setGroupVisible(R.id.create_menu_group, false)
-        mMenu = menu
-        return true
     }
 
     private fun configureViewModel(){
@@ -80,36 +67,18 @@ class CreateCommonPotActivity : AppCompatActivity(), ClickListener {
         }
     }
 
-    private fun configureRecyclerView(){
-        this.mAdapter = CreateRecyclerViewAdapter(this)
-        create_activity_recyclerview.adapter = this.mAdapter
-        create_activity_recyclerview.layoutManager = LinearLayoutManager(this)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.create -> {
-            this.createCommonPot()
-            true
-        }else -> {
-            super.onOptionsItemSelected(item)
-        }
-    }
-
     private fun checkInformationIsEntered(){
-        val title = create_activity_title_editext.toString().isNotEmpty()
-        val name = create_activity_your_name_editext.toString().isNotEmpty()
-        if (title && name){
-            mMenu.setGroupVisible(R.id.create_menu_group, true)
-        }
+        val title = create_activity_title_editext.text.toString().isNotEmpty()
+        val name = create_activity_your_name_editext.text.toString().isNotEmpty()
+        create_activity_add_common_pot_button.isEnabled = title && name
     }
 
     private fun createCommonPot(){
-
-    }
-
-    override fun onClick(position: Int) {
-        mContributorList.removeAt(position)
-        mAdapter.updateData(mContributorList)
+        val title = create_activity_title_editext.text.toString()
+        val description = create_activity_description_editext.text.toString()
+        val name = create_activity_your_name_editext.text.toString()
+        val currency = mCreateViewModel.getCurrencyCode(create_activity_spinner.text.toString())
+        mCreateViewModel.createCommonPot(CommonPot("", title, description, currency))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

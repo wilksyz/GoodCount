@@ -1,6 +1,8 @@
 package com.antoine.goodCount.ui.createAndEdit
 
 import androidx.lifecycle.ViewModel
+import com.antoine.goodCount.models.CommonPot
+import com.antoine.goodCount.repository.FirestoreRepository
 import java.util.*
 
 class CreateViewModel: ViewModel() {
@@ -19,5 +21,15 @@ class CreateViewModel: ViewModel() {
         mCurrencyList.sort()
         mCurrencyList.removeAt(0)
         return mCurrencyList
+    }
+
+    fun getCurrencyCode(currencyName: String): String{
+        val firstPart = currencyName.split("(")
+        val currencyCode = firstPart[1].split(")")
+        return currencyCode[0]
+    }
+
+    fun createCommonPot(commonPot: CommonPot){
+        FirestoreRepository().createCommonPot(commonPot)
     }
 }
