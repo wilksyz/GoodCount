@@ -49,8 +49,13 @@ class MainViewModel: ViewModel() {
                 }
                 if (document != null){
                     val commonPot = document.toObject(CommonPot::class.java)
-                    Log.e(TAG, "Contains: ${commonPotList.contains(commonPot)}")
-                    commonPot?.let { commonPotList.add(it) }
+                    if (commonPotList.any { commonPotFilter -> commonPotFilter.id == document.id }){
+                        val index = commonPotList.withIndex().filter { it.value.id == document.id }.map { it.index }.single()
+                        commonPotList.removeAt(index)
+                        commonPot?.let { commonPotList.add(index, it)}
+                    }else {
+                        commonPot?.let { commonPotList.add(it) }
+                    }
                     mCommonPotList.value = commonPotList
                 }
             }
