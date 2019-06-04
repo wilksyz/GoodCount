@@ -94,7 +94,7 @@
             android:clickable="true"
             android:id="@+id/main_fragment_floating_action_button"
             android:layout_marginBottom="32dp" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp" android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp" android:focusable="true"
             app:backgroundTint="@color/colorAccent"
             android:src="@drawable/ic_add"
             app:tint="@android:color/background_light"/>

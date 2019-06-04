@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.antoine.goodCount.R
 import com.antoine.goodCount.ui.createSpent.CreateSpentActivity
 import com.antoine.goodCount.ui.detail.DetailViewModel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_spent.view.*
 
 /**

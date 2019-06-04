@@ -5,10 +5,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -23,7 +19,6 @@ private const val USER = "user"
 private const val USER_ID = "user id"
 class CreateCommonPotActivity : AppCompatActivity() {
 
-    private lateinit var mMenu: Menu
     private lateinit var mCreateViewModel: CreateViewModel
     private var mCurrencyList: List<String> = ArrayList()
     @State private var mPositionSpinner:Int = 0
@@ -51,7 +46,7 @@ class CreateCommonPotActivity : AppCompatActivity() {
             }
         })
         create_activity_add_common_pot_button.setOnClickListener {
-            this.createCommonPot()
+            this.retrieveInformation()
         }
     }
 
@@ -61,12 +56,11 @@ class CreateCommonPotActivity : AppCompatActivity() {
 
     private fun configureSpinner(){
         mCurrencyList = mCreateViewModel.getAllCurrency()
+        mPositionSpinner = mCreateViewModel.getLocaleCurrency(mCurrencyList)
         create_activity_spinner.text = SpannableStringBuilder(mCurrencyList[mPositionSpinner])
         val adapter = ArrayAdapter(this@CreateCommonPotActivity, R.layout.dropdown_menu_popup_item, mCurrencyList)
         create_activity_spinner.setAdapter(adapter)
-
-        create_activity_spinner.setOnItemClickListener { parent, view, position, id ->
-            Log.e("TAG","Passage $position")
+        create_activity_spinner.setOnItemClickListener { _, _, position, _ ->
             mPositionSpinner = position
         }
     }
@@ -77,7 +71,7 @@ class CreateCommonPotActivity : AppCompatActivity() {
         create_activity_add_common_pot_button.isEnabled = title && name
     }
 
-    private fun createCommonPot(){
+    private fun retrieveInformation(){
         val title = create_activity_title_editext.text.toString()
         val description = create_activity_description_editext.text.toString()
         val name = create_activity_your_name_editext.text.toString()
@@ -85,7 +79,12 @@ class CreateCommonPotActivity : AppCompatActivity() {
         val userId = this.getUserId()
         val commonPot = CommonPot("", title, description, currency)
         val participant = Participant("","", userId,name,0.0)
+        this.createCommonPot(commonPot, participant)
+    }
+
+    private fun createCommonPot(commonPot: CommonPot, participant: Participant){
         mCreateViewModel.createCommonPot(commonPot, participant)
+        finish()
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

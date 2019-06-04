@@ -1,9 +1,9 @@
 package com.antoine.goodCount.ui.createSpent
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.antoine.goodCount.R
 import kotlinx.android.synthetic.main.activity_create_spent.*
 
