@@ -3,12 +3,13 @@ package com.antoine.goodCount.repository
 import android.util.Log
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.Participant
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class FirestoreRepository {
+class CommonPotRepository {
 
     private var mFirestoreDB = Firebase.firestore
 
@@ -21,16 +22,15 @@ class FirestoreRepository {
         return mFirestoreDB.collection("participant").whereEqualTo("userId", userId)
     }
 
-    fun createCommonPot(commonPot: CommonPot){
+    fun createCommonPot(commonPot: CommonPot, participant: Participant): Task<Void> {
         val batch = mFirestoreDB.batch()
-        val newDoc = mFirestoreDB.collection("commonPot").document()
-        val newPart = mFirestoreDB.collection("participant").document().id
-        val id = newDoc.id
-        commonPot.id = id
-        val participant = Participant(newPart, id, "wmD7tG6VvbgPNnmlhwriHNRZpHY2", "Antoine", 25.0)
-        batch.set(mFirestoreDB.collection("commonPot").document(id), commonPot)
-        batch.set(mFirestoreDB.collection("participant").document(newPart), participant)
-        batch.commit().addOnSuccessListener {
+        val newDocRef = mFirestoreDB.collection("commonPot").document()
+        commonPot.id = newDocRef.id
+        participant.commonPotId = newDocRef.id
+        participant.id = ParticipantRepository().createParticipant()
+        batch.set(mFirestoreDB.collection("commonPot").document(newDocRef.id), commonPot)
+        batch.set(mFirestoreDB.collection("participant").document(participant.id), participant)
+        return batch.commit().addOnSuccessListener {
             Log.e("Repository", "Success Write in database")
         }
     }

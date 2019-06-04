@@ -1,5 +1,6 @@
 package com.antoine.goodCount.ui.main.recyclerview
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

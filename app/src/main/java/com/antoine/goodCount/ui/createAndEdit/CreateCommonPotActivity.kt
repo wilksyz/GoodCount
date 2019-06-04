@@ -1,5 +1,6 @@
 package com.antoine.goodCount.ui.createAndEdit
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableStringBuilder
@@ -13,10 +14,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
+import com.antoine.goodCount.models.Participant
 import icepick.Icepick
 import icepick.State
 import kotlinx.android.synthetic.main.activity_create_common_pot.*
 
+private const val USER = "user"
+private const val USER_ID = "user id"
 class CreateCommonPotActivity : AppCompatActivity() {
 
     private lateinit var mMenu: Menu
@@ -78,7 +82,16 @@ class CreateCommonPotActivity : AppCompatActivity() {
         val description = create_activity_description_editext.text.toString()
         val name = create_activity_your_name_editext.text.toString()
         val currency = mCreateViewModel.getCurrencyCode(create_activity_spinner.text.toString())
-        mCreateViewModel.createCommonPot(CommonPot("", title, description, currency))
+        val userId = this.getUserId()
+        val commonPot = CommonPot("", title, description, currency)
+        val participant = Participant("","", userId,name,0.0)
+        mCreateViewModel.createCommonPot(commonPot, participant)
+    }
+
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    private fun getUserId(): String {
+        val sharedPref: SharedPreferences = getSharedPreferences(USER, MODE_PRIVATE)
+        return sharedPref.getString(USER_ID, null)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

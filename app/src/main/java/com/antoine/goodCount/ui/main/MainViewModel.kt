@@ -5,14 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.antoine.goodCount.models.CommonPot
-import com.antoine.goodCount.repository.FirestoreRepository
+import com.antoine.goodCount.repository.CommonPotRepository
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 
 private const val TAG = "FIRESTORE_VIEW_MODEL"
 class MainViewModel: ViewModel() {
 
-    private val mFirebaseRepository = FirestoreRepository()
+    private val mFirebaseRepository = CommonPotRepository()
     private val mCommonPotList: MutableLiveData<List<CommonPot>> = MutableLiveData()
 
     fun getParticipantCommonPot(userId: String): LiveData<List<CommonPot>> {
@@ -26,6 +26,7 @@ class MainViewModel: ViewModel() {
             }
 
             if (value != null) {
+                commonPotIdList.clear()
                 for (document in value) {
                     commonPotIdList.add(document.data["commonPotId"].toString())
                 }
@@ -39,6 +40,7 @@ class MainViewModel: ViewModel() {
 
     private fun getCommonPot(commonPotIdList: ArrayList<String>) {
         val commonPotList : MutableList<CommonPot> = mutableListOf()
+        commonPotList.clear()
         for (id in commonPotIdList){
             mFirebaseRepository.getCommonPot(id).addSnapshotListener { document, e ->
                 if (e != null) {
@@ -47,6 +49,7 @@ class MainViewModel: ViewModel() {
                 }
                 if (document != null){
                     val commonPot = document.toObject(CommonPot::class.java)
+                    Log.e(TAG, "Contains: ${commonPotList.contains(commonPot)}")
                     commonPot?.let { commonPotList.add(it) }
                     mCommonPotList.value = commonPotList
                 }
