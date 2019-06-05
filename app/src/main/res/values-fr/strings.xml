@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Good Count</string>
+    <string name="add">Ajouté</string>
+    <string name="amount">Montant</string>
+    <string name="create">Créer</string>
+    <string name="currency">Devise</string>
+    <string name="date">Date</string>
+    <string name="description">Description</string>
+    <string name="disconnect">Déconnexion</string>
+    <string name="edit">Modifier</string>
+    <string name="join_a_good_count">Rejoindre un compte</string>
+    <string name="new_good_count">Nouveau compte</string>
+    <string name="payed_by">Payé par</string>
+    <string name="share">Partager</string>
+    <string name="tab_title_1">Dépenses</string>
+    <string name="tab_title_2">Equilibre</string>
+    <string name="title">Titre</string>
+    <string name="total_cost">Coût total</string>
+    <string name="your_name">Votre pseudo</string>
+    <string name="for_who">Pour qui</string>
+</resources>
