@@ -8,6 +8,6 @@ class LineCommonPot(var id: String,
                     var title: String,
                     var amount: Double,
                     @ServerTimestamp var date: Date,
-                    var payedBy: String) {
+                    var paidBy: String) {
     constructor():this("", "","",0.0, Date(), "")
 }

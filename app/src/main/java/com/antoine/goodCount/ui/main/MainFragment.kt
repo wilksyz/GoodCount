@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.R
 import com.antoine.goodCount.ui.createAndEdit.CreateCommonPotActivity
 import com.antoine.goodCount.ui.detail.DetailActivity
-import com.antoine.goodCount.ui.main.recyclerview.ClickListener
-import com.antoine.goodCount.ui.main.recyclerview.MainRecyclerViewAdapter
+import com.antoine.goodCount.ui.main.recyclerView.ClickListener
+import com.antoine.goodCount.ui.main.recyclerView.MainRecyclerViewAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*

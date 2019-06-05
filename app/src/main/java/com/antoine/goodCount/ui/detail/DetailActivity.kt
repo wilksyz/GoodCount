@@ -1,6 +1,7 @@
 package com.antoine.goodCount.ui.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.antoine.goodCount.R
@@ -8,13 +9,17 @@ import com.antoine.goodCount.ui.BaseActivity
 import com.antoine.goodCount.ui.detail.viewpager.SectionsPagerAdapter
 import kotlinx.android.synthetic.main.activity_detail.*
 
+private const val COMMON_POT_ID = "common pot id"
 class DetailActivity : BaseActivity() {
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         supportActionBar?.elevation = 0F
-        this.configureViewPager()
+        val commonPotId = intent?.getStringExtra(COMMON_POT_ID)
+        commonPotId?.let { this.configureViewPager(it) }
 
 
     }
@@ -42,9 +47,8 @@ class DetailActivity : BaseActivity() {
         }
     }
 
-    private fun configureViewPager(){
-        val sectionsPagerAdapter =
-            SectionsPagerAdapter(this, supportFragmentManager)
+    private fun configureViewPager(commonPotId: String){
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, commonPotId)
         detail_activity_view_pager.adapter = sectionsPagerAdapter
         detail_activity_tablayout.setupWithViewPager(detail_activity_view_pager)
     }

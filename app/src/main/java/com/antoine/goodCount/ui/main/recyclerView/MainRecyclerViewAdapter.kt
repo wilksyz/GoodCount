@@ -1,4 +1,4 @@
-package com.antoine.goodCount.ui.main.recyclerview
+package com.antoine.goodCount.ui.main.recyclerView
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

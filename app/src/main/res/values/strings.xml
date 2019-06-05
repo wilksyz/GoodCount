@@ -24,7 +24,7 @@
     <string name="edit">Edit</string>
     <string name="amount">Amount</string>
     <string name="date">Date</string>
-    <string name="payed_by">Payed by</string>
+    <string name="payed_by">Paid by</string>
     <string name="for_who">For who</string>
 
 </resources>

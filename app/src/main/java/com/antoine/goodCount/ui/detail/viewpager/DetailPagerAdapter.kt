@@ -12,13 +12,13 @@ import com.antoine.goodCount.R
  */
 
 private val TAB_TITLES = arrayOf(R.string.tab_title_1, R.string.tab_title_2)
-class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, private val commonPotId: String) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
         return when (position) {
             0 -> {
-                SpentFragment()
+                SpentFragment.newInstance(commonPotId)
             }else -> {
                 return BalanceFragment()
             }

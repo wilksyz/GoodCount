@@ -18,10 +18,6 @@ class CommonPotRepository {
         return mFirestoreDB.collection("commonPot").document(commonPotId)
     }
 
-    fun getParticipant(userId: String): Query {
-        return mFirestoreDB.collection("participant").whereEqualTo("userId", userId)
-    }
-
     fun createCommonPot(commonPot: CommonPot, participant: Participant): Task<Void> {
         val batch = mFirestoreDB.batch()
         val newDocRef = mFirestoreDB.collection("commonPot").document()
