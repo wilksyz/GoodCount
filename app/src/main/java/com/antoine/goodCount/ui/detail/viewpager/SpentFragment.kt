@@ -12,10 +12,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
+import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.ui.createSpent.CreateSpentActivity
 import com.antoine.goodCount.ui.detail.DetailViewModel
 import com.antoine.goodCount.ui.detail.recyclerView.DetailRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_spent.view.*
+import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A placeholder fragment containing a simple view.
@@ -27,6 +31,8 @@ class SpentFragment : Fragment() {
     private lateinit var mDetailViewModel: DetailViewModel
     private lateinit var mAdapter: DetailRecyclerViewAdapter
     private lateinit var mCommonPotId: String
+    private var mCommonPot: CommonPot? = null
+    private var mLineCommonPotList: List<LineCommonPot> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,14 +63,32 @@ class SpentFragment : Fragment() {
 
     private fun getLineCommonPot(){
         mDetailViewModel.getLineCommonPot(mCommonPotId).observe(this, Observer { list ->
+            mLineCommonPotList = list
             this.mAdapter.updateData(list)
+            this.getTotalCost()
         })
     }
 
     private fun getCommonPot(){
         mDetailViewModel.getCommonPot(mCommonPotId).observe(this, Observer { commonPot ->
+            mCommonPot = commonPot
             this.mAdapter.updateCommonPot(commonPot)
+            this.getTotalCost()
         })
+    }
+
+    private fun getTotalCost(){
+        var totalCost = 0.0
+        if (mLineCommonPotList.isNotEmpty()){
+            for (lineCommonPot in mLineCommonPotList){
+                totalCost += lineCommonPot.amount
+            }
+        }
+        if (mCommonPot != null){
+            val cost = mDetailViewModel.formatAtCurrency(mCommonPot?.currency, totalCost)
+            val totalCostPhrase = "${getString(R.string.total_cost)}\n$cost"
+            viewOfLayout.spent_fragment_total_cost_textView.text = totalCostPhrase
+        }
     }
 
     companion object {

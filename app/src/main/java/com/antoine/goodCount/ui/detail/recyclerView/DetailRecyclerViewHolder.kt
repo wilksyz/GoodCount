@@ -31,9 +31,9 @@ class DetailRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView
         if (currency != null){
             val format = NumberFormat.getCurrencyInstance(Locale.getDefault())
             format.currency = Currency.getInstance(currency)
-            val result = format.format(lineCommonPot.amount)
+            val amount = format.format(lineCommonPot.amount)
             itemView.view_holder_price_textView.visibility = View.VISIBLE
-            itemView.view_holder_price_textView.text = result
+            itemView.view_holder_price_textView.text = amount
         }
     }
 }

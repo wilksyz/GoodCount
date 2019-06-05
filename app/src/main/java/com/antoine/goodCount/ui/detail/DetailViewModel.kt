@@ -11,6 +11,9 @@ import com.antoine.goodCount.repository.LineCommonPotRepository
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
+import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 private const val TAG = "DETAIL_VIEW_MODEL"
 class DetailViewModel : ViewModel() {
@@ -54,5 +57,11 @@ class DetailViewModel : ViewModel() {
             }
         })
         return mCommonPot
+    }
+
+    fun formatAtCurrency(currency: String?, amount: Double): String{
+        val format = NumberFormat.getCurrencyInstance(Locale.getDefault())
+        format.currency = Currency.getInstance(currency)
+        return format.format(amount)
     }
 }

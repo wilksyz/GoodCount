@@ -26,5 +26,6 @@
     <string name="date">Date</string>
     <string name="payed_by">Paid by</string>
     <string name="for_who">For who</string>
+    <string name="total_cost">Total cost</string>
 
 </resources>

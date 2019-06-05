@@ -9,12 +9,16 @@ import com.antoine.goodCount.R
 
 class BalanceFragment : Fragment() {
 
+    private lateinit var mViewOfLayout: View
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val viewOfLayout = inflater.inflate(R.layout.fragment_balance, container, false)
+        mViewOfLayout = inflater.inflate(R.layout.fragment_balance, container, false)
 
-        return viewOfLayout
+
+
+        return mViewOfLayout
     }
 }

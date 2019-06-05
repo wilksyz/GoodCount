@@ -17,7 +17,6 @@
             android:id="@+id/spent_fragment_recyclerview"
             app:layout_constraintBottom_toTopOf="@+id/guideline"/>
     <TextView
-            android:text="Mon cout: 75€"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/spent_fragment_my_cost_textView"
@@ -25,9 +24,9 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toStartOf="@+id/spent_fragment_total_cost_textView"
             app:layout_constraintTop_toTopOf="@+id/guideline" android:background="@color/browser_actions_text_color"
-            android:textColor="@android:color/primary_text_dark" android:paddingStart="16dp"/>
+            android:textColor="@android:color/primary_text_dark" android:paddingStart="16dp" android:paddingEnd="16dp"
+            android:paddingTop="8dp" android:textSize="18sp"/>
     <TextView
-            android:text="Cout Total: 245€"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/spent_fragment_total_cost_textView"
@@ -36,12 +35,12 @@
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline" android:background="@color/browser_actions_text_color"
             android:textColor="@android:color/primary_text_dark" android:textAlignment="viewEnd"
-            android:paddingEnd="16dp"/>
+            android:paddingEnd="16dp" android:paddingStart="16dp" android:paddingTop="8dp" android:textSize="18sp"/>
     <androidx.constraintlayout.widget.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline"
-            app:layout_constraintGuide_percent="0.9"/>
+            app:layout_constraintGuide_end="75dp"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,5 +54,5 @@
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline2"
-            app:layout_constraintGuide_percent="0.96"/>
+            app:layout_constraintGuide_end="30dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
