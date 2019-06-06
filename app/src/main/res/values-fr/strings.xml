@@ -20,4 +20,5 @@
     <string name="your_name">Votre pseudo</string>
     <string name="for_who">Pour qui</string>
     <string name="me">moi</string>
+    <string name="personal_cost">Mon coût</string>
 </resources>

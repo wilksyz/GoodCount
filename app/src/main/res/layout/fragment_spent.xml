@@ -6,7 +6,8 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.detail.viewpager.SpentFragment">
+        tools:context=".ui.detail.viewpager.SpentFragment"
+        android:background="@drawable/com_facebook_auth_dialog_cancel_background">
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
@@ -40,7 +41,7 @@
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline"
-            app:layout_constraintGuide_end="75dp"/>
+            app:layout_constraintGuide_end="64dp"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

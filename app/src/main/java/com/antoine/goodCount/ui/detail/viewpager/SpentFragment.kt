@@ -33,6 +33,7 @@ class SpentFragment : Fragment() {
     private lateinit var mCommonPotId: String
     private var mCommonPot: CommonPot? = null
     private var mLineCommonPotList: List<LineCommonPot> = ArrayList()
+    private var mUsername: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +68,7 @@ class SpentFragment : Fragment() {
             mLineCommonPotList = list
             this.mAdapter.updateData(list)
             this.getTotalCost()
+            this.getPersonalCost()
         })
     }
 
@@ -80,8 +82,26 @@ class SpentFragment : Fragment() {
 
     private fun getUsername(){
         mDetailViewModel.getUsername(this.getUserId(), mCommonPotId).observe(this, Observer { username ->
+            mUsername = username
             this.mAdapter.updateUsername(username)
+            this.getPersonalCost()
         })
+    }
+
+    private fun getPersonalCost(){
+        var personalCost = 0.0
+        if (mLineCommonPotList.isNotEmpty() && mUsername.isNotEmpty()){
+            for (lineCommonPot in mLineCommonPotList){
+                if (lineCommonPot.paidBy == mUsername){
+                    personalCost += lineCommonPot.amount
+                }
+            }
+        }
+        if (mCommonPot != null){
+            val cost = mDetailViewModel.formatAtCurrency(mCommonPot?.currency, personalCost)
+            val personalCostPhrase = "${getString(R.string.personal_cost)}\n$cost"
+            viewOfLayout.spent_fragment_my_cost_textView.text = personalCostPhrase
+        }
     }
 
     private fun getTotalCost(){

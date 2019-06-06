@@ -42,7 +42,6 @@ class MainViewModel: ViewModel() {
 
     private fun getCommonPot(commonPotIdList: ArrayList<String>) {
         val commonPotList : MutableList<CommonPot> = mutableListOf()
-        commonPotList.clear()
 
         for (id in commonPotIdList){
             mCommonPotRepository.getCommonPot(id).addSnapshotListener { document, e ->

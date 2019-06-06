@@ -12,7 +12,6 @@ import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.Participant
 import icepick.Icepick
-import icepick.State
 import kotlinx.android.synthetic.main.activity_create_common_pot.*
 
 private const val USER = "user"
@@ -21,7 +20,7 @@ class CreateCommonPotActivity : AppCompatActivity() {
 
     private lateinit var mCreateViewModel: CreateViewModel
     private var mCurrencyList: List<String> = ArrayList()
-    @State private var mPositionSpinner:Int = 0
+    private var mPositionSpinner:Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
