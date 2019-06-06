@@ -48,6 +48,7 @@ class SpentFragment : Fragment() {
 
         viewOfLayout.spent_fragment_add_spent_fab.setOnClickListener {
             val createSpentIntent = Intent(context, CreateSpentActivity::class.java)
+            createSpentIntent.putExtra(COMMON_POT_ID, mCommonPotId)
             startActivity(createSpentIntent)
         }
         return viewOfLayout
@@ -77,6 +78,7 @@ class SpentFragment : Fragment() {
             mCommonPot = commonPot
             this.mAdapter.updateCommonPot(commonPot)
             this.getTotalCost()
+            this.getPersonalCost()
         })
     }
 

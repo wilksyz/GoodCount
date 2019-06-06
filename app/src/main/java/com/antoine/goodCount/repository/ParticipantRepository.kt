@@ -20,4 +20,8 @@ class ParticipantRepository {
     fun getParticipant(userId: String, commonPotId: String): Query {
         return mFirestoreDB.collection("participant").whereEqualTo("commonPotId", commonPotId).whereEqualTo("userId", userId)
     }
+
+    fun getParticipantCommonPot(commonPotId: String): Query {
+        return mFirestoreDB.collection("participant").whereEqualTo("commonPotId", commonPotId)
+    }
 }

@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_create_common_pot.*
 
 private const val USER = "user"
 private const val USER_ID = "user id"
+private const val POSITION_SPINNER_CURRENCY = "position spinner currency"
 class CreateCommonPotActivity : AppCompatActivity() {
 
     private lateinit var mCreateViewModel: CreateViewModel
@@ -26,7 +27,7 @@ class CreateCommonPotActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_common_pot)
         Icepick.restoreInstanceState(this, savedInstanceState)
-        if (savedInstanceState != null) mPositionSpinner = savedInstanceState.getInt("pos")
+        if (savedInstanceState != null) mPositionSpinner = savedInstanceState.getInt(POSITION_SPINNER_CURRENCY)
         this.configureViewModel()
         this.configureSpinner()
 
@@ -96,13 +97,12 @@ class CreateCommonPotActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         Icepick.saveInstanceState(this, outState)
         outState.run {
-            outState.putInt("pos", mPositionSpinner)
+            outState.putInt(POSITION_SPINNER_CURRENCY, mPositionSpinner)
         }
     }
 
     override fun onStop() {
         create_activity_spinner.dismissDropDown()
         super.onStop()
-
     }
 }
