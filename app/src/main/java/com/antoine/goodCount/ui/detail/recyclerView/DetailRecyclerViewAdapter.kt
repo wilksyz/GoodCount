@@ -7,7 +7,7 @@ import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.LineCommonPot
 
-class DetailRecyclerViewAdapter() : RecyclerView.Adapter<DetailRecyclerViewHolder>(){
+class DetailRecyclerViewAdapter(): RecyclerView.Adapter<DetailRecyclerViewHolder>(){
 
     private var mLineCommonPotList : List<LineCommonPot> = ArrayList()
     private var mCommonPot: CommonPot? = null

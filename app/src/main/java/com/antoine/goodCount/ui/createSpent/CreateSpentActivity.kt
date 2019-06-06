@@ -9,7 +9,9 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.R
+import com.antoine.goodCount.ui.createSpent.recyclerView.CreateSpentRecyclerViewAdapter
 import icepick.Icepick
 import kotlinx.android.synthetic.main.activity_create_spent.*
 
@@ -18,6 +20,7 @@ private const val POSITION_SPINNER_PAID_BY = "position spinner paid by"
 class CreateSpentActivity : AppCompatActivity() {
 
     private lateinit var mMenu: Menu
+    private lateinit var mAdapter: CreateSpentRecyclerViewAdapter
     private lateinit var mCreateSpentViewModel: CreateSpentViewModel
     private lateinit var mCommonPotId: String
     private lateinit var mParticipantList: List<String>
@@ -30,7 +33,9 @@ class CreateSpentActivity : AppCompatActivity() {
         if (savedInstanceState != null) mPositionSpinnerPaidBy = savedInstanceState.getInt(POSITION_SPINNER_PAID_BY)
         mCommonPotId = intent.getStringExtra(COMMON_POT_ID)
         this.configureViewModel()
+        this.configureRecyclerView()
         this.getParticipant()
+
 
         create_spent_date_spinner.setOnClickListener {
             Log.e("TAG", "Click")
@@ -39,6 +44,12 @@ class CreateSpentActivity : AppCompatActivity() {
 
     private fun configureViewModel(){
         mCreateSpentViewModel = ViewModelProviders.of(this).get(CreateSpentViewModel::class.java)
+    }
+
+    private fun configureRecyclerView(){
+        this.mAdapter = CreateSpentRecyclerViewAdapter()
+        create_spent_who_recyclerview.adapter = this.mAdapter
+        create_spent_who_recyclerview.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -61,6 +72,7 @@ class CreateSpentActivity : AppCompatActivity() {
         mCreateSpentViewModel.getParticipantCommonPot(mCommonPotId).observe(this, Observer {
             mParticipantList = it
             this.configureSpinner()
+            this.mAdapter.updateData(it)
         })
     }
 
