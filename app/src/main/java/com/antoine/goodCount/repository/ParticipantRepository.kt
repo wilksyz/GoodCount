@@ -13,7 +13,11 @@ class ParticipantRepository {
         return newDocRef.id
     }
 
-    fun getParticipant(userId: String): Query {
+    fun getManyParticipant(userId: String): Query {
         return mFirestoreDB.collection("participant").whereEqualTo("userId", userId)
+    }
+
+    fun getParticipant(userId: String, commonPotId: String): Query {
+        return mFirestoreDB.collection("participant").whereEqualTo("commonPotId", commonPotId).whereEqualTo("userId", userId)
     }
 }

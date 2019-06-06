@@ -20,7 +20,7 @@ class MainViewModel: ViewModel() {
     fun getParticipantCommonPot(userId: String): LiveData<List<CommonPot>> {
         val commonPotIdList = ArrayList<String>()
 
-        mParticipantRepository.getParticipant(userId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+        mParticipantRepository.getManyParticipant(userId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
             if (e != null) {
                 Log.w(TAG, "Listen failed.", e)
                 mCommonPotList.value = null

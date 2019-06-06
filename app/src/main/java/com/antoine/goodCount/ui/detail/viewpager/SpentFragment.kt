@@ -1,8 +1,9 @@
 package com.antoine.goodCount.ui.detail.viewpager
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,14 +18,13 @@ import com.antoine.goodCount.ui.createSpent.CreateSpentActivity
 import com.antoine.goodCount.ui.detail.DetailViewModel
 import com.antoine.goodCount.ui.detail.recyclerView.DetailRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_spent.view.*
-import java.text.NumberFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * A placeholder fragment containing a simple view.
  */
 private const val COMMON_POT_ID = "common pot id"
+private const val USER = "user"
+private const val USER_ID = "user id"
 class SpentFragment : Fragment() {
 
     private lateinit var viewOfLayout: View
@@ -41,8 +41,9 @@ class SpentFragment : Fragment() {
         mCommonPotId = arguments?.getString(COMMON_POT_ID).toString()
         this.configureViewModel()
         this.getCommonPot()
-        this.configureRecyclerView()
         this.getLineCommonPot()
+        this.configureRecyclerView()
+        this.getUsername()
 
         viewOfLayout.spent_fragment_add_spent_fab.setOnClickListener {
             val createSpentIntent = Intent(context, CreateSpentActivity::class.java)
@@ -77,6 +78,12 @@ class SpentFragment : Fragment() {
         })
     }
 
+    private fun getUsername(){
+        mDetailViewModel.getUsername(this.getUserId(), mCommonPotId).observe(this, Observer { username ->
+            this.mAdapter.updateUsername(username)
+        })
+    }
+
     private fun getTotalCost(){
         var totalCost = 0.0
         if (mLineCommonPotList.isNotEmpty()){
@@ -89,6 +96,12 @@ class SpentFragment : Fragment() {
             val totalCostPhrase = "${getString(R.string.total_cost)}\n$cost"
             viewOfLayout.spent_fragment_total_cost_textView.text = totalCostPhrase
         }
+    }
+
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    private fun getUserId(): String {
+        val sharedPref: SharedPreferences = context!!.getSharedPreferences(USER, MODE_PRIVATE)
+        return sharedPref.getString(USER_ID, null)
     }
 
     companion object {

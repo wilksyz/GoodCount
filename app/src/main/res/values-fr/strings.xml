@@ -19,4 +19,5 @@
     <string name="total_cost">Coût total</string>
     <string name="your_name">Votre pseudo</string>
     <string name="for_who">Pour qui</string>
+    <string name="me">moi</string>
 </resources>

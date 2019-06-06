@@ -8,6 +8,7 @@ import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.repository.CommonPotRepository
 import com.antoine.goodCount.repository.LineCommonPotRepository
+import com.antoine.goodCount.repository.ParticipantRepository
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
@@ -20,8 +21,10 @@ class DetailViewModel : ViewModel() {
 
     private val mCommonPotRepository = CommonPotRepository()
     private val mLineCommonPotRepository = LineCommonPotRepository()
+    private val mParticipantRepository = ParticipantRepository()
     private val mLineCommonPotList: MutableLiveData<List<LineCommonPot>> = MutableLiveData()
     private var mCommonPot: MutableLiveData<CommonPot> = MutableLiveData()
+    private var mUsername: MutableLiveData<String> = MutableLiveData()
 
     fun getLineCommonPot(commonPotId: String): LiveData<List<LineCommonPot>> {
         val lineCommonPotList = ArrayList<LineCommonPot>()
@@ -63,5 +66,16 @@ class DetailViewModel : ViewModel() {
         val format = NumberFormat.getCurrencyInstance(Locale.getDefault())
         format.currency = Currency.getInstance(currency)
         return format.format(amount)
+    }
+
+    fun getUsername(userId: String, commonPotId: String): MutableLiveData<String> {
+        mParticipantRepository.getParticipant(userId, commonPotId).get().addOnSuccessListener { value ->
+            if (value != null){
+                mUsername.value = value.documents[0].data?.get("username").toString()
+            }
+        }.addOnFailureListener { e ->
+            Log.w(TAG, "Listen failed ", e)
+        }
+        return mUsername
     }
 }

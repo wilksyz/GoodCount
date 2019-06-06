@@ -1,7 +1,6 @@
 package com.antoine.goodCount.ui.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.antoine.goodCount.R

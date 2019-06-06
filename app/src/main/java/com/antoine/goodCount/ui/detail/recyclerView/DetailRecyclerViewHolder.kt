@@ -6,18 +6,17 @@ import com.antoine.goodCount.R
 import com.antoine.goodCount.models.LineCommonPot
 import kotlinx.android.synthetic.main.recyclerview_activity_main.view.*
 import java.text.DateFormat
-import java.util.*
 import java.text.NumberFormat
+import java.util.*
 
 
 class DetailRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-    fun updateLineCommonPotList(lineCommonPot: LineCommonPot, currency: String?){
+    fun updateLineCommonPotList(lineCommonPot: LineCommonPot, currency: String?, username: String){
         itemView.main_view_holder_tittle_textView.text = lineCommonPot.title
-        val payedBy = "${itemView.context.resources.getString(R.string.payed_by)} ${lineCommonPot.paidBy}"
-        itemView.main_view_holder_description_textView.text = payedBy
         this.formatDate(lineCommonPot)
         this.formatCurrency(lineCommonPot, currency)
+        this.formatPaidBy(lineCommonPot.paidBy, username)
     }
 
     private fun formatDate(lineCommonPot: LineCommonPot){
@@ -35,5 +34,14 @@ class DetailRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView
             itemView.view_holder_price_textView.visibility = View.VISIBLE
             itemView.view_holder_price_textView.text = amount
         }
+    }
+
+    private fun formatPaidBy(payerName: String, username: String){
+        val paidBy: String = if (payerName == username){
+            "${itemView.context.resources.getString(R.string.payed_by)} ${itemView.context.resources.getString(R.string.me)}"
+        }else {
+            "${itemView.context.resources.getString(R.string.payed_by)} $payerName"
+        }
+        itemView.main_view_holder_description_textView.text = paidBy
     }
 }

@@ -11,6 +11,7 @@ class DetailRecyclerViewAdapter() : RecyclerView.Adapter<DetailRecyclerViewHolde
 
     private var mLineCommonPotList : List<LineCommonPot> = ArrayList()
     private var mCommonPot: CommonPot? = null
+    private var mUsername: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailRecyclerViewHolder {
         val context = parent.context
@@ -24,7 +25,7 @@ class DetailRecyclerViewAdapter() : RecyclerView.Adapter<DetailRecyclerViewHolde
     }
 
     override fun onBindViewHolder(detailRecyclerViewHolder: DetailRecyclerViewHolder, position: Int) {
-        return detailRecyclerViewHolder.updateLineCommonPotList(mLineCommonPotList[position], mCommonPot?.currency)
+        return detailRecyclerViewHolder.updateLineCommonPotList(mLineCommonPotList[position], mCommonPot?.currency, mUsername)
     }
 
     fun updateData(commonPotList: List<LineCommonPot>){
@@ -34,6 +35,11 @@ class DetailRecyclerViewAdapter() : RecyclerView.Adapter<DetailRecyclerViewHolde
 
     fun updateCommonPot(commonPot: CommonPot){
         mCommonPot = commonPot
+        this.notifyDataSetChanged()
+    }
+
+    fun updateUsername(username: String){
+        mUsername = username
         this.notifyDataSetChanged()
     }
 
