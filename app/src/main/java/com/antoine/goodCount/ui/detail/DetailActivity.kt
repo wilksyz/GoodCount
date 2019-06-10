@@ -11,14 +11,14 @@ import kotlinx.android.synthetic.main.activity_detail.*
 private const val COMMON_POT_ID = "common pot id"
 class DetailActivity : BaseActivity() {
 
-
+    private var mCommonPotId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         supportActionBar?.elevation = 0F
-        val commonPotId = intent?.getStringExtra(COMMON_POT_ID)
-        commonPotId?.let { this.configureViewPager(it) }
+        mCommonPotId = intent?.getStringExtra(COMMON_POT_ID)
+        mCommonPotId?.let { this.configureViewPager(it) }
 
 
     }

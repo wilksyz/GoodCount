@@ -55,6 +55,7 @@ class CreateCommonPotActivity : AppCompatActivity() {
     }
 
     private fun configureSpinner(){
+        create_activity_spinner.keyListener = null
         mCurrencyList = mCreateViewModel.getAllCurrency()
         mPositionSpinner = mCreateViewModel.getLocaleCurrency(mCurrencyList)
         create_activity_spinner.text = SpannableStringBuilder(mCurrencyList[mPositionSpinner])
