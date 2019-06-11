@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.repository.CommonPotRepository
+import com.google.android.gms.tasks.Task
 import java.util.*
 
 class CreateViewModel: ViewModel() {
@@ -36,9 +37,7 @@ class CreateViewModel: ViewModel() {
         return currencyCode[0]
     }
 
-    fun createCommonPot(commonPot: CommonPot, participant: Participant){
-        CommonPotRepository().createCommonPot(commonPot, participant).addOnSuccessListener {
-            Log.e("View Model", "Success")
-        }
+    fun createCommonPot(commonPot: CommonPot, participant: Participant): Task<Void> {
+        return CommonPotRepository().createCommonPot(commonPot, participant)
     }
 }

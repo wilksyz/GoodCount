@@ -29,5 +29,7 @@
     <string name="you_must_add_a_title">You must add a title</string>
     <string name="you_must_add_an_amount">You must add an amount</string>
     <string name="you_must_allocate_the_amount_to_at_least_one_participant">You must allocate the amount to at least one participant</string>
+    <string name="successful_creation">Successful creation</string>
+    <string name="error_creating">Error creating</string>
 
 </resources>

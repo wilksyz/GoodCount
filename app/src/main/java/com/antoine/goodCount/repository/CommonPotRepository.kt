@@ -25,8 +25,6 @@ class CommonPotRepository {
         participant.id = ParticipantRepository().createParticipant()
         batch.set(mFirestoreDB.collection("commonPot").document(newDocRef.id), commonPot)
         batch.set(mFirestoreDB.collection("participant").document(participant.id), participant)
-        return batch.commit().addOnSuccessListener {
-            Log.e("Repository", "Success Write in database")
-        }
+        return batch.commit()
     }
 }

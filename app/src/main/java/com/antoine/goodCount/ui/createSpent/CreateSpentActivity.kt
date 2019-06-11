@@ -185,12 +185,18 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
             }
             this.createSpentInDatabase(lineCommonPot, participantSpentList)
         }else{
-            Snackbar.make(nestedScrollView,getString(R.string.you_must_allocate_the_amount_to_at_least_one_participant),Snackbar.LENGTH_LONG).show()
+            Snackbar.make(nestedScrollView, getString(R.string.you_must_allocate_the_amount_to_at_least_one_participant), Snackbar.LENGTH_LONG).show()
         }
     }
 
     private fun createSpentInDatabase(lineCommonPot: LineCommonPot, participantSpentList: List<ParticipantSpent>){
-        mCreateSpentViewModel.createSpentInDatabase(lineCommonPot, participantSpentList)
+        mCreateSpentViewModel.createSpentInDatabase(lineCommonPot, participantSpentList).addOnSuccessListener {
+            Snackbar.make(nestedScrollView, getString(R.string.successful_creation), Snackbar.LENGTH_LONG).show()
+            finish()
+        }.addOnFailureListener {
+            Snackbar.make(nestedScrollView, getString(R.string.error_creating), Snackbar.LENGTH_LONG).show()
+            finish()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

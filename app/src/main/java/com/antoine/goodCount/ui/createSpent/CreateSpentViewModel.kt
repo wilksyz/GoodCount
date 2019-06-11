@@ -1,11 +1,14 @@
 package com.antoine.goodCount.ui.createSpent
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.models.ParticipantSpent
+import com.antoine.goodCount.repository.LineCommonPotRepository
 import com.antoine.goodCount.repository.ParticipantRepository
+import com.google.android.gms.tasks.Task
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -14,6 +17,7 @@ import kotlin.collections.HashMap
 class CreateSpentViewModel: ViewModel() {
 
     private val mParticipantRepository = ParticipantRepository()
+    private val mLineCommonPotRepository = LineCommonPotRepository()
     private val mParticipantList: MutableLiveData<List<Participant>> = MutableLiveData()
     var mDateOfSpent: Date = Date()
 
@@ -52,7 +56,7 @@ class CreateSpentViewModel: ViewModel() {
         return dateFormat.format(mDateOfSpent)
     }
 
-    fun createSpentInDatabase(lineCommonPot: LineCommonPot, participantSpentList: List<ParticipantSpent>){
-
+    fun createSpentInDatabase(lineCommonPot: LineCommonPot, participantSpentList: List<ParticipantSpent>): Task<Void> {
+        return mLineCommonPotRepository.createLineCommonPot(lineCommonPot, participantSpentList)
     }
 }

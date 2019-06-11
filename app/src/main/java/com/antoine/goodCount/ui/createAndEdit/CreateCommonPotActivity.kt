@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.Participant
+import com.google.android.material.snackbar.Snackbar
 import icepick.Icepick
 import kotlinx.android.synthetic.main.activity_create_common_pot.*
 
@@ -84,8 +85,13 @@ class CreateCommonPotActivity : AppCompatActivity() {
     }
 
     private fun createCommonPot(commonPot: CommonPot, participant: Participant){
-        mCreateViewModel.createCommonPot(commonPot, participant)
-        finish()
+        mCreateViewModel.createCommonPot(commonPot, participant).addOnSuccessListener {
+            Snackbar.make(scrollView, getString(R.string.successful_creation), Snackbar.LENGTH_LONG).show()
+            finish()
+        }.addOnFailureListener {
+            Snackbar.make(scrollView, getString(R.string.error_creating), Snackbar.LENGTH_LONG).show()
+            finish()
+        }
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
