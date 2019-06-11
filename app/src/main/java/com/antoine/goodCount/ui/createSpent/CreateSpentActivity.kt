@@ -3,9 +3,9 @@ package com.antoine.goodCount.ui.createSpent
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.Editable
 import android.text.SpannableStringBuilder
-import android.util.Log
-import android.view.Menu
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -13,11 +13,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.R
+import com.antoine.goodCount.models.LineCommonPot
+import com.antoine.goodCount.models.Participant
+import com.antoine.goodCount.models.ParticipantSpent
 import com.antoine.goodCount.ui.createSpent.recyclerView.ClickListener
 import com.antoine.goodCount.ui.createSpent.recyclerView.CreateSpentRecyclerViewAdapter
+import com.google.android.material.snackbar.Snackbar
 import icepick.Icepick
 import kotlinx.android.synthetic.main.activity_create_spent.*
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 private const val COMMON_POT_ID = "common pot id"
@@ -25,10 +30,10 @@ private const val POSITION_SPINNER_PAID_BY = "position spinner paid by"
 private const val IS_SELECTED_MAP = "is selected map"
 class CreateSpentActivity : AppCompatActivity(), ClickListener {
 
-    private lateinit var mMenu: Menu
     private lateinit var mAdapter: CreateSpentRecyclerViewAdapter
     private lateinit var mCreateSpentViewModel: CreateSpentViewModel
     private lateinit var mCommonPotId: String
+    private lateinit var mParticipantList: List<Participant>
     private var mParticipantSelectedMap: HashMap<String, Boolean> = HashMap()
     private var mPositionSpinnerPaidBy = 0
 
@@ -45,6 +50,23 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
         this.configureRecyclerView()
         this.getParticipant()
         this.configureDateTextView()
+        create_spent_title_editext.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkInformationIsEntered(1)
+            }
+        })
+        create_spent_amount_editext.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkInformationIsEntered(2)
+            }
+        })
+        create_spent_button.setOnClickListener {
+            this.retrieveInformationEntered()
+        }
     }
 
     private fun configureViewModel(){
@@ -67,18 +89,7 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar_activity_create, menu)
-        menu.setGroupVisible(R.id.create_menu_group, false)
-        mMenu = menu
-        return true
-    }
-
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.create -> {
-            this.createSpent()
-            true
-        }
         android.R.id.home -> {
             this.onBackPressed()
             true
@@ -90,6 +101,7 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
 
     private fun getParticipant(){
         mCreateSpentViewModel.getParticipantCommonPot(mCommonPotId).observe(this, Observer {
+            mParticipantList = it
             if (mParticipantSelectedMap.isEmpty()) mParticipantSelectedMap = mCreateSpentViewModel.createMapParticipant(it)
             this.configureSpinner(mCreateSpentViewModel.createListUsername(it))
             this.mAdapter.updateData(it, mParticipantSelectedMap)
@@ -140,13 +152,45 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
 
     override fun onClick(isChecked: Boolean, participantId: String) {
         mParticipantSelectedMap[participantId] = isChecked
-        Log.e("TAG", "Checked: ${mParticipantSelectedMap.values}")
     }
 
-    private fun createSpent(){
-        val title = create_spent_title_editext.text.toString()
-        val amount =  create_spent_amount_editext.text.toString().toDouble()
+    private fun checkInformationIsEntered(signInCode: Int){
+        val title = create_spent_title_editext.text.toString().isNotEmpty()
+        val amount = create_spent_amount_editext.text.toString().isNotEmpty()
+        create_spent_button.isEnabled = title && amount
+        if (signInCode == 1){
+            if (!title){
+                create_spent_title_textInputLayout.error = getString(R.string.you_must_add_a_title)
+            }else{
+                create_spent_title_textInputLayout.error = null
+            }
+        }else if (signInCode == 2){
+            if (!amount){
+                create_spent_amount_textInputLayout.error = getString(R.string.you_must_add_an_amount)
+            }else{
+                create_spent_amount_textInputLayout.error = null
+            }
+        }
+    }
 
+    private fun retrieveInformationEntered(){
+        val participantSpentList = ArrayList<ParticipantSpent>()
+        if (mParticipantSelectedMap.containsValue(true)){
+            val title = create_spent_title_editext.text.toString()
+            val amount =  create_spent_amount_editext.text.toString().toDouble()
+            val paidBy = mParticipantList[mPositionSpinnerPaidBy].username
+            val lineCommonPot = LineCommonPot("",mCommonPotId,title,amount,mCreateSpentViewModel.mDateOfSpent,paidBy)
+            for (select in mParticipantSelectedMap){
+                participantSpentList.add(ParticipantSpent("","",select.key))
+            }
+            this.createSpentInDatabase(lineCommonPot, participantSpentList)
+        }else{
+            Snackbar.make(nestedScrollView,getString(R.string.you_must_allocate_the_amount_to_at_least_one_participant),Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    private fun createSpentInDatabase(lineCommonPot: LineCommonPot, participantSpentList: List<ParticipantSpent>){
+        mCreateSpentViewModel.createSpentInDatabase(lineCommonPot, participantSpentList)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

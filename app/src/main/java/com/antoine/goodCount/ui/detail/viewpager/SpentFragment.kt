@@ -17,6 +17,7 @@ import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.ui.createSpent.CreateSpentActivity
 import com.antoine.goodCount.ui.detail.DetailViewModel
 import com.antoine.goodCount.ui.detail.recyclerView.DetailRecyclerViewAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_spent.view.*
 
 /**

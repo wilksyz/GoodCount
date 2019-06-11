@@ -21,4 +21,9 @@
     <string name="for_who">Pour qui</string>
     <string name="me">moi</string>
     <string name="personal_cost">Mon coût</string>
+    <string name="you_must_add_a_title">Vous devez ajouter un titre</string>
+    <string name="you_must_add_an_amount">Vous devez ajouter un montant</string>
+    <string name="you_must_allocate_the_amount_to_at_least_one_participant">Vous devez répartir le montant sur un
+        participant au minimum
+    </string>
 </resources>
