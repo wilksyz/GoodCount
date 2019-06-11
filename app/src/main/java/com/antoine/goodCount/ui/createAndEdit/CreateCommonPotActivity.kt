@@ -36,14 +36,14 @@ class CreateCommonPotActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                checkInformationIsEntered()
+                checkInformationIsEntered(0)
             }
         })
         create_activity_your_name_editext.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                checkInformationIsEntered()
+                checkInformationIsEntered(1)
             }
         })
         create_activity_add_common_pot_button.setOnClickListener {
@@ -67,10 +67,23 @@ class CreateCommonPotActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkInformationIsEntered(){
+    private fun checkInformationIsEntered(signInCode: Int){
         val title = create_activity_title_editext.text.toString().isNotEmpty()
         val name = create_activity_your_name_editext.text.toString().isNotEmpty()
         create_activity_add_common_pot_button.isEnabled = title && name
+        if (signInCode == 0){
+            if (!title){
+                create_common_pot_title_textInputLayout.error = getString(R.string.you_must_add_a_title)
+            }else{
+                create_common_pot_title_textInputLayout.error = null
+            }
+        }else if (signInCode == 1){
+            if (!name){
+                create_common_pot_name_textInputLayout.error = getString(R.string.you_must_enter_your_username)
+            }else{
+                create_common_pot_name_textInputLayout.error = null
+            }
+        }
     }
 
     private fun retrieveInformation(){

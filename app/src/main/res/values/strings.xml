@@ -31,5 +31,6 @@
     <string name="you_must_allocate_the_amount_to_at_least_one_participant">You must allocate the amount to at least one participant</string>
     <string name="successful_creation">Successful creation</string>
     <string name="error_creating">Error creating</string>
+    <string name="you_must_enter_your_username">You must enter your username</string>
 
 </resources>

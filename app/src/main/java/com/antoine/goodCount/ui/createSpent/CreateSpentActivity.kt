@@ -54,14 +54,14 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                checkInformationIsEntered(1)
+                checkInformationIsEntered(0)
             }
         })
         create_spent_amount_editext.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                checkInformationIsEntered(2)
+                checkInformationIsEntered(1)
             }
         })
         create_spent_button.setOnClickListener {
@@ -158,13 +158,13 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
         val title = create_spent_title_editext.text.toString().isNotEmpty()
         val amount = create_spent_amount_editext.text.toString().isNotEmpty()
         create_spent_button.isEnabled = title && amount
-        if (signInCode == 1){
+        if (signInCode == 0){
             if (!title){
                 create_spent_title_textInputLayout.error = getString(R.string.you_must_add_a_title)
             }else{
                 create_spent_title_textInputLayout.error = null
             }
-        }else if (signInCode == 2){
+        }else if (signInCode == 1){
             if (!amount){
                 create_spent_amount_textInputLayout.error = getString(R.string.you_must_add_an_amount)
             }else{
