@@ -4,28 +4,32 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.antoine.goodCount.R
+import com.antoine.goodCount.models.Participant
 
-class CreateSpentRecyclerViewAdapter: RecyclerView.Adapter<CreateSpentRecyclerViewHolder>() {
+class CreateSpentRecyclerViewAdapter(private val clickListener: ClickListener): RecyclerView.Adapter<CreateSpentRecyclerViewHolder>() {
 
-    private var mParticipantName: List<String> = ArrayList()
+    private var mParticipantList: List<Participant> = ArrayList()
+    private var mParticipantSelectedMap: Map<String, Boolean> = HashMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CreateSpentRecyclerViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.recyclerview_activity_spent_create, parent, false)
-        return CreateSpentRecyclerViewHolder(view)
+        return CreateSpentRecyclerViewHolder(view, clickListener)
     }
 
     override fun getItemCount(): Int {
-        return mParticipantName.size
+        return mParticipantList.size
     }
 
     override fun onBindViewHolder(createSpentRecyclerViewHolder: CreateSpentRecyclerViewHolder, position: Int) {
-        return createSpentRecyclerViewHolder.updateParticipantList(mParticipantName[position])
+        return createSpentRecyclerViewHolder.updateParticipantList(mParticipantList[position], mParticipantSelectedMap[mParticipantList[position].id]
+        )
     }
 
-    fun updateData(commonPotList: List<String>){
-        mParticipantName = commonPotList
+    fun updateData(participantList: List<Participant>, participantSelectedMap: Map<String, Boolean>){
+        mParticipantList = participantList
+        mParticipantSelectedMap = participantSelectedMap
         this.notifyDataSetChanged()
     }
 }

@@ -13,28 +13,33 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.R
+import com.antoine.goodCount.ui.createSpent.recyclerView.ClickListener
 import com.antoine.goodCount.ui.createSpent.recyclerView.CreateSpentRecyclerViewAdapter
 import icepick.Icepick
 import kotlinx.android.synthetic.main.activity_create_spent.*
-import java.text.DateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 private const val COMMON_POT_ID = "common pot id"
 private const val POSITION_SPINNER_PAID_BY = "position spinner paid by"
-class CreateSpentActivity : AppCompatActivity() {
+private const val IS_SELECTED_MAP = "is selected map"
+class CreateSpentActivity : AppCompatActivity(), ClickListener {
 
     private lateinit var mMenu: Menu
     private lateinit var mAdapter: CreateSpentRecyclerViewAdapter
     private lateinit var mCreateSpentViewModel: CreateSpentViewModel
     private lateinit var mCommonPotId: String
-    private lateinit var mParticipantList: List<String>
+    private var mParticipantSelectedMap: HashMap<String, Boolean> = HashMap()
     private var mPositionSpinnerPaidBy = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_spent)
         Icepick.restoreInstanceState(this, savedInstanceState)
-        if (savedInstanceState != null) mPositionSpinnerPaidBy = savedInstanceState.getInt(POSITION_SPINNER_PAID_BY)
+        if (savedInstanceState != null){
+            mPositionSpinnerPaidBy = savedInstanceState.getInt(POSITION_SPINNER_PAID_BY)
+            mParticipantSelectedMap = savedInstanceState.getSerializable(IS_SELECTED_MAP) as HashMap<String, Boolean>
+        }
         mCommonPotId = intent.getStringExtra(COMMON_POT_ID)
         this.configureViewModel()
         this.configureRecyclerView()
@@ -47,7 +52,7 @@ class CreateSpentActivity : AppCompatActivity() {
     }
 
     private fun configureRecyclerView(){
-        this.mAdapter = CreateSpentRecyclerViewAdapter()
+        this.mAdapter = CreateSpentRecyclerViewAdapter(this)
         create_spent_who_recyclerview.adapter = this.mAdapter
         create_spent_who_recyclerview.layoutManager = LinearLayoutManager(this)
     }
@@ -85,16 +90,16 @@ class CreateSpentActivity : AppCompatActivity() {
 
     private fun getParticipant(){
         mCreateSpentViewModel.getParticipantCommonPot(mCommonPotId).observe(this, Observer {
-            mParticipantList = it
-            this.configureSpinner()
-            this.mAdapter.updateData(it)
+            if (mParticipantSelectedMap.isEmpty()) mParticipantSelectedMap = mCreateSpentViewModel.createMapParticipant(it)
+            this.configureSpinner(mCreateSpentViewModel.createListUsername(it))
+            this.mAdapter.updateData(it, mParticipantSelectedMap)
         })
     }
 
-    private fun configureSpinner(){
+    private fun configureSpinner(usernameList: List<String>){
         create_spent_payed_by_spinner.keyListener = null
-        create_spent_payed_by_spinner.text = SpannableStringBuilder(mParticipantList[mPositionSpinnerPaidBy])
-        val adapter = ArrayAdapter(this, R.layout.dropdown_menu_popup_item, mParticipantList)
+        create_spent_payed_by_spinner.text = SpannableStringBuilder(usernameList[mPositionSpinnerPaidBy])
+        val adapter = ArrayAdapter(this, R.layout.dropdown_menu_popup_item, usernameList)
         create_spent_payed_by_spinner.setAdapter(adapter)
         create_spent_payed_by_spinner.setOnItemClickListener { _, _, position, _ ->
             mPositionSpinnerPaidBy = position
@@ -133,6 +138,11 @@ class CreateSpentActivity : AppCompatActivity() {
         }
     }
 
+    override fun onClick(isChecked: Boolean, participantId: String) {
+        mParticipantSelectedMap[participantId] = isChecked
+        Log.e("TAG", "Checked: ${mParticipantSelectedMap.values}")
+    }
+
     private fun createSpent(){
         val title = create_spent_title_editext.text.toString()
         val amount =  create_spent_amount_editext.text.toString().toDouble()
@@ -144,6 +154,7 @@ class CreateSpentActivity : AppCompatActivity() {
         Icepick.saveInstanceState(this, outState)
         outState.run {
             outState.putInt(POSITION_SPINNER_PAID_BY, mPositionSpinnerPaidBy)
+            outState.putSerializable(IS_SELECTED_MAP, mParticipantSelectedMap)
         }
     }
 
