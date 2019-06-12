@@ -1,6 +1,5 @@
 package com.antoine.goodCount.ui.createSpent
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.antoine.goodCount.models.LineCommonPot

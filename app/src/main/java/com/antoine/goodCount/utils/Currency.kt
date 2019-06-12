@@ -1,29 +1,24 @@
-package com.antoine.goodCount.ui.createAndEdit
+package com.antoine.goodCount.utils
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import com.antoine.goodCount.models.CommonPot
-import com.antoine.goodCount.models.Participant
-import com.antoine.goodCount.repository.CommonPotRepository
-import com.google.android.gms.tasks.Task
 import java.util.*
+import java.util.Currency
+import kotlin.collections.ArrayList
 
-class CreateViewModel: ViewModel() {
-
-    private val mCurrencyList: MutableList<String> = ArrayList()
+object Currency {
 
     fun getAllCurrency(): List<String> {
         val localeList = Locale.getAvailableLocales()
+        val currencyList = ArrayList<String>()
         for (locale in localeList){
             try {
                 val currency = Currency.getInstance(locale)
                 val string = "${currency.displayName} (${currency.currencyCode})"
-                if (!mCurrencyList.contains(string)) mCurrencyList.add(string)
+                if (!currencyList.contains(string)) currencyList.add(string)
             }catch (e: Exception){ }
         }
-        mCurrencyList.sort()
-        mCurrencyList.removeAt(0)
-        return mCurrencyList
+        currencyList.sort()
+        currencyList.removeAt(0)
+        return currencyList
     }
 
     fun getLocaleCurrency(currencyList: List<String>): Int {
@@ -31,13 +26,14 @@ class CreateViewModel: ViewModel() {
         return currencyList.indexOf("${currency.displayName} (${currency.currencyCode})")
     }
 
+    fun getCurrencySelected(currencyList: List<String>, currencyCode: String): Int {
+        val currency = Currency.getInstance(currencyCode)
+        return currencyList.indexOf("${currency.displayName} (${currency.currencyCode})")
+    }
+
     fun getCurrencyCode(currencyName: String): String{
         val firstPart = currencyName.split("(")
         val currencyCode = firstPart[1].split(")")
         return currencyCode[0]
-    }
-
-    fun createCommonPot(commonPot: CommonPot, participant: Participant): Task<Void> {
-        return CommonPotRepository().createCommonPot(commonPot, participant)
     }
 }

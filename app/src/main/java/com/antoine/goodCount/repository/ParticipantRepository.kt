@@ -1,5 +1,6 @@
 package com.antoine.goodCount.repository
 
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -23,5 +24,9 @@ class ParticipantRepository {
 
     fun getParticipantCommonPot(commonPotId: String): Query {
         return mFirestoreDB.collection("participant").whereEqualTo("commonPotId", commonPotId)
+    }
+
+    fun getParticipantRef(id: String): DocumentReference {
+        return mFirestoreDB.collection("participant").document(id)
     }
 }

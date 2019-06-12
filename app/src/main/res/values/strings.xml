@@ -30,7 +30,10 @@
     <string name="you_must_add_an_amount">You must add an amount</string>
     <string name="you_must_allocate_the_amount_to_at_least_one_participant">You must allocate the amount to at least one participant</string>
     <string name="successful_creation">Successful creation</string>
+    <string name="successful_update">Successful update</string>
     <string name="error_creating">Error creating</string>
+    <string name="error_updating">Error updating</string>
     <string name="you_must_enter_your_username">You must enter your username</string>
+    <string name="validate_the_change">Validate the changes</string>
 
 </resources>

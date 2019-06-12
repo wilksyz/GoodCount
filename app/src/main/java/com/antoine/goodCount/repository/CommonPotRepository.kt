@@ -1,6 +1,5 @@
 package com.antoine.goodCount.repository
 
-import android.util.Log
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.Participant
 import com.google.android.gms.tasks.Task
@@ -25,6 +24,15 @@ class CommonPotRepository {
         participant.id = ParticipantRepository().createParticipant()
         batch.set(mFirestoreDB.collection("commonPot").document(newDocRef.id), commonPot)
         batch.set(mFirestoreDB.collection("participant").document(participant.id), participant)
+        return batch.commit()
+    }
+
+    fun updateCommonPot(mCommonPot: CommonPot, mParticipant: Participant): Task<Void> {
+        val batch = mFirestoreDB.batch()
+        val commonPotRef = mFirestoreDB.collection("commonPot").document(mCommonPot.id)
+        val participantRef = ParticipantRepository().getParticipantRef(mParticipant.id)
+        batch.set(commonPotRef, mCommonPot)
+        batch.set(participantRef, mParticipant)
         return batch.commit()
     }
 }

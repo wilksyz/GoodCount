@@ -1,6 +1,7 @@
 package com.antoine.goodCount.ui.main
 
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.R
-import com.antoine.goodCount.ui.createAndEdit.CreateCommonPotActivity
+import com.antoine.goodCount.ui.createAndEdit.create.CreateCommonPotActivity
 import com.antoine.goodCount.ui.detail.DetailActivity
 import com.antoine.goodCount.ui.main.recyclerView.ClickListener
 import com.antoine.goodCount.ui.main.recyclerView.MainRecyclerViewAdapter
@@ -28,6 +29,8 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
  */
 private const val USER_ID = "user id"
 private const val COMMON_POT_ID = "common pot id"
+private const val ANSWER_REQUEST = 1918
+private const val ANSWER_WRITING_REQUEST = "answer writing request"
 class MainFragment : Fragment(), ClickListener {
 
     private lateinit var viewOfLayout: View
@@ -56,7 +59,7 @@ class MainFragment : Fragment(), ClickListener {
         viewOfLayout.main_fragment_button_add_common_pot.setOnClickListener {
             this.setContextualMenu()
             val intent = Intent(context, CreateCommonPotActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, ANSWER_REQUEST)
         }
         viewOfLayout.main_fragment_button_join_common_pot.setOnClickListener {
             this.setContextualMenu()
@@ -110,6 +113,27 @@ class MainFragment : Fragment(), ClickListener {
                 mAdapter.updateData(it)
             }
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ANSWER_REQUEST){
+            if (resultCode == Activity.RESULT_OK){
+                val code = data?.getIntExtra(ANSWER_WRITING_REQUEST, -1)
+                code?.let { this.displaySnackBar(it) }
+            }
+        }
+    }
+
+    private fun displaySnackBar(code: Int) {
+        when(code){
+            0 -> {
+                view?.let { Snackbar.make(it, getString(R.string.successful_creation), Snackbar.LENGTH_LONG).show() }
+            }
+            1 -> {
+                view?.let { Snackbar.make(it, getString(R.string.error_creating), Snackbar.LENGTH_LONG).show() }
+            }
+        }
     }
 
     override fun onClick(position: Int) {
