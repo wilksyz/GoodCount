@@ -1,5 +1,6 @@
 package com.antoine.goodCount.repository
 
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -9,5 +10,9 @@ class ParticipantSpentRepository {
 
     fun getDocumentId(): String {
         return mFirestoreDB.collection("participantSpent").document().id
+    }
+
+    fun getParticipantSpent(lineCommonPotId: String): Query {
+        return mFirestoreDB.collection("participantSpent").whereEqualTo("lineCommonPotId", lineCommonPotId)
     }
 }

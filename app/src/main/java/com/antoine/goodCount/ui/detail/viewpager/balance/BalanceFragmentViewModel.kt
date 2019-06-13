@@ -1,0 +1,91 @@
+package com.antoine.goodCount.ui.detail.viewpager.balance
+
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.antoine.goodCount.models.LineCommonPot
+import com.antoine.goodCount.models.Participant
+import com.antoine.goodCount.models.ParticipantSpent
+import com.antoine.goodCount.repository.LineCommonPotRepository
+import com.antoine.goodCount.repository.ParticipantRepository
+import com.antoine.goodCount.repository.ParticipantSpentRepository
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.QuerySnapshot
+
+private const val TAG = "BALANCE_FRAG_VIEW_MODEL"
+class BalanceFragmentViewModel: ViewModel() {
+
+    private val mLineCommonPotRepository = LineCommonPotRepository()
+    private val mParticipantRepository = ParticipantRepository()
+    private val mParticipantSpentRepository = ParticipantSpentRepository()
+    private val mParticipantSpent: MutableLiveData<HashMap<String, Double>> = MutableLiveData()
+    private val mLineCommonPotList = ArrayList<LineCommonPot>()
+    private val mParticipantSpentMap: HashMap<String, Double> = HashMap()
+
+    private fun getLineCommonPot(commonPotId: String) {
+        mLineCommonPotRepository.getLineCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e)
+                return@EventListener
+            }
+            if (value != null) {
+                mLineCommonPotList.clear()
+                for (document in value) {
+                    val lineCommonPot = document.toObject(LineCommonPot::class.java)
+                    mLineCommonPotList.add(lineCommonPot)
+                    this.getParticipantSpent(lineCommonPot)
+                }
+            }
+        })
+    }
+
+    private fun getParticipantSpent(lineCommonPot: LineCommonPot) {
+        val key = lineCommonPot.paidBy.split("\"")[0]
+        val amountPay = mParticipantSpentMap[key]?.plus(lineCommonPot.amount)
+        if (amountPay != null) {
+            mParticipantSpentMap[key] = amountPay
+        }
+        mParticipantSpentRepository.getParticipantSpent(lineCommonPot.id).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e)
+                return@EventListener
+            }
+            if (value != null){
+                val size = value.documents.size
+                val amountPerContributor = -Math.abs(lineCommonPot.amount.div(size))
+                for (document in value){
+                    val participantSpent = document.toObject(ParticipantSpent::class.java)
+                    val  amountUse = mParticipantSpentMap[participantSpent.participantId]?.plus(amountPerContributor)
+                    if (amountUse != null){
+                        mParticipantSpentMap[participantSpent.participantId] = amountUse
+                    }
+                }
+                mParticipantSpent.value = mParticipantSpentMap
+            }
+        })
+    }
+
+    fun getParticipant(commonPotId: String): MutableLiveData<HashMap<String, Double>> {
+
+        mParticipantRepository.getParticipantCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+            if (e != null){
+                Log.w(TAG, "Listen failed.", e)
+                mParticipantSpent.value = null
+                return@EventListener
+            }
+
+            if (value != null){
+                mParticipantSpentMap.clear()
+                for (document in value){
+                    val participant = document.toObject(Participant::class.java)
+                    val key = participant.id
+                    mParticipantSpentMap[key] = 0.0
+                }
+                mParticipantSpent.value = mParticipantSpentMap
+                getLineCommonPot(commonPotId)
+            }
+        })
+        return mParticipantSpent
+    }
+
+}

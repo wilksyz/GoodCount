@@ -9,7 +9,6 @@ import java.text.DateFormat
 import java.text.NumberFormat
 import java.util.*
 
-
 class DetailRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     fun updateLineCommonPotList(lineCommonPot: LineCommonPot, currency: String?, username: String){
@@ -40,7 +39,8 @@ class DetailRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView
         val paidBy: String = if (payerName == username){
             "${itemView.context.resources.getString(R.string.payed_by)} ${itemView.context.resources.getString(R.string.me)}"
         }else {
-            "${itemView.context.resources.getString(R.string.payed_by)} $payerName"
+            val split = payerName.split("\"")
+            "${itemView.context.resources.getString(R.string.payed_by)} ${split[1]}"
         }
         itemView.main_view_holder_description_textView.text = paidBy
     }

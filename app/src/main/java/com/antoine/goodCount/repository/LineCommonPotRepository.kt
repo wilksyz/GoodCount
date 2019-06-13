@@ -26,7 +26,7 @@ class LineCommonPotRepository {
             participantSpent.lineCommonPotId = newDocRef.id
             participantSpent.id = ParticipantSpentRepository().getDocumentId()
             Log.e("Repository","id: ${participantSpent.id}")
-            batch.set(mFirestoreDB.collection("participantSpent").document(participantSpent.id), participantSpent)
+            batch.set(mFirestoreDB.collection("mParticipantSpentMap").document(participantSpent.id), participantSpent)
         }
         return batch.commit()
     }

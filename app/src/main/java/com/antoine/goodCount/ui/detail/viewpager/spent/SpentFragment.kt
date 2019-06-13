@@ -1,4 +1,4 @@
-package com.antoine.goodCount.ui.detail.viewpager
+package com.antoine.goodCount.ui.detail.viewpager.spent
 
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
@@ -15,8 +15,8 @@ import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.ui.createSpent.CreateSpentActivity
-import com.antoine.goodCount.ui.detail.DetailViewModel
 import com.antoine.goodCount.ui.detail.recyclerView.DetailRecyclerViewAdapter
+import com.antoine.goodCount.utils.Currency
 import kotlinx.android.synthetic.main.fragment_spent.view.*
 
 /**
@@ -28,7 +28,7 @@ private const val USER_ID = "user id"
 class SpentFragment : Fragment() {
 
     private lateinit var viewOfLayout: View
-    private lateinit var mDetailViewModel: DetailViewModel
+    private lateinit var mSpentFragmentViewModel: SpentFragmentViewModel
     private lateinit var mAdapter: DetailRecyclerViewAdapter
     private lateinit var mCommonPotId: String
     private var mCommonPot: CommonPot? = null
@@ -55,7 +55,7 @@ class SpentFragment : Fragment() {
     }
 
     private fun configureViewModel(){
-        mDetailViewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+        mSpentFragmentViewModel = ViewModelProviders.of(this).get(SpentFragmentViewModel::class.java)
     }
 
     private fun configureRecyclerView(){
@@ -65,7 +65,7 @@ class SpentFragment : Fragment() {
     }
 
     private fun getLineCommonPot(){
-        mDetailViewModel.getLineCommonPot(mCommonPotId).observe(this, Observer { list ->
+        mSpentFragmentViewModel.getLineCommonPot(mCommonPotId).observe(this, Observer { list ->
             mLineCommonPotList = list
             this.mAdapter.updateData(list)
             this.getTotalCost()
@@ -74,7 +74,7 @@ class SpentFragment : Fragment() {
     }
 
     private fun getCommonPot(){
-        mDetailViewModel.getCommonPot(mCommonPotId).observe(this, Observer { commonPot ->
+        mSpentFragmentViewModel.getCommonPot(mCommonPotId).observe(this, Observer { commonPot ->
             mCommonPot = commonPot
             this.mAdapter.updateCommonPot(commonPot)
             this.getTotalCost()
@@ -83,7 +83,7 @@ class SpentFragment : Fragment() {
     }
 
     private fun getUsername(){
-        mDetailViewModel.getUsername(this.getUserId(), mCommonPotId).observe(this, Observer { username ->
+        mSpentFragmentViewModel.getUsername(this.getUserId(), mCommonPotId).observe(this, Observer { username ->
             mUsername = username
             this.mAdapter.updateUsername(username)
             this.getPersonalCost()
@@ -100,7 +100,7 @@ class SpentFragment : Fragment() {
             }
         }
         if (mCommonPot != null){
-            val cost = mDetailViewModel.formatAtCurrency(mCommonPot?.currency, personalCost)
+            val cost = Currency.formatAtCurrency(mCommonPot?.currency, personalCost)
             val personalCostPhrase = "${getString(R.string.personal_cost)}\n$cost"
             viewOfLayout.spent_fragment_my_cost_textView.text = personalCostPhrase
         }
@@ -114,7 +114,7 @@ class SpentFragment : Fragment() {
             }
         }
         if (mCommonPot != null){
-            val cost = mDetailViewModel.formatAtCurrency(mCommonPot?.currency, totalCost)
+            val cost = Currency.formatAtCurrency(mCommonPot?.currency, totalCost)
             val totalCostPhrase = "${getString(R.string.total_cost)}\n$cost"
             viewOfLayout.spent_fragment_total_cost_textView.text = totalCostPhrase
         }

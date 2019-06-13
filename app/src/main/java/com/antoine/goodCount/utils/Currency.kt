@@ -1,5 +1,6 @@
 package com.antoine.goodCount.utils
 
+import java.text.NumberFormat
 import java.util.*
 import java.util.Currency
 import kotlin.collections.ArrayList
@@ -35,5 +36,11 @@ object Currency {
         val firstPart = currencyName.split("(")
         val currencyCode = firstPart[1].split(")")
         return currencyCode[0]
+    }
+
+    fun formatAtCurrency(currency: String?, amount: Double): String{
+        val format = NumberFormat.getCurrencyInstance(Locale.getDefault())
+        format.currency = Currency.getInstance(currency)
+        return format.format(amount)
     }
 }

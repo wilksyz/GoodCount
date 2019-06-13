@@ -6,7 +6,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.detail.viewpager.SpentFragment"
+        tools:context=".ui.detail.viewpager.spent.SpentFragment"
         android:background="@drawable/com_facebook_auth_dialog_cancel_background">
 
     <androidx.recyclerview.widget.RecyclerView

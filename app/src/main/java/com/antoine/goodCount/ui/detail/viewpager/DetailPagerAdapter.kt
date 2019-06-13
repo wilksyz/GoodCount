@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.antoine.goodCount.R
+import com.antoine.goodCount.ui.detail.viewpager.balance.BalanceFragment
+import com.antoine.goodCount.ui.detail.viewpager.spent.SpentFragment
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -20,7 +22,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, pr
             0 -> {
                 SpentFragment.newInstance(commonPotId)
             }else -> {
-                return BalanceFragment()
+                return BalanceFragment.newInstance(commonPotId)
             }
         }
     }

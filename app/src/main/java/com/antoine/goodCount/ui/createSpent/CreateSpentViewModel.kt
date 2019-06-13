@@ -58,4 +58,8 @@ class CreateSpentViewModel: ViewModel() {
     fun createSpentInDatabase(lineCommonPot: LineCommonPot, participantSpentList: List<ParticipantSpent>): Task<Void> {
         return mLineCommonPotRepository.createLineCommonPot(lineCommonPot, participantSpentList)
     }
+
+    fun formatPaidBy(participant: Participant): String {
+        return "${participant.id}\"${participant.username}"
+    }
 }
