@@ -1,5 +1,6 @@
 package com.antoine.goodCount.ui.detail.viewpager.spent
 
+import android.app.Activity
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
@@ -17,12 +18,15 @@ import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.ui.createSpent.CreateSpentActivity
 import com.antoine.goodCount.ui.detail.viewpager.spent.recyclerView.SpentFragmentRecyclerViewAdapter
 import com.antoine.goodCount.utils.Currency
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_spent.view.*
 
 /**
  * A placeholder fragment containing a simple view.
  */
 private const val USER_APP = "user app"
+private const val ANSWER_REQUEST = 1914
+private const val ANSWER_WRITING_REQUEST = "answer writing request"
 private const val COMMON_POT_ID = "common pot id"
 private const val USER = "user"
 private const val USER_ID = "user id"
@@ -50,7 +54,7 @@ class SpentFragment : Fragment() {
         mViewOfLayout.spent_fragment_add_spent_fab.setOnClickListener {
             val createSpentIntent = Intent(context, CreateSpentActivity::class.java)
             createSpentIntent.putExtra(COMMON_POT_ID, mCommonPotId)
-            startActivity(createSpentIntent)
+            startActivityForResult(createSpentIntent, ANSWER_REQUEST)
         }
         return mViewOfLayout
     }
@@ -118,6 +122,27 @@ class SpentFragment : Fragment() {
             val cost = Currency.formatAtCurrency(mCommonPot?.currency, totalCost)
             val totalCostPhrase = "${getString(R.string.total_cost)}\n$cost"
             mViewOfLayout.spent_fragment_total_cost_textView.text = totalCostPhrase
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ANSWER_REQUEST){
+            if (resultCode == Activity.RESULT_OK){
+                val code = data?.getIntExtra(ANSWER_WRITING_REQUEST, -1)
+                code?.let { this.displaySnackBar(it) }
+            }
+        }
+    }
+
+    private fun displaySnackBar(code: Int) {
+        when(code){
+            0 -> {
+                view?.let { Snackbar.make(it, getString(R.string.successful_creation), Snackbar.LENGTH_LONG).show() }
+            }
+            1 -> {
+                view?.let { Snackbar.make(it, getString(R.string.error_creating), Snackbar.LENGTH_LONG).show() }
+            }
         }
     }
 

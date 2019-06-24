@@ -1,7 +1,9 @@
 package com.antoine.goodCount.ui.createSpent
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableStringBuilder
@@ -28,6 +30,7 @@ import kotlin.collections.HashMap
 private const val COMMON_POT_ID = "common pot id"
 private const val POSITION_SPINNER_PAID_BY = "position spinner paid by"
 private const val IS_SELECTED_MAP = "is selected map"
+private const val ANSWER_WRITING_REQUEST = "answer writing request"
 class CreateSpentActivity : AppCompatActivity(), ClickListener {
 
     private lateinit var mAdapter: CreateSpentRecyclerViewAdapter
@@ -190,11 +193,14 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
     }
 
     private fun createSpentInDatabase(lineCommonPot: LineCommonPot, participantSpentList: List<ParticipantSpent>){
+        val returnIntent = Intent()
         mCreateSpentViewModel.createSpentInDatabase(lineCommonPot, participantSpentList).addOnSuccessListener {
-            Snackbar.make(nestedScrollView, getString(R.string.successful_creation), Snackbar.LENGTH_LONG).show()
+            returnIntent.putExtra(ANSWER_WRITING_REQUEST, 0)
+            setResult(Activity.RESULT_OK, returnIntent)
             finish()
         }.addOnFailureListener {
-            Snackbar.make(nestedScrollView, getString(R.string.error_creating), Snackbar.LENGTH_LONG).show()
+            returnIntent.putExtra(ANSWER_WRITING_REQUEST, 1)
+            setResult(Activity.RESULT_OK, returnIntent)
             finish()
         }
     }
