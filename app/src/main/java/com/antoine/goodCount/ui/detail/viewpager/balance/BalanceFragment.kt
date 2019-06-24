@@ -1,7 +1,6 @@
 package com.antoine.goodCount.ui.detail.viewpager.balance
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,8 @@ class BalanceFragment : Fragment() {
         mCommonPotId = arguments?.getString(COMMON_POT_ID).toString()
         this.configureViewModel()
         this.configureRecyclerView()
-        this.getParticipant()
+        this.getParticipantBalance()
+        this.getCommonPot()
 
         return mViewOfLayout
     }
@@ -44,10 +44,15 @@ class BalanceFragment : Fragment() {
         mViewOfLayout.balance_fragment_recyclerview.layoutManager = LinearLayoutManager(this.context)
     }
 
-    private fun getParticipant(){
+    private fun getParticipantBalance(){
         mBalanceFragmentViewModel.getParticipant(mCommonPotId).observe(this, Observer {
-            Log.e("TAG","key: ${it.keys} Map: ${it.values}")
             mAdapter.updateData(it, mBalanceFragmentViewModel.mParticipantList)
+        })
+    }
+
+    private fun getCommonPot(){
+        mBalanceFragmentViewModel.getCommonPot(mCommonPotId).observe(this, Observer { commonPot ->
+            mAdapter.updateCurrency(commonPot.currency)
         })
     }
 

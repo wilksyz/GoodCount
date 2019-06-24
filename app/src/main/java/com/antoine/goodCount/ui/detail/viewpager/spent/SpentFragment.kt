@@ -84,6 +84,7 @@ class SpentFragment : Fragment() {
             this.mAdapter.updateCommonPot(commonPot)
             this.getTotalCost()
             this.getPersonalCost()
+            activity?.title = commonPot.title
         })
     }
 

@@ -26,7 +26,6 @@ class DetailActivity : BaseActivity() {
         mCommonPotId = intent?.getStringExtra(COMMON_POT_ID)
         mCommonPotId?.let { this.configureViewPager(it) }
 
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
