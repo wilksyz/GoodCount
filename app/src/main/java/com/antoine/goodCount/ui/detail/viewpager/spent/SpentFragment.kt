@@ -15,21 +15,22 @@ import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.ui.createSpent.CreateSpentActivity
-import com.antoine.goodCount.ui.detail.recyclerView.DetailRecyclerViewAdapter
+import com.antoine.goodCount.ui.detail.viewpager.spent.recyclerView.SpentFragmentRecyclerViewAdapter
 import com.antoine.goodCount.utils.Currency
 import kotlinx.android.synthetic.main.fragment_spent.view.*
 
 /**
  * A placeholder fragment containing a simple view.
  */
+private const val USER_APP = "user app"
 private const val COMMON_POT_ID = "common pot id"
 private const val USER = "user"
 private const val USER_ID = "user id"
 class SpentFragment : Fragment() {
 
-    private lateinit var viewOfLayout: View
+    private lateinit var mViewOfLayout: View
     private lateinit var mSpentFragmentViewModel: SpentFragmentViewModel
-    private lateinit var mAdapter: DetailRecyclerViewAdapter
+    private lateinit var mAdapter: SpentFragmentRecyclerViewAdapter
     private lateinit var mCommonPotId: String
     private var mCommonPot: CommonPot? = null
     private var mLineCommonPotList: List<LineCommonPot> = ArrayList()
@@ -38,7 +39,7 @@ class SpentFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        viewOfLayout = inflater.inflate(R.layout.fragment_spent, container, false)
+        mViewOfLayout = inflater.inflate(R.layout.fragment_spent, container, false)
         mCommonPotId = arguments?.getString(COMMON_POT_ID).toString()
         this.configureViewModel()
         this.getCommonPot()
@@ -46,12 +47,12 @@ class SpentFragment : Fragment() {
         this.configureRecyclerView()
         this.getUsername()
 
-        viewOfLayout.spent_fragment_add_spent_fab.setOnClickListener {
+        mViewOfLayout.spent_fragment_add_spent_fab.setOnClickListener {
             val createSpentIntent = Intent(context, CreateSpentActivity::class.java)
             createSpentIntent.putExtra(COMMON_POT_ID, mCommonPotId)
             startActivity(createSpentIntent)
         }
-        return viewOfLayout
+        return mViewOfLayout
     }
 
     private fun configureViewModel(){
@@ -59,9 +60,9 @@ class SpentFragment : Fragment() {
     }
 
     private fun configureRecyclerView(){
-        this.mAdapter = DetailRecyclerViewAdapter()
-        viewOfLayout.spent_fragment_recyclerview.adapter = this.mAdapter
-        viewOfLayout.spent_fragment_recyclerview.layoutManager = LinearLayoutManager(this.context)
+        this.mAdapter = SpentFragmentRecyclerViewAdapter()
+        mViewOfLayout.spent_fragment_recyclerview.adapter = this.mAdapter
+        mViewOfLayout.spent_fragment_recyclerview.layoutManager = LinearLayoutManager(this.context)
     }
 
     private fun getLineCommonPot(){
@@ -83,9 +84,9 @@ class SpentFragment : Fragment() {
     }
 
     private fun getUsername(){
-        mSpentFragmentViewModel.getUsername(this.getUserId(), mCommonPotId).observe(this, Observer { username ->
-            mUsername = username
-            this.mAdapter.updateUsername(username)
+        mSpentFragmentViewModel.getParticipant(this.getUserId(), mCommonPotId).observe(this, Observer { participantList ->
+            mUsername = participantList[USER_APP]?.id.toString()
+            this.mAdapter.updateParticipantList(participantList)
             this.getPersonalCost()
         })
     }
@@ -102,7 +103,7 @@ class SpentFragment : Fragment() {
         if (mCommonPot != null){
             val cost = Currency.formatAtCurrency(mCommonPot?.currency, personalCost)
             val personalCostPhrase = "${getString(R.string.personal_cost)}\n$cost"
-            viewOfLayout.spent_fragment_my_cost_textView.text = personalCostPhrase
+            mViewOfLayout.spent_fragment_my_cost_textView.text = personalCostPhrase
         }
     }
 
@@ -116,7 +117,7 @@ class SpentFragment : Fragment() {
         if (mCommonPot != null){
             val cost = Currency.formatAtCurrency(mCommonPot?.currency, totalCost)
             val totalCostPhrase = "${getString(R.string.total_cost)}\n$cost"
-            viewOfLayout.spent_fragment_total_cost_textView.text = totalCostPhrase
+            mViewOfLayout.spent_fragment_total_cost_textView.text = totalCostPhrase
         }
     }
 

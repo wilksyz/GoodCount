@@ -178,7 +178,7 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
         if (mParticipantSelectedMap.containsValue(true)){
             val title = create_spent_title_editext.text.toString()
             val amount =  create_spent_amount_editext.text.toString().toDouble()
-            val paidBy = mCreateSpentViewModel.formatPaidBy(mParticipantList[mPositionSpinnerPaidBy])
+            val paidBy = mParticipantList[mPositionSpinnerPaidBy].id
             val lineCommonPot = LineCommonPot("",mCommonPotId,title,amount,mCreateSpentViewModel.mDateOfSpent,paidBy)
             for (select in mParticipantSelectedMap){
                 participantSpentList.add(ParticipantSpent("","",select.key))

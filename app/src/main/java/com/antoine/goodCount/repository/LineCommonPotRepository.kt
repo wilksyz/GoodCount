@@ -1,6 +1,5 @@
 package com.antoine.goodCount.repository
 
-import android.util.Log
 import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.models.ParticipantSpent
 import com.google.android.gms.tasks.Task
@@ -25,8 +24,7 @@ class LineCommonPotRepository {
         for (participantSpent in participantSpentList){
             participantSpent.lineCommonPotId = newDocRef.id
             participantSpent.id = ParticipantSpentRepository().getDocumentId()
-            Log.e("Repository","id: ${participantSpent.id}")
-            batch.set(mFirestoreDB.collection("mParticipantSpentMap").document(participantSpent.id), participantSpent)
+            batch.set(mFirestoreDB.collection("participantSpent").document(participantSpent.id), participantSpent)
         }
         return batch.commit()
     }

@@ -18,9 +18,10 @@ class BalanceFragmentViewModel: ViewModel() {
     private val mLineCommonPotRepository = LineCommonPotRepository()
     private val mParticipantRepository = ParticipantRepository()
     private val mParticipantSpentRepository = ParticipantSpentRepository()
-    private val mParticipantSpent: MutableLiveData<HashMap<String, Double>> = MutableLiveData()
+    private val mParticipantSpentMapMutable: MutableLiveData<HashMap<String, Double>> = MutableLiveData()
     private val mLineCommonPotList = ArrayList<LineCommonPot>()
     private val mParticipantSpentMap: HashMap<String, Double> = HashMap()
+    val mParticipantList = ArrayList<Participant>()
 
     private fun getLineCommonPot(commonPotId: String) {
         mLineCommonPotRepository.getLineCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
@@ -40,16 +41,11 @@ class BalanceFragmentViewModel: ViewModel() {
     }
 
     private fun getParticipantSpent(lineCommonPot: LineCommonPot) {
-        val key = lineCommonPot.paidBy.split("\"")[0]
-        val amountPay = mParticipantSpentMap[key]?.plus(lineCommonPot.amount)
+        val amountPay = mParticipantSpentMap[lineCommonPot.paidBy]?.plus(lineCommonPot.amount)
         if (amountPay != null) {
-            mParticipantSpentMap[key] = amountPay
+            mParticipantSpentMap[lineCommonPot.paidBy] = amountPay
         }
-        mParticipantSpentRepository.getParticipantSpent(lineCommonPot.id).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
-            if (e != null) {
-                Log.w(TAG, "Listen failed.", e)
-                return@EventListener
-            }
+        mParticipantSpentRepository.getParticipantSpent(lineCommonPot.id).get().addOnSuccessListener {value ->
             if (value != null){
                 val size = value.documents.size
                 val amountPerContributor = -Math.abs(lineCommonPot.amount.div(size))
@@ -60,32 +56,32 @@ class BalanceFragmentViewModel: ViewModel() {
                         mParticipantSpentMap[participantSpent.participantId] = amountUse
                     }
                 }
-                mParticipantSpent.value = mParticipantSpentMap
+                mParticipantSpentMapMutable.value = mParticipantSpentMap
             }
-        })
+        }.addOnFailureListener { e ->
+            Log.w(TAG, "Listen failed.", e)
+        }
     }
 
     fun getParticipant(commonPotId: String): MutableLiveData<HashMap<String, Double>> {
-
         mParticipantRepository.getParticipantCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
             if (e != null){
                 Log.w(TAG, "Listen failed.", e)
-                mParticipantSpent.value = null
+                mParticipantSpentMapMutable.value = null
                 return@EventListener
             }
-
             if (value != null){
                 mParticipantSpentMap.clear()
+                mParticipantList.clear()
                 for (document in value){
                     val participant = document.toObject(Participant::class.java)
-                    val key = participant.id
-                    mParticipantSpentMap[key] = 0.0
+                    mParticipantList.add(participant)
+                    mParticipantSpentMap[participant.id] = 0.0
                 }
-                mParticipantSpent.value = mParticipantSpentMap
+                mParticipantSpentMapMutable.value = mParticipantSpentMap
                 getLineCommonPot(commonPotId)
             }
         })
-        return mParticipantSpent
+        return mParticipantSpentMapMutable
     }
-
 }

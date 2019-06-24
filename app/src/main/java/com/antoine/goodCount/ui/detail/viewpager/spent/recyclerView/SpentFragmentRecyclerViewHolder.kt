@@ -1,21 +1,24 @@
-package com.antoine.goodCount.ui.detail.recyclerView
+package com.antoine.goodCount.ui.detail.viewpager.spent.recyclerView
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.antoine.goodCount.R
 import com.antoine.goodCount.models.LineCommonPot
+import com.antoine.goodCount.models.Participant
 import kotlinx.android.synthetic.main.recyclerview_activity_main.view.*
 import java.text.DateFormat
 import java.text.NumberFormat
 import java.util.*
+import kotlin.collections.HashMap
 
-class DetailRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+private const val USER_APP = "user app"
+class SpentFragmentRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-    fun updateLineCommonPotList(lineCommonPot: LineCommonPot, currency: String?, username: String){
+    fun updateLineCommonPotList(lineCommonPot: LineCommonPot, currency: String?, participantMap: HashMap<String, Participant>){
         itemView.main_view_holder_tittle_textView.text = lineCommonPot.title
         this.formatDate(lineCommonPot)
         this.formatCurrency(lineCommonPot, currency)
-        this.formatPaidBy(lineCommonPot.paidBy, username)
+        this.formatPaidBy(lineCommonPot.paidBy, participantMap)
     }
 
     private fun formatDate(lineCommonPot: LineCommonPot){
@@ -35,12 +38,11 @@ class DetailRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView
         }
     }
 
-    private fun formatPaidBy(payerName: String, username: String){
-        val paidBy: String = if (payerName == username){
+    private fun formatPaidBy(payerName: String, username: HashMap<String, Participant>){
+        val paidBy: String = if (payerName == username[USER_APP]?.id){
             "${itemView.context.resources.getString(R.string.payed_by)} ${itemView.context.resources.getString(R.string.me)}"
         }else {
-            val split = payerName.split("\"")
-            "${itemView.context.resources.getString(R.string.payed_by)} ${split[1]}"
+            "${itemView.context.resources.getString(R.string.payed_by)} ${username[payerName]?.username}"
         }
         itemView.main_view_holder_description_textView.text = paidBy
     }

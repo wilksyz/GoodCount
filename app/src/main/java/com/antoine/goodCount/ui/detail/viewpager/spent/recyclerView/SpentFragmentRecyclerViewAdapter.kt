@@ -1,4 +1,4 @@
-package com.antoine.goodCount.ui.detail.recyclerView
+package com.antoine.goodCount.ui.detail.viewpager.spent.recyclerView
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,26 +6,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.LineCommonPot
+import com.antoine.goodCount.models.Participant
 
-class DetailRecyclerViewAdapter(): RecyclerView.Adapter<DetailRecyclerViewHolder>(){
+class SpentFragmentRecyclerViewAdapter(): RecyclerView.Adapter<SpentFragmentRecyclerViewHolder>(){
 
     private var mLineCommonPotList : List<LineCommonPot> = ArrayList()
     private var mCommonPot: CommonPot? = null
-    private var mUsername: String = ""
+    private var mParticipantMap: HashMap<String, Participant> = HashMap()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailRecyclerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpentFragmentRecyclerViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.recyclerview_activity_main, parent, false)
-        return DetailRecyclerViewHolder(view)
+        return SpentFragmentRecyclerViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return mLineCommonPotList.size
     }
 
-    override fun onBindViewHolder(detailRecyclerViewHolder: DetailRecyclerViewHolder, position: Int) {
-        return detailRecyclerViewHolder.updateLineCommonPotList(mLineCommonPotList[position], mCommonPot?.currency, mUsername)
+    override fun onBindViewHolder(spentFragmentRecyclerViewHolder: SpentFragmentRecyclerViewHolder, position: Int) {
+        return spentFragmentRecyclerViewHolder.updateLineCommonPotList(mLineCommonPotList[position], mCommonPot?.currency, mParticipantMap)
     }
 
     fun updateData(commonPotList: List<LineCommonPot>){
@@ -38,12 +39,8 @@ class DetailRecyclerViewAdapter(): RecyclerView.Adapter<DetailRecyclerViewHolder
         this.notifyDataSetChanged()
     }
 
-    fun updateUsername(username: String){
-        mUsername = username
+    fun updateParticipantList(participantMap: HashMap<String, Participant>){
+        mParticipantMap = participantMap
         this.notifyDataSetChanged()
-    }
-
-    fun getCommonPotId(position: Int): String? {
-        return mLineCommonPotList[position].id
     }
 }
