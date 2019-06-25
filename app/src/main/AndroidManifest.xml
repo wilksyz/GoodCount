@@ -11,7 +11,6 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-
         <meta-data
                 android:name="com.facebook.sdk.ApplicationId"
                 android:value="@string/facebook_app_id"/>
@@ -24,7 +23,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -43,7 +41,7 @@
                     android:value=".ui.main.MainActivity"/>
         </activity>
         <activity
-                android:name=".ui.createSpent.CreateSpentActivity"
+                android:name=".ui.createAndEditSpent.create.CreateSpentActivity"
                 android:parentActivityName=".ui.detail.DetailActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -51,6 +49,13 @@
         </activity>
         <activity
                 android:name=".ui.createAndEdit.edit.EditCommonPotActivity"
+                android:parentActivityName=".ui.detail.DetailActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.detail.DetailActivity"/>
+        </activity>
+        <activity
+                android:name=".ui.createAndEditSpent.edit.EditSpentActivity"
                 android:parentActivityName=".ui.detail.DetailActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"

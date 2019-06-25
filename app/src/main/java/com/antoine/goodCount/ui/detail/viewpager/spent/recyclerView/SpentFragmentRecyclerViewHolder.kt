@@ -12,9 +12,16 @@ import java.util.*
 import kotlin.collections.HashMap
 
 private const val USER_APP = "user app"
-class SpentFragmentRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class SpentFragmentRecyclerViewHolder(itemView: View, private var clickListener: SpentClickListener): RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
+    private lateinit var mLineCommonPot: LineCommonPot
+
+    init {
+        itemView.setOnClickListener(this)
+    }
 
     fun updateLineCommonPotList(lineCommonPot: LineCommonPot, currency: String?, participantMap: HashMap<String, Participant>){
+        mLineCommonPot = lineCommonPot
         itemView.main_view_holder_tittle_textView.text = lineCommonPot.title
         this.formatDate(lineCommonPot)
         this.formatCurrency(lineCommonPot, currency)
@@ -46,4 +53,11 @@ class SpentFragmentRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(i
         }
         itemView.main_view_holder_description_textView.text = paidBy
     }
+
+    override fun onClick(v: View?) {
+        clickListener.onClick(mLineCommonPot.id)
+    }
+}
+interface SpentClickListener{
+    fun onClick(lineCommonPotId: String)
 }

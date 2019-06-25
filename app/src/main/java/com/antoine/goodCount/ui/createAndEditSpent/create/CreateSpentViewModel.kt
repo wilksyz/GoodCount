@@ -1,4 +1,4 @@
-package com.antoine.goodCount.ui.createSpent
+package com.antoine.goodCount.ui.createAndEditSpent.create
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -22,13 +22,15 @@
     <string name="amount">Amount</string>
     <string name="date">Date</string>
     <string name="payed_by">Paid by</string>
-    <string name="for_who">For who</string>
+    <string name="for_who">Participant</string>
     <string name="total_cost">Total cost</string>
     <string name="personal_cost">My cost</string>
     <string name="me">me</string>
     <string name="you_must_add_a_title">You must add a title</string>
     <string name="you_must_add_an_amount">You must add an amount</string>
-    <string name="you_must_allocate_the_amount_to_at_least_one_participant">You must allocate the amount to at least one participant</string>
+    <string name="you_must_allocate_the_amount_to_at_least_one_participant">You must allocate the amount to at least one
+        participant
+    </string>
     <string name="successful_creation">Successful creation</string>
     <string name="successful_update">Successful update</string>
     <string name="error_creating">Error creating</string>

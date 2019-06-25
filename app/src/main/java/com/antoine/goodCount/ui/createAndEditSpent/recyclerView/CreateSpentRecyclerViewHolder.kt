@@ -1,4 +1,4 @@
-package com.antoine.goodCount.ui.createSpent.recyclerView
+package com.antoine.goodCount.ui.createAndEditSpent.recyclerView
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

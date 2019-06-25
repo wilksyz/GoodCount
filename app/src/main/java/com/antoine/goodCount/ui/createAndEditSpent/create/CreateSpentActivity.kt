@@ -1,4 +1,4 @@
-package com.antoine.goodCount.ui.createSpent
+package com.antoine.goodCount.ui.createAndEditSpent.create
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -18,8 +18,9 @@ import com.antoine.goodCount.R
 import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.models.ParticipantSpent
-import com.antoine.goodCount.ui.createSpent.recyclerView.ClickListener
-import com.antoine.goodCount.ui.createSpent.recyclerView.CreateSpentRecyclerViewAdapter
+import com.antoine.goodCount.ui.createAndEditSpent.BaseSpentActivity
+import com.antoine.goodCount.ui.createAndEditSpent.recyclerView.ClickListener
+import com.antoine.goodCount.ui.createAndEditSpent.recyclerView.CreateSpentRecyclerViewAdapter
 import com.google.android.material.snackbar.Snackbar
 import icepick.Icepick
 import kotlinx.android.synthetic.main.activity_create_spent.*
@@ -28,45 +29,20 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 private const val COMMON_POT_ID = "common pot id"
-private const val POSITION_SPINNER_PAID_BY = "position spinner paid by"
-private const val IS_SELECTED_MAP = "is selected map"
 private const val ANSWER_WRITING_REQUEST = "answer writing request"
-class CreateSpentActivity : AppCompatActivity(), ClickListener {
+class CreateSpentActivity: BaseSpentActivity() {
 
-    private lateinit var mAdapter: CreateSpentRecyclerViewAdapter
     private lateinit var mCreateSpentViewModel: CreateSpentViewModel
     private lateinit var mCommonPotId: String
     private lateinit var mParticipantList: List<Participant>
-    private var mParticipantSelectedMap: HashMap<String, Boolean> = HashMap()
-    private var mPositionSpinnerPaidBy = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_spent)
-        Icepick.restoreInstanceState(this, savedInstanceState)
-        if (savedInstanceState != null){
-            mPositionSpinnerPaidBy = savedInstanceState.getInt(POSITION_SPINNER_PAID_BY)
-            mParticipantSelectedMap = savedInstanceState.getSerializable(IS_SELECTED_MAP) as HashMap<String, Boolean>
-        }
         mCommonPotId = intent.getStringExtra(COMMON_POT_ID)
         this.configureViewModel()
-        this.configureRecyclerView()
+        configureRecyclerView()
         this.getParticipant()
         this.configureDateTextView()
-        create_spent_title_editext.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                checkInformationIsEntered(0)
-            }
-        })
-        create_spent_amount_editext.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                checkInformationIsEntered(1)
-            }
-        })
         create_spent_button.setOnClickListener {
             this.retrieveInformationEntered()
         }
@@ -76,12 +52,6 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
         mCreateSpentViewModel = ViewModelProviders.of(this).get(CreateSpentViewModel::class.java)
     }
 
-    private fun configureRecyclerView(){
-        this.mAdapter = CreateSpentRecyclerViewAdapter(this)
-        create_spent_who_recyclerview.adapter = this.mAdapter
-        create_spent_who_recyclerview.layoutManager = LinearLayoutManager(this)
-    }
-
     private fun configureDateTextView(){
         create_spent_date_spinner.keyListener = null
         create_spent_date_spinner.text = SpannableStringBuilder(mCreateSpentViewModel.formatDate())
@@ -89,16 +59,6 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
             create_spent_date_spinner.isFocusableInTouchMode = true
             create_spent_date_spinner.requestFocus()
             displayDatePicker()
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        android.R.id.home -> {
-            this.onBackPressed()
-            true
-        }
-        else -> {
-            super.onOptionsItemSelected(item)
         }
     }
 
@@ -112,6 +72,7 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
     }
 
     private fun configureSpinner(usernameList: List<String>){
+        if (mPositionSpinnerPaidBy == -1) mPositionSpinnerPaidBy = 0
         create_spent_payed_by_spinner.keyListener = null
         create_spent_payed_by_spinner.text = SpannableStringBuilder(usernameList[mPositionSpinnerPaidBy])
         val adapter = ArrayAdapter(this, R.layout.dropdown_menu_popup_item, usernameList)
@@ -130,6 +91,7 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
             calendar.set(yearOfCalendar, monthOfYear, dayOfMonth)
             this.displayTimePicker(calendar)
         }, year, month, day)
+        dpd.datePicker.maxDate = Date().time
         dpd.show()
         dpd.setOnCancelListener {
             create_spent_date_spinner.isFocusableInTouchMode = false
@@ -138,7 +100,7 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
     }
 
     private fun displayTimePicker(calendar: Calendar){
-        val hour = calendar.get(Calendar.HOUR)
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
         val tpd = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minuteOfHour ->
             calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
@@ -155,25 +117,6 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
 
     override fun onClick(isChecked: Boolean, participantId: String) {
         mParticipantSelectedMap[participantId] = isChecked
-    }
-
-    private fun checkInformationIsEntered(signInCode: Int){
-        val title = create_spent_title_editext.text.toString().isNotEmpty()
-        val amount = create_spent_amount_editext.text.toString().isNotEmpty()
-        create_spent_button.isEnabled = title && amount
-        if (signInCode == 0){
-            if (!title){
-                create_spent_title_textInputLayout.error = getString(R.string.you_must_add_a_title)
-            }else{
-                create_spent_title_textInputLayout.error = null
-            }
-        }else if (signInCode == 1){
-            if (!amount){
-                create_spent_amount_textInputLayout.error = getString(R.string.you_must_add_an_amount)
-            }else{
-                create_spent_amount_textInputLayout.error = null
-            }
-        }
     }
 
     private fun retrieveInformationEntered(){
@@ -203,19 +146,5 @@ class CreateSpentActivity : AppCompatActivity(), ClickListener {
             setResult(Activity.RESULT_OK, returnIntent)
             finish()
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        Icepick.saveInstanceState(this, outState)
-        outState.run {
-            outState.putInt(POSITION_SPINNER_PAID_BY, mPositionSpinnerPaidBy)
-            outState.putSerializable(IS_SELECTED_MAP, mParticipantSelectedMap)
-        }
-    }
-
-    override fun onStop() {
-        create_spent_payed_by_spinner.dismissDropDown()
-        super.onStop()
     }
 }

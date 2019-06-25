@@ -56,6 +56,12 @@ class MainFragment : Fragment(), ClickListener {
         viewOfLayout.main_fragment_floating_action_button.setOnClickListener {
             this.setContextualMenu()
         }
+        viewOfLayout.main_fragment_recycler_view.setOnTouchListener { _, _ ->
+            if (mIsOpen){
+                this.setContextualMenu()
+            }
+            false
+        }
         viewOfLayout.main_fragment_button_add_common_pot.setOnClickListener {
             this.setContextualMenu()
             val intent = Intent(context, CreateCommonPotActivity::class.java)

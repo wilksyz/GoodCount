@@ -8,7 +8,7 @@ import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.models.Participant
 
-class SpentFragmentRecyclerViewAdapter(): RecyclerView.Adapter<SpentFragmentRecyclerViewHolder>(){
+class SpentFragmentRecyclerViewAdapter(private val clickListener: SpentClickListener): RecyclerView.Adapter<SpentFragmentRecyclerViewHolder>(){
 
     private var mLineCommonPotList : List<LineCommonPot> = ArrayList()
     private var mCommonPot: CommonPot? = null
@@ -18,7 +18,7 @@ class SpentFragmentRecyclerViewAdapter(): RecyclerView.Adapter<SpentFragmentRecy
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.recyclerview_activity_main, parent, false)
-        return SpentFragmentRecyclerViewHolder(view)
+        return SpentFragmentRecyclerViewHolder(view, clickListener)
     }
 
     override fun getItemCount(): Int {

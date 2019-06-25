@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.LineCommonPot
-import com.antoine.goodCount.ui.createSpent.CreateSpentActivity
+import com.antoine.goodCount.ui.createAndEditSpent.create.CreateSpentActivity
+import com.antoine.goodCount.ui.createAndEditSpent.edit.EditSpentActivity
+import com.antoine.goodCount.ui.detail.viewpager.spent.recyclerView.SpentClickListener
 import com.antoine.goodCount.ui.detail.viewpager.spent.recyclerView.SpentFragmentRecyclerViewAdapter
 import com.antoine.goodCount.utils.Currency
 import com.google.android.material.snackbar.Snackbar
@@ -28,9 +30,10 @@ private const val USER_APP = "user app"
 private const val ANSWER_REQUEST = 1914
 private const val ANSWER_WRITING_REQUEST = "answer writing request"
 private const val COMMON_POT_ID = "common pot id"
+private const val LINE_COMMON_POT_ID = "line common pot id"
 private const val USER = "user"
 private const val USER_ID = "user id"
-class SpentFragment : Fragment() {
+class SpentFragment : Fragment(), SpentClickListener {
 
     private lateinit var mViewOfLayout: View
     private lateinit var mSpentFragmentViewModel: SpentFragmentViewModel
@@ -64,7 +67,7 @@ class SpentFragment : Fragment() {
     }
 
     private fun configureRecyclerView(){
-        this.mAdapter = SpentFragmentRecyclerViewAdapter()
+        this.mAdapter = SpentFragmentRecyclerViewAdapter(this)
         mViewOfLayout.spent_fragment_recyclerview.adapter = this.mAdapter
         mViewOfLayout.spent_fragment_recyclerview.layoutManager = LinearLayoutManager(this.context)
     }
@@ -144,7 +147,20 @@ class SpentFragment : Fragment() {
             1 -> {
                 view?.let { Snackbar.make(it, getString(R.string.error_creating), Snackbar.LENGTH_LONG).show() }
             }
+            2 -> {
+                view?.let { Snackbar.make(it, getString(R.string.successful_update), Snackbar.LENGTH_LONG).show() }
+            }
+            3 -> {
+                view?.let { Snackbar.make(it, getString(R.string.error_updating), Snackbar.LENGTH_LONG).show() }
+            }
         }
+    }
+
+    override fun onClick(lineCommonPotId: String) {
+        val editSpentIntent = Intent(context, EditSpentActivity::class.java)
+        editSpentIntent.putExtra(COMMON_POT_ID, mCommonPotId)
+        editSpentIntent.putExtra(LINE_COMMON_POT_ID, lineCommonPotId)
+        startActivityForResult(editSpentIntent, ANSWER_REQUEST)
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

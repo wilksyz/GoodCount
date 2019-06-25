@@ -18,7 +18,7 @@
     <string name="title">Titre</string>
     <string name="total_cost">Coût total</string>
     <string name="your_name">Votre pseudo</string>
-    <string name="for_who">Pour qui</string>
+    <string name="for_who">Participant</string>
     <string name="me">moi</string>
     <string name="personal_cost">Mon coût</string>
     <string name="you_must_add_a_title">Vous devez ajouter un titre</string>
