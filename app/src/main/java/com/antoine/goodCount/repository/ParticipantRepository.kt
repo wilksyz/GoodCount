@@ -1,5 +1,7 @@
 package com.antoine.goodCount.repository
 
+import com.antoine.goodCount.models.Participant
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -15,7 +17,7 @@ class ParticipantRepository {
     }
 
     fun getManyParticipant(userId: String): Query {
-        return mFirestoreDB.collection("participant").whereEqualTo("userId", userId)
+        return mFirestoreDB.collection("participant").whereEqualTo("userId", userId).whereEqualTo("isVisible", true)
     }
 
     fun getParticipant(userId: String, commonPotId: String): Query {
@@ -28,5 +30,12 @@ class ParticipantRepository {
 
     fun getParticipantRef(id: String): DocumentReference {
         return mFirestoreDB.collection("participant").document(id)
+    }
+
+    fun takeOffGoodCount(participant: Participant?): Task<Void> {
+        val batch = mFirestoreDB.batch()
+        val docRef = participant?.id?.let { mFirestoreDB.collection("participant").document(it) }
+        docRef?.let { batch.update(it,"isVisible", false) }
+        return batch.commit()
     }
 }

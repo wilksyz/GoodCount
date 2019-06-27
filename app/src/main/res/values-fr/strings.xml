@@ -33,4 +33,5 @@
     <string name="successful_update">Mise a jour réussi</string>
     <string name="error_updating">Erreur lors de la mise a jour</string>
     <string name="join_me_on_good_count">Rejoignez moi sur</string>
+    <string name="undo">Annuler</string>
 </resources>

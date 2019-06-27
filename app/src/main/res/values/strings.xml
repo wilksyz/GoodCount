@@ -38,5 +38,6 @@
     <string name="you_must_enter_your_username">You must enter your username</string>
     <string name="validate_the_change">Validate the changes</string>
     <string name="join_me_on_good_count">Join me on GoodCount</string>
+    <string name="undo">Undo</string>
 
 </resources>

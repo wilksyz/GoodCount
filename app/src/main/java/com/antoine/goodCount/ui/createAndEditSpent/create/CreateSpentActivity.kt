@@ -5,28 +5,19 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.text.SpannableStringBuilder
-import android.text.TextWatcher
-import android.view.MenuItem
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoine.goodCount.R
 import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.models.ParticipantSpent
 import com.antoine.goodCount.ui.createAndEditSpent.BaseSpentActivity
-import com.antoine.goodCount.ui.createAndEditSpent.recyclerView.ClickListener
-import com.antoine.goodCount.ui.createAndEditSpent.recyclerView.CreateSpentRecyclerViewAdapter
 import com.google.android.material.snackbar.Snackbar
-import icepick.Icepick
 import kotlinx.android.synthetic.main.activity_create_spent.*
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 private const val COMMON_POT_ID = "common pot id"
 private const val ANSWER_WRITING_REQUEST = "answer writing request"

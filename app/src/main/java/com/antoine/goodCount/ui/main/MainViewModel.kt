@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.antoine.goodCount.models.CommonPot
+import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.repository.CommonPotRepository
 import com.antoine.goodCount.repository.ParticipantRepository
 import com.google.firebase.firestore.EventListener
@@ -61,6 +62,19 @@ class MainViewModel: ViewModel() {
                     mCommonPotList.value = commonPotList
                 }
             }
+        }
+    }
+
+    fun takeOffParticipant(commonPot: CommonPot, userId: String) {
+        mParticipantRepository.getParticipant(userId, commonPot.id).get().addOnSuccessListener { value ->
+            if (value != null){
+                val participant = value.documents[0].toObject(Participant::class.java)
+                mParticipantRepository.takeOffGoodCount(participant).addOnSuccessListener {
+                    Log.w(TAG, "Remove visibility successful")
+                }
+            }
+        }.addOnFailureListener { e ->
+            Log.w(TAG, "Listen failed.", e)
         }
     }
 }

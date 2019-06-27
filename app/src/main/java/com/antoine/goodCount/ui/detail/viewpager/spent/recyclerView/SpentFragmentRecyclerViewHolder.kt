@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.recyclerview_activity_main.view.*
 import java.text.DateFormat
 import java.text.NumberFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 private const val USER_APP = "user app"
 class SpentFragmentRecyclerViewHolder(itemView: View, private var clickListener: SpentClickListener): RecyclerView.ViewHolder(itemView), View.OnClickListener {

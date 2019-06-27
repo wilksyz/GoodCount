@@ -13,11 +13,6 @@ import com.antoine.goodCount.repository.ParticipantRepository
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.toObject
-import java.text.NumberFormat
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 private const val USER_APP = "user app"
 private const val TAG = "SPENT_FRAG_VIEW_MODEL"

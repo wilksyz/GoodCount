@@ -43,7 +43,7 @@ class CreateCommonPotActivity: BaseCommonPotActivity() {
         val currency = Currency.getCurrencyCode(create_activity_spinner.text.toString())
         val userId = this.getUserId()
         val commonPot = CommonPot("", title, description, currency, "")
-        val participant = Participant("","", userId,name)
+        val participant = Participant("","", userId,name, true)
         this.createCommonPot(commonPot, participant)
     }
 
