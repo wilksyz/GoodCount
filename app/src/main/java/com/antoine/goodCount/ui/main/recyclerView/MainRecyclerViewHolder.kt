@@ -39,5 +39,5 @@ class MainRecyclerViewHolder(itemView: View, private var clickListener: ClickLis
 
 interface ClickListener{
     fun onClick(position: Int)
-    fun onLongClick(commonPot: CommonPot)
+    fun onUndoClick(commonPot: CommonPot)
 }

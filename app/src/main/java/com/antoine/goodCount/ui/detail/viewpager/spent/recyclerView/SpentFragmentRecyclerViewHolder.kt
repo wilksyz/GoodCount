@@ -1,5 +1,6 @@
 package com.antoine.goodCount.ui.detail.viewpager.spent.recyclerView
 
+import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.antoine.goodCount.R
@@ -19,12 +20,24 @@ class SpentFragmentRecyclerViewHolder(itemView: View, private var clickListener:
         itemView.setOnClickListener(this)
     }
 
-    fun updateLineCommonPotList(lineCommonPot: LineCommonPot, currency: String?, participantMap: HashMap<String, Participant>){
-        mLineCommonPot = lineCommonPot
-        itemView.main_view_holder_tittle_textView.text = lineCommonPot.title
-        this.formatDate(lineCommonPot)
-        this.formatCurrency(lineCommonPot, currency)
-        this.formatPaidBy(lineCommonPot.paidBy, participantMap)
+    fun updateLineCommonPotList(lineCommonPot: LineCommonPot, currency: String?, participantMap: HashMap<String, Participant>, isPendingRemoval: Boolean){
+        if (!isPendingRemoval){
+            mLineCommonPot = lineCommonPot
+            itemView.main_view_holder_tittle_textView.text = lineCommonPot.title
+            this.formatDate(lineCommonPot)
+            this.formatCurrency(lineCommonPot, currency)
+            this.formatPaidBy(lineCommonPot.paidBy, participantMap)
+            itemView.setBackgroundColor(Color.WHITE)
+            itemView.container_main_view_holder.visibility = View.VISIBLE
+            itemView.undo_button.visibility = View.INVISIBLE
+        }else{
+            itemView.main_view_holder_tittle_textView.visibility = View.INVISIBLE
+            itemView.main_view_holder_description_textView.visibility = View.INVISIBLE
+            itemView.setBackgroundColor(Color.RED)
+            itemView.undo_button.visibility = View.VISIBLE
+            itemView.view_holder_date_textView.visibility = View.INVISIBLE
+            itemView.view_holder_price_textView.visibility = View.INVISIBLE
+        }
     }
 
     private fun formatDate(lineCommonPot: LineCommonPot){
@@ -59,4 +72,5 @@ class SpentFragmentRecyclerViewHolder(itemView: View, private var clickListener:
 }
 interface SpentClickListener{
     fun onClick(lineCommonPotId: String)
+    fun onUndoClick(lineCommonPot: LineCommonPot)
 }

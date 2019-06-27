@@ -1,7 +1,6 @@
 package com.antoine.goodCount.ui.main.recyclerView
 
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -17,9 +16,9 @@ private const val PENDING_REMOVAL_TIMEOUT = 3000
 class MainRecyclerViewAdapter(private val clickListener: ClickListener): RecyclerView.Adapter<MainRecyclerViewHolder>() {
 
     private var mCommonPotList : MutableList<CommonPot> = ArrayList()
-    private var itemsPendingRemoval: MutableList<CommonPot> = ArrayList()
-    private val handler = Handler()
-    private var pendingRunnables = HashMap<CommonPot, Runnable>()
+    private var commonPotPendingRemoval: MutableList<CommonPot> = ArrayList()
+    private val mHandler = Handler()
+    private var mPendingRunnable = HashMap<CommonPot, Runnable>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainRecyclerViewHolder {
         val context = parent.context
@@ -33,16 +32,16 @@ class MainRecyclerViewAdapter(private val clickListener: ClickListener): Recycle
     }
 
     override fun onBindViewHolder(mainRecyclerViewHolder: MainRecyclerViewHolder, position: Int) {
-        val item = mCommonPotList[position]
+        val commonPot = mCommonPotList[position]
         mainRecyclerViewHolder.itemView.undo_button.setOnClickListener {
-            val pendingRemovalRunnable = pendingRunnables[item]
-            pendingRunnables.remove(item)
-            if (pendingRemovalRunnable != null) handler.removeCallbacks(pendingRemovalRunnable)
-            itemsPendingRemoval.remove(item)
+            val pendingRemovalRunnable = mPendingRunnable[commonPot]
+            mPendingRunnable.remove(commonPot)
+            if (pendingRemovalRunnable != null) mHandler.removeCallbacks(pendingRemovalRunnable)
+            commonPotPendingRemoval.remove(commonPot)
             // this will rebind the row in "normal" state
-            notifyItemChanged(mCommonPotList.indexOf(item))
+            notifyItemChanged(mCommonPotList.indexOf(commonPot))
         }
-        return if (itemsPendingRemoval.contains(item)){
+        return if (commonPotPendingRemoval.contains(commonPot)){
             mainRecyclerViewHolder.updateListOfCommonPots(mCommonPotList[position], true)
         }else {
             mainRecyclerViewHolder.updateListOfCommonPots(mCommonPotList[position], false)
@@ -63,35 +62,32 @@ class MainRecyclerViewAdapter(private val clickListener: ClickListener): Recycle
     }
 
     fun pendingRemoval(position: Int) {
-        val item = mCommonPotList[position]
-        Log.e("TAG","Passage pending removal")
-        if (!itemsPendingRemoval.contains(item)) {
-            itemsPendingRemoval.add(item)
+        val commonPot = mCommonPotList[position]
+        if (!commonPotPendingRemoval.contains(commonPot)) {
+            commonPotPendingRemoval.add(commonPot)
             // this will redraw row in "undo" state
             notifyItemChanged(position)
             // let's create, store and post a runnable to remove the item
             val pendingRemovalRunnable = Runnable {
-                remove(mCommonPotList.indexOf(item))
-                Log.e("TAG","3 secondes")
+                remove(mCommonPotList.indexOf(commonPot))
             }
-            handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT.toLong())
-            pendingRunnables[item] = pendingRemovalRunnable
+            mHandler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT.toLong())
+            mPendingRunnable[commonPot] = pendingRemovalRunnable
         }
     }
 
     fun isPendingRemoval(position: Int): Boolean {
-        Log.e("TAG", "Passage is pending removal")
-        val item = mCommonPotList[position]
-        return itemsPendingRemoval.contains(item)
+        val commonPot = mCommonPotList[position]
+        return commonPotPendingRemoval.contains(commonPot)
     }
 
     private fun remove(position: Int) {
-        val item = mCommonPotList[position]
-        if (itemsPendingRemoval.contains(item)) {
-            itemsPendingRemoval.remove(item)
+        val commonPot = mCommonPotList[position]
+        if (commonPotPendingRemoval.contains(commonPot)) {
+            commonPotPendingRemoval.remove(commonPot)
         }
-        if (mCommonPotList.contains(item)) {
-            clickListener.onLongClick(mCommonPotList[position])
+        if (mCommonPotList.contains(commonPot)) {
+            clickListener.onUndoClick(mCommonPotList[position])
             mCommonPotList.removeAt(position)
             notifyItemRemoved(position)
         }

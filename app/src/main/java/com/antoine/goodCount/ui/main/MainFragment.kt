@@ -41,7 +41,7 @@ private const val ANSWER_REQUEST = 1918
 private const val ANSWER_WRITING_REQUEST = "answer writing request"
 class MainFragment : Fragment(), ClickListener {
 
-    private lateinit var viewOfLayout: View
+    private lateinit var mViewOfLayout: View
     private lateinit var mAdapter: MainRecyclerViewAdapter
     private lateinit var mMainViewModel: MainViewModel
     private var mIsOpen = false
@@ -55,32 +55,32 @@ class MainFragment : Fragment(), ClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        viewOfLayout = inflater.inflate(R.layout.fragment_main, container, false)
+        mViewOfLayout = inflater.inflate(R.layout.fragment_main, container, false)
         mUserId = arguments?.get(USER_ID).toString()
         this.configureAnimation()
         this.configureViewModel()
         this.configureRecyclerView()
         this.getCommonPot(mUserId)
 
-        viewOfLayout.main_fragment_floating_action_button.setOnClickListener {
+        mViewOfLayout.main_fragment_floating_action_button.setOnClickListener {
             this.setContextualMenu()
         }
-        viewOfLayout.main_fragment_recycler_view.setOnTouchListener { _, _ ->
+        mViewOfLayout.main_fragment_recycler_view.setOnTouchListener { _, _ ->
             if (mIsOpen){
                 this.setContextualMenu()
             }
             false
         }
-        viewOfLayout.main_fragment_button_add_common_pot.setOnClickListener {
+        mViewOfLayout.main_fragment_button_add_common_pot.setOnClickListener {
             this.setContextualMenu()
             val intent = Intent(context, CreateCommonPotActivity::class.java)
             startActivityForResult(intent, ANSWER_REQUEST)
         }
-        viewOfLayout.main_fragment_button_join_common_pot.setOnClickListener {
+        mViewOfLayout.main_fragment_button_join_common_pot.setOnClickListener {
             this.setContextualMenu()
             view?.let { it1 -> Snackbar.make(it1, "Ask your friends for the pot sharing code", Snackbar.LENGTH_LONG).show() }
         }
-        return viewOfLayout
+        return mViewOfLayout
     }
 
     private fun configureViewModel(){
@@ -89,9 +89,9 @@ class MainFragment : Fragment(), ClickListener {
 
     private fun configureRecyclerView(){
         this.mAdapter = MainRecyclerViewAdapter(this)
-        viewOfLayout.main_fragment_recycler_view.adapter = this.mAdapter
-        viewOfLayout.main_fragment_recycler_view.layoutManager = LinearLayoutManager(this.context)
-        viewOfLayout.main_fragment_recycler_view.setHasFixedSize(true)
+        mViewOfLayout.main_fragment_recycler_view.adapter = this.mAdapter
+        mViewOfLayout.main_fragment_recycler_view.layoutManager = LinearLayoutManager(this.context)
+        mViewOfLayout.main_fragment_recycler_view.setHasFixedSize(true)
         this.setUpItemTouchHelper()
         this.setUpAnimationDecoratorHelper()
     }
@@ -161,11 +161,11 @@ class MainFragment : Fragment(), ClickListener {
             }
         }
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-        itemTouchHelper.attachToRecyclerView(viewOfLayout.main_fragment_recycler_view)
+        itemTouchHelper.attachToRecyclerView(mViewOfLayout.main_fragment_recycler_view)
     }
 
     private fun setUpAnimationDecoratorHelper(){
-        viewOfLayout.main_fragment_recycler_view.addItemDecoration(object : RecyclerView.ItemDecoration(){
+        mViewOfLayout.main_fragment_recycler_view.addItemDecoration(object : RecyclerView.ItemDecoration(){
 
             lateinit var background: Drawable
             var initiated: Boolean = false
@@ -298,7 +298,7 @@ class MainFragment : Fragment(), ClickListener {
         startActivity(detailActivityIntent)
     }
 
-    override fun onLongClick(commonPot: CommonPot) {
+    override fun onUndoClick(commonPot: CommonPot) {
         mMainViewModel.takeOffParticipant(commonPot, mUserId)
     }
 }

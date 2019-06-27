@@ -4,14 +4,22 @@ import android.app.Activity
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.LineCommonPot
@@ -70,12 +78,153 @@ class SpentFragment : Fragment(), SpentClickListener {
         this.mAdapter = SpentFragmentRecyclerViewAdapter(this)
         mViewOfLayout.spent_fragment_recyclerview.adapter = this.mAdapter
         mViewOfLayout.spent_fragment_recyclerview.layoutManager = LinearLayoutManager(this.context)
+        mViewOfLayout.spent_fragment_recyclerview.setHasFixedSize(true)
+        this.setUpItemTouchHelper()
+        this.setUpAnimationDecoratorHelper()
+    }
+
+    private fun setUpItemTouchHelper(){
+        val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+
+            lateinit var background: Drawable
+            lateinit var trashMark: Drawable
+            var trashMarkMargin: Int = 0
+            var initiated: Boolean = false
+
+            private fun init() {
+                background = ColorDrawable(Color.RED)
+                val draw = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_delete) }
+                if (draw != null) trashMark = draw
+                trashMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP)
+                trashMarkMargin = 16
+                initiated = true
+            }
+
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val swipedPosition = viewHolder.adapterPosition
+                mAdapter.pendingRemoval(swipedPosition)
+            }
+
+            override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+                val position = viewHolder.adapterPosition
+                return if (mAdapter.isPendingRemoval(position)) {
+                    0
+                } else super.getSwipeDirs(recyclerView, viewHolder)
+            }
+
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+                val itemView = viewHolder.itemView
+
+                if (viewHolder.adapterPosition == -1) {
+                    // not interested in those
+                    return
+                }
+
+                if (!initiated) {
+                    init()
+                }
+
+                // draw red background
+                background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                background.draw(c)
+
+                // draw trash mark
+                val itemHeight = itemView.bottom - itemView.top
+                val intrinsicWidth: Int = trashMark.intrinsicWidth
+                val intrinsicHeight = trashMark.intrinsicWidth
+
+                val xMarkLeft = itemView.right - trashMarkMargin - intrinsicWidth
+                val xMarkRight = itemView.right - trashMarkMargin
+                val xMarkTop = itemView.top + (itemHeight - intrinsicHeight) / 2
+                val xMarkBottom = xMarkTop + intrinsicHeight
+                trashMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom)
+
+                trashMark.draw(c)
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(mViewOfLayout.spent_fragment_recyclerview)
+    }
+
+    private fun setUpAnimationDecoratorHelper(){
+        mViewOfLayout.spent_fragment_recyclerview.addItemDecoration(object : RecyclerView.ItemDecoration(){
+
+            lateinit var background: Drawable
+            var initiated: Boolean = false
+
+            private fun init() {
+                background = ColorDrawable(Color.RED)
+                initiated = true
+            }
+
+            override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+
+                if (!initiated) {
+                    init()
+                }
+                val itemAnimator = parent.itemAnimator
+                // only if animation is in progress
+                if (itemAnimator != null && itemAnimator.isRunning) {
+                    var lastViewComingDown: View? = null
+                    var firstViewComingUp: View? = null
+
+                    // this is fixed
+                    val left = 0
+                    val right = parent.width
+
+                    // this we need to find out
+                    var top = 0
+                    var bottom = 0
+
+                    // find relevant translating views
+                    val childCount = parent.layoutManager?.childCount
+                    if (childCount != null){
+                        for (i in 0 until childCount) {
+                            val child = parent.layoutManager?.getChildAt(i)
+                            if (child != null && child.translationY < 0) {
+                                // view is coming down
+                                lastViewComingDown = child
+                            } else if (child != null && child.translationY > 0) {
+                                // view is coming up
+                                if (firstViewComingUp == null) {
+                                    firstViewComingUp = child
+                                }
+                            }
+                        }
+                    }
+
+                    if (lastViewComingDown != null && firstViewComingUp != null) {
+                        // views are coming down AND going up to fill the void
+                        top = lastViewComingDown.bottom + lastViewComingDown.translationY.toInt()
+                        bottom = firstViewComingUp.top + firstViewComingUp.translationY.toInt()
+                    } else if (lastViewComingDown != null) {
+                        // views are going down to fill the void
+                        top = lastViewComingDown.bottom + lastViewComingDown.translationY.toInt()
+                        bottom = lastViewComingDown.bottom
+                    } else if (firstViewComingUp != null) {
+                        // views are coming up to fill the void
+                        top = firstViewComingUp.top
+                        bottom = firstViewComingUp.top + firstViewComingUp.translationY.toInt()
+                    }
+
+                    background.setBounds(left, top, right, bottom)
+                    background.draw(c)
+
+                }
+                super.onDraw(c, parent, state)
+            }
+        })
     }
 
     private fun getLineCommonPot(){
         mSpentFragmentViewModel.getLineCommonPot(mCommonPotId).observe(this, Observer { list ->
             mLineCommonPotList = list
-            this.mAdapter.updateData(list)
+            this.mAdapter.updateData(list as MutableList<LineCommonPot>)
             this.getTotalCost()
             this.getPersonalCost()
         })
@@ -161,6 +310,10 @@ class SpentFragment : Fragment(), SpentClickListener {
         editSpentIntent.putExtra(COMMON_POT_ID, mCommonPotId)
         editSpentIntent.putExtra(LINE_COMMON_POT_ID, lineCommonPotId)
         startActivityForResult(editSpentIntent, ANSWER_REQUEST)
+    }
+
+    override fun onUndoClick(lineCommonPot: LineCommonPot) {
+
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
