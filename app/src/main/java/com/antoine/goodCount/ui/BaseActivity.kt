@@ -31,7 +31,7 @@ abstract class BaseActivity: AppCompatActivity() {
         }
     }
 
-    private fun startSignInActivity(){
+    protected fun startSignInActivity(){
         val signInActivityIntent = Intent(this, SignInActivity::class.java)
         startActivity(signInActivityIntent)
     }

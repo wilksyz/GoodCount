@@ -16,13 +16,16 @@ import com.antoine.goodCount.ui.detail.viewpager.spent.SpentFragment
 private val TAB_TITLES = arrayOf(R.string.tab_title_1, R.string.tab_title_2)
 class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, private val commonPotId: String) : FragmentPagerAdapter(fm) {
 
+    var spentFragment: SpentFragment = SpentFragment.newInstance(commonPotId)
+    var balanceFragment: BalanceFragment = BalanceFragment.newInstance(commonPotId)
+
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
         return when (position) {
             0 -> {
-                SpentFragment.newInstance(commonPotId)
+                spentFragment
             }else -> {
-                return BalanceFragment.newInstance(commonPotId)
+                return balanceFragment
             }
         }
     }

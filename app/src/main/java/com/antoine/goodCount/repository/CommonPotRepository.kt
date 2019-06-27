@@ -1,8 +1,11 @@
 package com.antoine.goodCount.repository
 
+import android.net.Uri
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.Participant
 import com.google.android.gms.tasks.Task
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -20,6 +23,7 @@ class CommonPotRepository {
         val batch = mFirestoreDB.batch()
         val newDocRef = mFirestoreDB.collection("commonPot").document()
         commonPot.id = newDocRef.id
+        commonPot.shareLink = createLink(commonPot.id)
         participant.commonPotId = newDocRef.id
         participant.id = ParticipantRepository().createParticipant()
         batch.set(mFirestoreDB.collection("commonPot").document(newDocRef.id), commonPot)
@@ -34,5 +38,15 @@ class CommonPotRepository {
         batch.set(commonPotRef, mCommonPot)
         batch.set(participantRef, mParticipant)
         return batch.commit()
+    }
+
+    private fun createLink(id: String): String {
+        val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+            .setLink(Uri.parse("https://goodcount.page.link/?GoodCount=$id"))
+            .setDomainUriPrefix("https://goodcount.page.link")
+            // Open links with this app on Android
+            .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
+            .buildDynamicLink()
+        return dynamicLink.uri.toString()
     }
 }

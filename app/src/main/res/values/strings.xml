@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Good Count</string>
+    <string name="app_name">GoodCount</string>
 
     // Facebook
     <string name="facebook_app_id" translatable="false">360557888140915</string>
@@ -37,5 +37,6 @@
     <string name="error_updating">Error updating</string>
     <string name="you_must_enter_your_username">You must enter your username</string>
     <string name="validate_the_change">Validate the changes</string>
+    <string name="join_me_on_good_count">Join me on GoodCount</string>
 
 </resources>

@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -167,6 +168,14 @@ class SpentFragment : Fragment(), SpentClickListener {
     private fun getUserId(): String {
         val sharedPref: SharedPreferences = context!!.getSharedPreferences(USER, MODE_PRIVATE)
         return sharedPref.getString(USER_ID, null)
+    }
+
+    fun shareCommonPot(){
+        val textSend = "${getString(R.string.join_me_on_good_count)} ${mCommonPot?.shareLink}"
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, textSend)
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share)))
     }
 
     companion object {

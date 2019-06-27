@@ -18,6 +18,7 @@ private const val ANSWER_WRITING_REQUEST = "answer writing request"
 class DetailActivity : BaseActivity() {
 
     private var mCommonPotId: String? = null
+    private lateinit var mSectionsPagerAdapter: SectionsPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +26,6 @@ class DetailActivity : BaseActivity() {
         supportActionBar?.elevation = 0F
         mCommonPotId = intent?.getStringExtra(COMMON_POT_ID)
         mCommonPotId?.let { this.configureViewPager(it) }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -39,8 +39,8 @@ class DetailActivity : BaseActivity() {
             true
         }
         R.id.share_button -> {
-
-             true
+            mSectionsPagerAdapter.spentFragment.shareCommonPot()
+            true
         }
         R.id.edit_button -> {
             val editCommonPotIntent = Intent(this, EditCommonPotActivity::class.java)
@@ -75,8 +75,8 @@ class DetailActivity : BaseActivity() {
     }
 
     private fun configureViewPager(commonPotId: String){
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, commonPotId)
-        detail_activity_view_pager.adapter = sectionsPagerAdapter
+        mSectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, commonPotId)
+        detail_activity_view_pager.adapter = mSectionsPagerAdapter
         detail_activity_tablayout.setupWithViewPager(detail_activity_view_pager)
     }
 }
