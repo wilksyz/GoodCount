@@ -48,4 +48,15 @@ class LineCommonPotRepository {
         }
         return batch.commit()
     }
+
+    fun removeLineCommonPot(participantSpentIdList: List<String>, lineCommonPotId: String): Task<Void> {
+        val batch = mFirestoreDB.batch()
+        val docRef = mFirestoreDB.collection("lineCommonPot").document(lineCommonPotId)
+        batch.delete(docRef)
+        for (participantSpentId in participantSpentIdList){
+            val docParticipantSpentRef = mFirestoreDB.collection("participantSpent").document(participantSpentId)
+            batch.delete(docParticipantSpentRef)
+        }
+        return batch.commit()
+    }
 }

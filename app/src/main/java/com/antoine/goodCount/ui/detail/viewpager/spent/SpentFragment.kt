@@ -48,7 +48,7 @@ class SpentFragment : Fragment(), SpentClickListener {
     private lateinit var mAdapter: SpentFragmentRecyclerViewAdapter
     private lateinit var mCommonPotId: String
     private var mCommonPot: CommonPot? = null
-    private var mLineCommonPotList: List<LineCommonPot> = ArrayList()
+    private var mLineCommonPotList: MutableList<LineCommonPot> = ArrayList()
     private var mUsername: String = ""
 
     override fun onCreateView(
@@ -224,7 +224,7 @@ class SpentFragment : Fragment(), SpentClickListener {
     private fun getLineCommonPot(){
         mSpentFragmentViewModel.getLineCommonPot(mCommonPotId).observe(this, Observer { list ->
             mLineCommonPotList = list
-            this.mAdapter.updateData(list as MutableList<LineCommonPot>)
+            this.mAdapter.updateData(list)
             this.getTotalCost()
             this.getPersonalCost()
         })
@@ -302,6 +302,12 @@ class SpentFragment : Fragment(), SpentClickListener {
             3 -> {
                 view?.let { Snackbar.make(it, getString(R.string.error_updating), Snackbar.LENGTH_LONG).show() }
             }
+            4 -> {
+                view?.let { Snackbar.make(it, getString(R.string.successful_delete), Snackbar.LENGTH_LONG).show() }
+            }
+            5 -> {
+                view?.let { Snackbar.make(it, getString(R.string.error_deleting), Snackbar.LENGTH_LONG).show() }
+            }
         }
     }
 
@@ -313,7 +319,23 @@ class SpentFragment : Fragment(), SpentClickListener {
     }
 
     override fun onUndoClick(lineCommonPot: LineCommonPot) {
+        if (mLineCommonPotList.contains(lineCommonPot)){
+            val index = mLineCommonPotList.indexOf(lineCommonPot)
+            mLineCommonPotList.removeAt(index)
+            getPersonalCost()
+            getTotalCost()
+        }
+        this.removeInDatabase(lineCommonPot.id)
+    }
 
+    private fun removeInDatabase(lineCommonPotId: String) {
+        mSpentFragmentViewModel.getParticipantSpentAtSpent(lineCommonPotId).observe(this, Observer {participantSpentIdList ->
+            mSpentFragmentViewModel.removeSpent(participantSpentIdList, lineCommonPotId).addOnSuccessListener {
+                this.displaySnackBar(4)
+            }.addOnFailureListener {
+                this.displaySnackBar(5)
+            }
+        })
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

@@ -1,6 +1,7 @@
 package com.antoine.goodCount.ui.detail.viewpager.spent.recyclerView
 
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -89,8 +90,7 @@ class SpentFragmentRecyclerViewAdapter(private val clickListener: SpentClickList
             mLineCommonPotPendingRemoval.remove(lineCommonPot)
         }
         if (mLineCommonPotList.contains(lineCommonPot)) {
-            clickListener.onUndoClick(mLineCommonPotList[position])
-            mLineCommonPotList.removeAt(position)
+            clickListener.onUndoClick(lineCommonPot)
             notifyItemRemoved(position)
         }
     }

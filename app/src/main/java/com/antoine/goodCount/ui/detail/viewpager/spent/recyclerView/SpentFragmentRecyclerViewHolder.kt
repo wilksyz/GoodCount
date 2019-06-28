@@ -30,6 +30,8 @@ class SpentFragmentRecyclerViewHolder(itemView: View, private var clickListener:
             itemView.setBackgroundColor(Color.WHITE)
             itemView.container_main_view_holder.visibility = View.VISIBLE
             itemView.undo_button.visibility = View.INVISIBLE
+            itemView.main_view_holder_tittle_textView.visibility = View.VISIBLE
+            itemView.main_view_holder_description_textView.visibility = View.VISIBLE
         }else{
             itemView.main_view_holder_tittle_textView.visibility = View.INVISIBLE
             itemView.main_view_holder_description_textView.visibility = View.INVISIBLE

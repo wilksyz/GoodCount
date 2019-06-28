@@ -1,7 +1,6 @@
 package com.antoine.goodCount.ui.detail.viewpager.spent
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.antoine.goodCount.models.CommonPot
@@ -10,6 +9,8 @@ import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.repository.CommonPotRepository
 import com.antoine.goodCount.repository.LineCommonPotRepository
 import com.antoine.goodCount.repository.ParticipantRepository
+import com.antoine.goodCount.repository.ParticipantSpentRepository
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
@@ -21,11 +22,13 @@ class SpentFragmentViewModel : ViewModel() {
     private val mCommonPotRepository = CommonPotRepository()
     private val mLineCommonPotRepository = LineCommonPotRepository()
     private val mParticipantRepository = ParticipantRepository()
-    private val mLineCommonPotList: MutableLiveData<List<LineCommonPot>> = MutableLiveData()
+    private val mParticipantSpentRepository = ParticipantSpentRepository()
+    private val mLineCommonPotList: MutableLiveData<MutableList<LineCommonPot>> = MutableLiveData()
     private var mCommonPot: MutableLiveData<CommonPot> = MutableLiveData()
     private var mParticipantMap: MutableLiveData<HashMap<String, Participant>> = MutableLiveData()
+    private var mParticipantSpentIdList: MutableLiveData<List<String>> = MutableLiveData()
 
-    fun getLineCommonPot(commonPotId: String): LiveData<List<LineCommonPot>> {
+    fun getLineCommonPot(commonPotId: String): MutableLiveData<MutableList<LineCommonPot>> {
         val lineCommonPotList = ArrayList<LineCommonPot>()
 
         mLineCommonPotRepository.getLineCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
@@ -87,5 +90,24 @@ class SpentFragmentViewModel : ViewModel() {
         }else{
             participant.id
         }
+    }
+
+    fun getParticipantSpentAtSpent(lineCommonPotId: String): MutableLiveData<List<String>> {
+        val participantSpentIdList = ArrayList<String>()
+        mParticipantSpentRepository.getParticipantSpent(lineCommonPotId).get().addOnSuccessListener { value ->
+            if (value != null){
+                for (document in value){
+                    participantSpentIdList.add(document.id)
+                }
+                mParticipantSpentIdList.value = participantSpentIdList
+            }
+        }.addOnFailureListener {e ->
+            Log.w(TAG, "Listen ParticipantSpent failed.", e)
+        }
+        return mParticipantSpentIdList
+    }
+
+    fun removeSpent(participantSpentIdList: List<String>, lineCommonPotId: String): Task<Void> {
+        return mLineCommonPotRepository.removeLineCommonPot(participantSpentIdList, lineCommonPotId)
     }
 }

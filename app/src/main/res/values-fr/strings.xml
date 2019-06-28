@@ -18,7 +18,7 @@
     <string name="title">Titre</string>
     <string name="total_cost">Coût total</string>
     <string name="your_name">Votre pseudo</string>
-    <string name="for_who">Participant</string>
+    <string name="for_who">Participant(s)</string>
     <string name="me">moi</string>
     <string name="personal_cost">Mon coût</string>
     <string name="you_must_add_a_title">Vous devez ajouter un titre</string>
@@ -34,4 +34,6 @@
     <string name="error_updating">Erreur lors de la mise a jour</string>
     <string name="join_me_on_good_count">Rejoignez moi sur</string>
     <string name="undo">Annuler</string>
+    <string name="successful_delete">Suppression réussi</string>
+    <string name="error_deleting">Echec de la suppression</string>
 </resources>
