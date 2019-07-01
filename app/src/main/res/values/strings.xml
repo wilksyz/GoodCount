@@ -13,7 +13,7 @@
     <string name="description">Description</string>
     <string name="currency">Currency</string>
     <string name="add">Add</string>
-    <string name="your_name">Your name</string>
+    <string name="your_name">Your username</string>
     <string name="create">Create</string>
     <string name="tab_title_1">SPENT</string>
     <string name="tab_title_2">BALANCE</string>
@@ -41,5 +41,7 @@
     <string name="validate_the_change">Validate the changes</string>
     <string name="join_me_on_good_count">Join me on GoodCount</string>
     <string name="undo">Undo</string>
+    <string name="enter_your_name">Enter your username</string>
+    <string name="create_user">Create user</string>
 
 </resources>

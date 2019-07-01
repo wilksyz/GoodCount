@@ -4,6 +4,6 @@ class Participant(var id: String,
                   var commonPotId: String,
                   var userId: String,
                   var username: String,
-                  var isVisible: Boolean) {
+                  var visible: Boolean) {
     constructor():this("", "","","", true)
 }

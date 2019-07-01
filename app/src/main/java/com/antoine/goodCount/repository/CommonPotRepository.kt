@@ -25,7 +25,7 @@ class CommonPotRepository {
         commonPot.id = newDocRef.id
         commonPot.shareLink = createLink(commonPot.id)
         participant.commonPotId = newDocRef.id
-        participant.id = ParticipantRepository().createParticipant()
+        participant.id = ParticipantRepository().createParticipantId()
         batch.set(mFirestoreDB.collection("commonPot").document(newDocRef.id), commonPot)
         batch.set(mFirestoreDB.collection("participant").document(participant.id), participant)
         return batch.commit()

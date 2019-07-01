@@ -43,7 +43,7 @@ class MainFragment : Fragment(), ClickListener {
 
     private lateinit var mViewOfLayout: View
     private lateinit var mAdapter: MainRecyclerViewAdapter
-    private lateinit var mMainViewModel: MainViewModel
+    private lateinit var mMainFragmentViewModel: MainFragmentViewModel
     private var mIsOpen = false
     private lateinit var mFabClose: Animation
     private lateinit var mFabOpen: Animation
@@ -84,7 +84,7 @@ class MainFragment : Fragment(), ClickListener {
     }
 
     private fun configureViewModel(){
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        mMainFragmentViewModel = ViewModelProviders.of(this).get(MainFragmentViewModel::class.java)
     }
 
     private fun configureRecyclerView(){
@@ -264,7 +264,7 @@ class MainFragment : Fragment(), ClickListener {
     }
 
     private fun getCommonPot(userId: String){
-        mMainViewModel.getParticipantCommonPot(userId).observe(this, Observer {
+        mMainFragmentViewModel.getParticipantCommonPot(userId).observe(this, Observer {
             if (it.isNotEmpty()){
                 mAdapter.updateData(it as MutableList<CommonPot>)
             }
@@ -299,7 +299,7 @@ class MainFragment : Fragment(), ClickListener {
     }
 
     override fun onUndoClick(commonPot: CommonPot) {
-        mMainViewModel.takeOffParticipant(commonPot, mUserId)
+        mMainFragmentViewModel.takeOffParticipant(commonPot, mUserId)
     }
 }
 

@@ -36,4 +36,6 @@
     <string name="undo">Annuler</string>
     <string name="successful_delete">Suppression réussi</string>
     <string name="error_deleting">Echec de la suppression</string>
+    <string name="enter_your_name">Entrez votre pseudo</string>
+    <string name="create_user">Créer utilisateur</string>
 </resources>

@@ -12,7 +12,7 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 
 private const val TAG = "MAIN_VIEW_MODEL"
-class MainViewModel: ViewModel() {
+class MainFragmentViewModel: ViewModel() {
 
     private val mCommonPotRepository = CommonPotRepository()
     private val mParticipantRepository = ParticipantRepository()

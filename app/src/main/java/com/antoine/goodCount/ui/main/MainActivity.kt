@@ -1,29 +1,42 @@
 package com.antoine.goodCount.ui.main
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.antoine.goodCount.R
+import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.ui.BaseActivity
 import com.antoine.goodCount.ui.detail.DetailActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import kotlinx.android.synthetic.main.dialog_request_username.view.*
 
 private const val USER = "user"
 private const val USER_ID = "user id"
 private const val COMMON_POT_ID = "common pot id"
+private const val TAG = "MAIN_ACTIVITY"
 class MainActivity : BaseActivity() {
+
+    private lateinit var mMainActivityViewModel: MainActivityViewModel
+    private var mUserId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val sharedPref: SharedPreferences = getSharedPreferences(USER, MODE_PRIVATE)
-        val userId = sharedPref.getString(USER_ID, null)
-        userId?.let { this.configureFragment(it) }
+        mUserId = sharedPref.getString(USER_ID, null)
+        mUserId?.let { this.configureFragment(it) }
+        this.configureViewModel()
         this.receiveDynamicLinks()
     }
 
@@ -39,6 +52,10 @@ class MainActivity : BaseActivity() {
         }else -> {
             super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun configureViewModel(){
+        mMainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
     }
 
     private fun configureFragment(userId: String){
@@ -60,22 +77,66 @@ class MainActivity : BaseActivity() {
                 if (pendingDynamicLinkData != null) {
                     val deepLink: Uri = pendingDynamicLinkData.link
                     val commonPotId = deepLink.getQueryParameter("GoodCount")
-                    Log.e("TAG Links", "id= ${deepLink.getQueryParameter("GoodCount")}")
-                    this.accessToNewCount(commonPotId)
+                    if (commonPotId != null) this.accessToNewCount(commonPotId)
                 }
             }
             .addOnFailureListener(this) { e ->
-                Log.w("Dynamic Links", "getDynamicLink:onFailure", e)
+                Log.w(TAG, "getDynamicLink:onFailure", e)
             }
     }
 
-    private fun accessToNewCount(commonPotId: String?) {
+    private fun accessToNewCount(commonPotId: String) {
         if (FirebaseAuth.getInstance().currentUser != null){
-            val detailActivityIntent = Intent(this, DetailActivity::class.java)
-            detailActivityIntent.putExtra(COMMON_POT_ID, commonPotId)
-            startActivity(detailActivityIntent)
+            mUserId?.let { mMainActivityViewModel.checkParticipantCommonPot(commonPotId, it) }?.observe(this, Observer {
+                if (it != null){
+                    if (it){
+                        this.startDetailActivity(commonPotId)
+                    }else{
+                        this.requestUsername(commonPotId)
+                    }
+                }
+            })
         }else{
             startSignInActivity()
         }
+    }
+
+    @SuppressLint("InflateParams")
+    private fun requestUsername(commonPotId: String) {
+        val builder = AlertDialog.Builder(this)
+        val view = layoutInflater.inflate(R.layout.dialog_request_username, null)
+        builder.setView(view)
+        builder.setTitle(getString(R.string.enter_your_name))
+        builder.setPositiveButton(getString(R.string.create_user)) { _, _ -> }
+        val dialog = builder.create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val username = view.alert_dialog_username_editText.text.toString()
+            this.createParticipant(username, commonPotId)
+            dialog.dismiss()
+        }
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
+                    view.alert_dialog_username_editText.text.toString().isNotEmpty()
+            }
+        })
+    }
+
+    private fun createParticipant(username: String, commonPotId: String) {
+        val participant = mUserId?.let { Participant("", commonPotId, it, username, true) }
+        mMainActivityViewModel.createParticipant(participant)?.addOnSuccessListener {
+            this.startDetailActivity(commonPotId)
+        }?.addOnFailureListener { e ->
+            Log.w(TAG, "Listen Participant Failed", e)
+        }
+    }
+
+    private fun startDetailActivity(commonPotId: String) {
+        val detailActivityIntent = Intent(this, DetailActivity::class.java)
+        detailActivityIntent.putExtra(COMMON_POT_ID, commonPotId)
+        startActivity(detailActivityIntent)
     }
 }
