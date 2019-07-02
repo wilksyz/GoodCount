@@ -9,7 +9,6 @@ import com.antoine.goodCount.models.CommonPot
 import kotlinx.android.synthetic.main.recyclerview_activity_main.view.*
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.MutableList
 import kotlin.collections.set
 
 private const val PENDING_REMOVAL_TIMEOUT = 3000

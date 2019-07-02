@@ -1,6 +1,5 @@
 package com.antoine.goodCount.repository
 
-import android.util.Log
 import com.antoine.goodCount.models.Participant
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference

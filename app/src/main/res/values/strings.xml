@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GoodCount</string>
+    <string name="app_name">Good Count</string>
 
     // Facebook
     <string name="facebook_app_id" translatable="false">360557888140915</string>
@@ -43,5 +43,6 @@
     <string name="undo">Undo</string>
     <string name="enter_your_name">Enter your username</string>
     <string name="create_user">Create user</string>
+    <string name="delete_good_count">Delete Good Count</string>
 
 </resources>

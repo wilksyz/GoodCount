@@ -25,6 +25,10 @@ class DetailActivity : BaseActivity() {
         setContentView(R.layout.activity_detail)
         supportActionBar?.elevation = 0F
         mCommonPotId = intent?.getStringExtra(COMMON_POT_ID)
+    }
+
+    override fun onResume() {
+        super.onResume()
         mCommonPotId?.let { this.configureViewPager(it) }
     }
 

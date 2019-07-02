@@ -19,9 +19,9 @@ class BalanceFragmentRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder
         itemView.balance_amount_recyclerview_textView.text = balanceFormat
         if (balance != null) {
             if (balance < 0){
-                itemView.container_balance_recycler_view.background = ContextCompat.getDrawable(itemView.context, R.drawable.custom_background_negative)
+                itemView.balance_amount_recyclerview_textView.setTextColor(ContextCompat.getColor(itemView.context, R.color.red))
             }else {
-                itemView.container_balance_recycler_view.background = ContextCompat.getDrawable(itemView.context, R.drawable.custom_background_positive)
+                itemView.balance_amount_recyclerview_textView.setTextColor(ContextCompat.getColor(itemView.context, R.color.green))
             }
         }
     }
