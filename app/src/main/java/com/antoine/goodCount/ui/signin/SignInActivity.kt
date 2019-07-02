@@ -23,6 +23,8 @@ import kotlinx.android.synthetic.main.activity_sign_in.*
 
 private const val RC_SIGN_IN = 1994
 private const val USER_ID = "user id"
+private const val COMMON_POT_ID = "common pot id"
+private const val ANSWER_WRITING_REQUEST = "answer writing request"
 private const val USER = "user"
 private const val TAG = "Sign in"
 class SignInActivity : AppCompatActivity() {
@@ -30,6 +32,7 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
+    private var mCommonPotId: String? = null
 
     override fun onStart() {
         super.onStart()
@@ -45,6 +48,7 @@ class SignInActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         // Initialize Facebook Login button
         this.initFacebookAuth()
+        mCommonPotId = intent.getStringExtra(COMMON_POT_ID)
 
         google_sign_in_button.setOnClickListener {
             this.signIn()
@@ -130,9 +134,15 @@ class SignInActivity : AppCompatActivity() {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            val mainActivityIntent = Intent(this@SignInActivity, MainActivity::class.java)
-            startActivity(mainActivityIntent)
-            finish()
+            if (mCommonPotId != null){
+                val returnIntent = Intent()
+                returnIntent.putExtra(ANSWER_WRITING_REQUEST, mCommonPotId)
+                setResult(Activity.RESULT_OK, returnIntent)
+                finish()
+            }else{
+                val mainActivityIntent = Intent(this@SignInActivity, MainActivity::class.java)
+                startActivity(mainActivityIntent)
+            }
         }
     }
 }

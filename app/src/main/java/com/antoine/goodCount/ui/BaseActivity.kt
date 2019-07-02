@@ -9,6 +9,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 
+private const val COMMON_POT_ID = "common pot id"
+private const val ANSWER_REQUEST = 1919
 abstract class BaseActivity: AppCompatActivity() {
 
     protected fun disconnect(){
@@ -17,7 +19,7 @@ abstract class BaseActivity: AppCompatActivity() {
             if (user.providerId == "facebook.com") {
                 auth.signOut()
                 LoginManager.getInstance().logOut()
-                startSignInActivity()
+                startSignInActivity(null)
             }else if (user.providerId == "google.com"){
                 auth.signOut()
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -26,13 +28,18 @@ abstract class BaseActivity: AppCompatActivity() {
                     .build()
                 val googleSignInClient = GoogleSignIn.getClient(this, gso)
                 googleSignInClient.revokeAccess()
-                startSignInActivity()
+                startSignInActivity(null)
             }
         }
     }
 
-    protected fun startSignInActivity(){
+    protected fun startSignInActivity(commonPotId: String?){
         val signInActivityIntent = Intent(this, SignInActivity::class.java)
-        startActivity(signInActivityIntent)
+        if (commonPotId != null){
+            signInActivityIntent.putExtra(COMMON_POT_ID, commonPotId)
+            startActivityForResult(signInActivityIntent, ANSWER_REQUEST)
+        }else{
+            startActivity(signInActivityIntent)
+        }
     }
 }

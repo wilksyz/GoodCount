@@ -1,6 +1,7 @@
 package com.antoine.goodCount.ui.main
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
@@ -24,6 +25,8 @@ import kotlinx.android.synthetic.main.dialog_request_username.view.*
 private const val USER = "user"
 private const val USER_ID = "user id"
 private const val COMMON_POT_ID = "common pot id"
+private const val ANSWER_WRITING_REQUEST = "answer writing request"
+private const val ANSWER_REQUEST = 1919
 private const val TAG = "MAIN_ACTIVITY"
 class MainActivity : BaseActivity() {
 
@@ -97,7 +100,17 @@ class MainActivity : BaseActivity() {
                 }
             })
         }else{
-            startSignInActivity()
+            startSignInActivity(commonPotId)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ANSWER_REQUEST){
+            if (resultCode == Activity.RESULT_OK){
+                val commonPotId = data?.getStringExtra(ANSWER_WRITING_REQUEST)
+                commonPotId?.let { this.accessToNewCount(it) }
+            }
         }
     }
 
