@@ -1,4 +1,4 @@
-package com.antoine.goodCount.ui.main
+package com.antoine.goodCount.ui.main.fragment
 
 import android.util.Log
 import androidx.lifecycle.LiveData

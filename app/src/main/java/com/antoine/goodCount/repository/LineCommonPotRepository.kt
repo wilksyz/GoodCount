@@ -59,4 +59,8 @@ class LineCommonPotRepository {
         }
         return batch.commit()
     }
+
+    fun getLineCommonPotRef(id: String): DocumentReference {
+        return mFirestoreDB.collection("lineCommonPot").document(id)
+    }
 }

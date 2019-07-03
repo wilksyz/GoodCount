@@ -31,7 +31,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/create_common_pot_title_textInputLayout" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/create_common_pot_title_textInputLayout"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp"
                 android:id="@+id/textInputLayout2"
@@ -71,8 +72,9 @@
                 android:layout_marginEnd="16dp"
                 android:enabled="false"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/create_common_pot_name_textInputLayout"
-                android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"/>
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/create_common_pot_name_textInputLayout"
+        />
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -89,5 +91,16 @@
                     android:hint="@string/your_name" android:id="@+id/create_activity_your_name_editext"
                     android:inputType="textCapSentences"/>
         </com.google.android.material.textfield.TextInputLayout>
+        <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/delete_common_pot_button" android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@+id/create_activity_add_common_pot_button"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/delete_good_count" android:textAllCaps="true"
+                app:backgroundTint="@android:color/holo_red_dark"
+                android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

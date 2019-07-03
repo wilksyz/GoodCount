@@ -1,4 +1,4 @@
-package com.antoine.goodCount.ui.main
+package com.antoine.goodCount.ui.main.fragment
 
 
 import android.app.Activity
@@ -37,7 +37,8 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
  */
 private const val USER_ID = "user id"
 private const val COMMON_POT_ID = "common pot id"
-private const val ANSWER_REQUEST = 1918
+private const val ANSWER_REQUEST_CREATE = 1916
+private const val ANSWER_REQUEST = 1924
 private const val ANSWER_WRITING_REQUEST = "answer writing request"
 class MainFragment : Fragment(), ClickListener {
 
@@ -74,7 +75,7 @@ class MainFragment : Fragment(), ClickListener {
         mViewOfLayout.main_fragment_button_add_common_pot.setOnClickListener {
             this.setContextualMenu()
             val intent = Intent(context, CreateCommonPotActivity::class.java)
-            startActivityForResult(intent, ANSWER_REQUEST)
+            startActivityForResult(intent, ANSWER_REQUEST_CREATE)
         }
         mViewOfLayout.main_fragment_button_join_common_pot.setOnClickListener {
             this.setContextualMenu()
@@ -273,6 +274,12 @@ class MainFragment : Fragment(), ClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ANSWER_REQUEST_CREATE){
+            if (resultCode == Activity.RESULT_OK){
+                val code = data?.getIntExtra(ANSWER_WRITING_REQUEST, -1)
+                code?.let { this.displaySnackBar(it) }
+            }
+        }
         if (requestCode == ANSWER_REQUEST){
             if (resultCode == Activity.RESULT_OK){
                 val code = data?.getIntExtra(ANSWER_WRITING_REQUEST, -1)
@@ -289,13 +296,19 @@ class MainFragment : Fragment(), ClickListener {
             1 -> {
                 view?.let { Snackbar.make(it, getString(R.string.error_creating), Snackbar.LENGTH_LONG).show() }
             }
+            2 -> {
+                view?.let { Snackbar.make(it, getString(R.string.successful_delete), Snackbar.LENGTH_LONG).show() }
+            }
+            3 -> {
+                view?.let { Snackbar.make(it, getString(R.string.error_deleting), Snackbar.LENGTH_LONG).show() }
+            }
         }
     }
 
     override fun onClick(position: Int) {
         val detailActivityIntent = Intent(context, DetailActivity::class.java)
         detailActivityIntent.putExtra(COMMON_POT_ID, mAdapter.getCommonPotId(position))
-        startActivity(detailActivityIntent)
+        startActivityForResult(detailActivityIntent, ANSWER_REQUEST)
     }
 
     override fun onUndoClick(commonPot: CommonPot) {

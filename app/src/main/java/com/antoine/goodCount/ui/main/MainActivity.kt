@@ -2,7 +2,6 @@ package com.antoine.goodCount.ui.main
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -12,12 +11,14 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.antoine.goodCount.R
 import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.ui.BaseActivity
 import com.antoine.goodCount.ui.detail.DetailActivity
+import com.antoine.goodCount.ui.main.fragment.MainFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.android.synthetic.main.dialog_request_username.view.*

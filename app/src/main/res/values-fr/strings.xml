@@ -9,8 +9,8 @@
     <string name="description">Description</string>
     <string name="disconnect">Déconnexion</string>
     <string name="edit">Modifier</string>
-    <string name="join_a_good_count">Rejoindre un compte</string>
-    <string name="new_good_count">Nouveau compte</string>
+    <string name="join_a_good_count">Rejoindre un Good Count</string>
+    <string name="new_good_count">Nouveau Good Count</string>
     <string name="payed_by">Payé par</string>
     <string name="share">Partager</string>
     <string name="tab_title_1">Dépenses</string>
@@ -37,5 +37,8 @@
     <string name="successful_delete">Suppression réussi</string>
     <string name="error_deleting">Echec de la suppression</string>
     <string name="enter_your_name">Entrez votre pseudo</string>
-    <string name="create_user">Créer utilisateur</string>
+    <string name="create_user">Créer participant</string>
+    <string name="delete_good_count">Supprimer le Good Count</string>
+    <string name="are_you_sure_you_want_to_permanently_delete_the_Good_Count">Etes-vous sûr de vouloir supprimer définitivement le Good Count ?</string>
+    <string name="delete">Supprimer</string>
 </resources>

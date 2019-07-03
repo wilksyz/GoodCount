@@ -42,7 +42,9 @@
     <string name="join_me_on_good_count">Join me on GoodCount</string>
     <string name="undo">Undo</string>
     <string name="enter_your_name">Enter your username</string>
-    <string name="create_user">Create user</string>
+    <string name="create_user">Create participant</string>
     <string name="delete_good_count">Delete Good Count</string>
+    <string name="are_you_sure_you_want_to_permanently_delete_the_Good_Count">Are you sure you want to permanently delete the Good Count?</string>
+    <string name="delete">Delete</string>
 
 </resources>

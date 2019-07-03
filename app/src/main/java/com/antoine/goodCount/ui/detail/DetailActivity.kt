@@ -62,9 +62,20 @@ class DetailActivity : BaseActivity() {
         if (requestCode == ANSWER_REQUEST){
             if (resultCode == Activity.RESULT_OK){
                 val code = data?.getIntExtra(ANSWER_WRITING_REQUEST, -1)
-                code?.let { this.displaySnackBar(it) }
+                if (code == 2 || code == 3){
+                    this.commonPotIsDelete(code)
+                }else{
+                    code?.let { this.displaySnackBar(it) }
+                }
             }
         }
+    }
+
+    private fun commonPotIsDelete(code: Int) {
+        val returnIntent = Intent()
+        returnIntent.putExtra(ANSWER_WRITING_REQUEST, code)
+        setResult(Activity.RESULT_OK, returnIntent)
+        finish()
     }
 
     private fun displaySnackBar(code: Int) {

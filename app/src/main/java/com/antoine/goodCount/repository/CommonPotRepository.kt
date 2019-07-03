@@ -49,4 +49,32 @@ class CommonPotRepository {
             .buildDynamicLink()
         return dynamicLink.uri.toString()
     }
+
+    fun deleteCommonPot(hashMapId: HashMap<String, MutableList<String>>, commonPotId: String): Task<Void> {
+        val batch = mFirestoreDB.batch()
+        val commonPotRef = mFirestoreDB.collection("commonPot").document(commonPotId)
+        batch.delete(commonPotRef)
+        val participantIdList: MutableList<String>? = hashMapId["participant"]
+        if (participantIdList != null) {
+            for (participantId in participantIdList){
+                val participantRef = ParticipantRepository().getParticipantRef(participantId)
+                batch.delete(participantRef)
+            }
+        }
+        val lineCommonPotIdList = hashMapId["lineCommonPot"]
+        if (lineCommonPotIdList != null) {
+            for (lineCommonPotId in lineCommonPotIdList){
+                val lineCommonPotRef = LineCommonPotRepository().getLineCommonPotRef(lineCommonPotId)
+                batch.delete(lineCommonPotRef)
+            }
+        }
+        val participantSpentIdList = hashMapId["participantSpent"]
+        if (participantSpentIdList != null) {
+            for (participantSpentId in participantSpentIdList){
+                val participantSpentRef = ParticipantSpentRepository().getParticipantSpentRef(participantSpentId)
+                batch.delete(participantSpentRef)
+            }
+        }
+        return batch.commit()
+    }
 }

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.antoine.goodCount.R
@@ -31,6 +33,10 @@ class EditCommonPotActivity: BaseCommonPotActivity() {
         this.getUsername(getUserId(), mCommonPotId)
         create_activity_add_common_pot_button.setOnClickListener {
             this.retrieveInformation()
+        }
+        delete_common_pot_button.visibility = View.VISIBLE
+        delete_common_pot_button.setOnClickListener {
+            this.displayAlertDialog()
         }
     }
 
@@ -89,6 +95,39 @@ class EditCommonPotActivity: BaseCommonPotActivity() {
             finish()
         }.addOnFailureListener {
             returnIntent.putExtra(ANSWER_WRITING_REQUEST, 1)
+            setResult(Activity.RESULT_OK, returnIntent)
+            finish()
+        }
+    }
+
+    private fun displayAlertDialog(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.delete_good_count))
+        builder.setMessage(getString(R.string.are_you_sure_you_want_to_permanently_delete_the_Good_Count))
+        builder.setPositiveButton(getString(R.string.delete)) { _, _ ->
+            this.getTheIdToDelete()
+        }
+        builder.setNegativeButton(getString(R.string.undo)) { _, _ -> }
+        builder.create()
+        builder.show()
+    }
+
+    private fun getTheIdToDelete(){
+        mEditViewModel.getParticipantId(mCommonPotId).observe(this, Observer {hashMapId ->
+            if (hashMapId != null){
+                this.deleteCommonPot(hashMapId)
+            }
+        })
+    }
+
+    private fun deleteCommonPot(hashMapId: HashMap<String, MutableList<String>>) {
+        val returnIntent = Intent()
+        mEditViewModel.deleteCommonPot(hashMapId, mCommonPotId).addOnSuccessListener {
+            returnIntent.putExtra(ANSWER_WRITING_REQUEST, 2)
+            setResult(Activity.RESULT_OK, returnIntent)
+            finish()
+        }.addOnFailureListener {
+            returnIntent.putExtra(ANSWER_WRITING_REQUEST, 3)
             setResult(Activity.RESULT_OK, returnIntent)
             finish()
         }
