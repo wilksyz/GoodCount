@@ -14,6 +14,7 @@ import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.models.ParticipantSpent
 import com.antoine.goodCount.ui.createAndEditSpent.BaseSpentActivity
+import com.antoine.goodCount.utils.User
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_create_spent.*
 import java.util.*
@@ -56,8 +57,8 @@ class CreateSpentActivity: BaseSpentActivity() {
     private fun getParticipant(){
         mCreateSpentViewModel.getParticipantCommonPot(mCommonPotId).observe(this, Observer {
             mParticipantList = it
-            if (mParticipantSelectedMap.isEmpty()) mParticipantSelectedMap = mCreateSpentViewModel.createMapParticipant(it)
-            this.configureSpinner(mCreateSpentViewModel.createListUsername(it))
+            if (mParticipantSelectedMap.isEmpty()) mParticipantSelectedMap = User.createMapParticipant(it)
+            this.configureSpinner(User.createListUsername(it))
             this.mAdapter.updateData(it, mParticipantSelectedMap)
         })
     }

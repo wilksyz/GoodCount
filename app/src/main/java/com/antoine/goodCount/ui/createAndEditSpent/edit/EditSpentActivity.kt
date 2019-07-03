@@ -14,6 +14,7 @@ import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.models.ParticipantSpent
 import com.antoine.goodCount.ui.createAndEditSpent.BaseSpentActivity
+import com.antoine.goodCount.utils.User
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_create_spent.*
 import java.util.*
@@ -94,8 +95,8 @@ class EditSpentActivity: BaseSpentActivity() {
 
     private fun configureSpinner(){
         if (mParticipantList.isNotEmpty() && mLineCommonPot != null){
-            val usernameList: List<String> = mEditSpentViewModel.createListUsername(mParticipantList)
-            if (mPositionSpinnerPaidBy == -1) mPositionSpinnerPaidBy = mEditSpentViewModel.getPaidBy(usernameList, mParticipantList, mLineCommonPot)
+            val usernameList: List<String> = User.createListUsername(mParticipantList)
+            if (mPositionSpinnerPaidBy == -1) mPositionSpinnerPaidBy = User.getPaidBy(usernameList, mParticipantList, mLineCommonPot)
             create_spent_payed_by_spinner.keyListener = null
             create_spent_payed_by_spinner.text = SpannableStringBuilder(usernameList[mPositionSpinnerPaidBy])
             val adapter = ArrayAdapter(this, R.layout.dropdown_menu_popup_item, usernameList)

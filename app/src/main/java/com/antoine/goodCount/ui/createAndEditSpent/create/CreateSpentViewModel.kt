@@ -34,22 +34,6 @@ class CreateSpentViewModel: ViewModel() {
         return mParticipantList
     }
 
-    fun createListUsername(participantList: List<Participant>): ArrayList<String> {
-        val usernameList = ArrayList<String>()
-        for (participant in participantList){
-            usernameList.add(participant.username)
-        }
-        return usernameList
-    }
-
-    fun createMapParticipant(participantList: List<Participant>): HashMap<String, Boolean> {
-        val participantSelectedMap = HashMap<String, Boolean>()
-        for (participant in participantList){
-            participantSelectedMap[participant.id] = true
-        }
-        return participantSelectedMap
-    }
-
     fun formatDate(): String {
         val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.getDefault())
         return dateFormat.format(mDateOfSpent)

@@ -41,4 +41,6 @@
     <string name="delete_good_count">Supprimer le Good Count</string>
     <string name="are_you_sure_you_want_to_permanently_delete_the_Good_Count">Etes-vous sûr de vouloir supprimer définitivement le Good Count ?</string>
     <string name="delete">Supprimer</string>
+    <string name="failed_to_delete_your_list">Échec de la suppression de votre liste</string>
+    <string name="remove_from_your_list">Good Count supprimer de votre liste</string>
 </resources>

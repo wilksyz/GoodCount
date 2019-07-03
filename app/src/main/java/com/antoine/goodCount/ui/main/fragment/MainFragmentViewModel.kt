@@ -17,6 +17,7 @@ class MainFragmentViewModel: ViewModel() {
     private val mCommonPotRepository = CommonPotRepository()
     private val mParticipantRepository = ParticipantRepository()
     private val mCommonPotList: MutableLiveData<List<CommonPot>> = MutableLiveData()
+    private val mIndicator: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getParticipantCommonPot(userId: String): LiveData<List<CommonPot>> {
         val commonPotIdList = ArrayList<String>()
@@ -65,16 +66,18 @@ class MainFragmentViewModel: ViewModel() {
         }
     }
 
-    fun takeOffParticipant(commonPot: CommonPot, userId: String) {
+    fun takeOffParticipant(commonPot: CommonPot, userId: String): MutableLiveData<Boolean> {
         mParticipantRepository.getParticipant(userId, commonPot.id).get().addOnSuccessListener { value ->
             if (value != null){
                 val participant = value.documents[0].toObject(Participant::class.java)
                 mParticipantRepository.takeOffGoodCount(participant).addOnSuccessListener {
-                    Log.w(TAG, "Remove visibility successful")
+                    mIndicator.value = true
                 }
             }
         }.addOnFailureListener { e ->
             Log.w(TAG, "Listen failed.", e)
+            mIndicator.value = false
         }
+        return mIndicator
     }
 }

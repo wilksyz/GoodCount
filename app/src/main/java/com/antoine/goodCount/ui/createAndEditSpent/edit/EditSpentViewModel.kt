@@ -78,24 +78,6 @@ class EditSpentViewModel: ViewModel() {
         return dateFormat.format(mDateOfSpent)
     }
 
-    fun createListUsername(participantList: List<Participant>): ArrayList<String> {
-        val usernameList = ArrayList<String>()
-        for (participant in participantList){
-            usernameList.add(participant.username)
-        }
-        return usernameList
-    }
-
-    fun getPaidBy(usernameList: List<String>, participantList: List<Participant>, lineCommonPot: LineCommonPot?): Int {
-        var usernamePaid = ""
-        for (participant in participantList){
-            if (participant.id == lineCommonPot?.paidBy){
-                usernamePaid = participant.username
-            }
-        }
-        return usernameList.indexOf(usernamePaid)
-    }
-
     fun editSpentInDatabase(lineCommonPot: LineCommonPot, participantSpentList: List<ParticipantSpent>): Task<Void> {
         return mLineCommonPotRepository.editLineCommonPot(lineCommonPot, participantSpentList, mParticipantSpentIdList)
     }

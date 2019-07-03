@@ -302,6 +302,12 @@ class MainFragment : Fragment(), ClickListener {
             3 -> {
                 view?.let { Snackbar.make(it, getString(R.string.error_deleting), Snackbar.LENGTH_LONG).show() }
             }
+            4 -> {
+                view?.let { Snackbar.make(it, getString(R.string.remove_from_your_list), Snackbar.LENGTH_LONG).show() }
+            }
+            5 -> {
+                view?.let { Snackbar.make(it, getString(R.string.failed_to_delete_your_list), Snackbar.LENGTH_LONG).show() }
+            }
         }
     }
 
@@ -312,7 +318,15 @@ class MainFragment : Fragment(), ClickListener {
     }
 
     override fun onUndoClick(commonPot: CommonPot) {
-        mMainFragmentViewModel.takeOffParticipant(commonPot, mUserId)
+        mMainFragmentViewModel.takeOffParticipant(commonPot, mUserId).observe(this, Observer {indicator ->
+            if (indicator != null){
+                if (indicator){
+                    this.displaySnackBar(4)
+                }else{
+                    this.displaySnackBar(5)
+                }
+            }
+        })
     }
 }
 

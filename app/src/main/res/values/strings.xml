@@ -46,5 +46,7 @@
     <string name="delete_good_count">Delete Good Count</string>
     <string name="are_you_sure_you_want_to_permanently_delete_the_Good_Count">Are you sure you want to permanently delete the Good Count?</string>
     <string name="delete">Delete</string>
+    <string name="remove_from_your_list">Good Count remove from your list</string>
+    <string name="failed_to_delete_your_list">Failed to delete your list</string>
 
 </resources>
