@@ -48,5 +48,6 @@
     <string name="delete">Delete</string>
     <string name="remove_from_your_list">Good Count remove from your list</string>
     <string name="failed_to_delete_your_list">Failed to delete your list</string>
+    <string name="ask_your_friends_for_the_pot_sharing_code">Ask your friends for the pot sharing code</string>
 
 </resources>

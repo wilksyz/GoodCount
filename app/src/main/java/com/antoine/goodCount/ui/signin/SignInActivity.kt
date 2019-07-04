@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlin.system.exitProcess
 
 private const val RC_SIGN_IN = 1994
 private const val USER_ID = "user id"
@@ -144,5 +145,11 @@ class SignInActivity : AppCompatActivity() {
                 startActivity(mainActivityIntent)
             }
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+        exitProcess(0)
     }
 }

@@ -79,7 +79,7 @@ class MainFragment : Fragment(), ClickListener {
         }
         mViewOfLayout.main_fragment_button_join_common_pot.setOnClickListener {
             this.setContextualMenu()
-            view?.let { it1 -> Snackbar.make(it1, "Ask your friends for the pot sharing code", Snackbar.LENGTH_LONG).show() }
+            view?.let { it1 -> Snackbar.make(it1, getString(R.string.ask_your_friends_for_the_pot_sharing_code), Snackbar.LENGTH_LONG).show() }
         }
         return mViewOfLayout
     }

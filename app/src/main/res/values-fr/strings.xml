@@ -43,4 +43,5 @@
     <string name="delete">Supprimer</string>
     <string name="failed_to_delete_your_list">Échec de la suppression de votre liste</string>
     <string name="remove_from_your_list">Good Count supprimer de votre liste</string>
+    <string name="ask_your_friends_for_the_pot_sharing_code">Demandez à vos amis le lien du Good Count</string>
 </resources>

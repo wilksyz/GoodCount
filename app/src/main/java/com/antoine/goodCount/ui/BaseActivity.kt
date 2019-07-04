@@ -15,20 +15,23 @@ abstract class BaseActivity: AppCompatActivity() {
 
     protected fun disconnect(){
         val auth = FirebaseAuth.getInstance()
-        for (user in auth.currentUser!!.providerData) {
-            if (user.providerId == "facebook.com") {
-                auth.signOut()
-                LoginManager.getInstance().logOut()
-                startSignInActivity(null)
-            }else if (user.providerId == "google.com"){
-                auth.signOut()
-                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build()
-                val googleSignInClient = GoogleSignIn.getClient(this, gso)
-                googleSignInClient.revokeAccess()
-                startSignInActivity(null)
+        val firebaseUser = auth.currentUser
+        if (firebaseUser != null){
+            for (user in firebaseUser.providerData) {
+                if (user.providerId == "facebook.com") {
+                    auth.signOut()
+                    LoginManager.getInstance().logOut()
+                    startSignInActivity(null)
+                }else if (user.providerId == "google.com"){
+                    auth.signOut()
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build()
+                    val googleSignInClient = GoogleSignIn.getClient(this, gso)
+                    googleSignInClient.revokeAccess()
+                    startSignInActivity(null)
+                }
             }
         }
     }
