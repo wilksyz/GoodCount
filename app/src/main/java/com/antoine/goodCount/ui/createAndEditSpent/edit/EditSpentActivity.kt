@@ -52,7 +52,7 @@ class EditSpentActivity: BaseSpentActivity() {
         mEditSpentViewModel.getParticipantCommonPot(mCommonPotId).observe(this, Observer { participantList ->
             mParticipantList = participantList
             if (mParticipantSelectedMap.isEmpty()){
-                mEditSpentViewModel.createMapParticipant(participantList, mLineCommonPotId).observe(this, Observer {
+                mEditSpentViewModel.createParticipantMap(participantList, mLineCommonPotId).observe(this, Observer {
                     mParticipantSelectedMap = it
                     this.configureSpinner()
                     this.mAdapter.updateData(participantList, mParticipantSelectedMap)
@@ -95,7 +95,7 @@ class EditSpentActivity: BaseSpentActivity() {
 
     private fun configureSpinner(){
         if (mParticipantList.isNotEmpty() && mLineCommonPot != null){
-            val usernameList: List<String> = User.createListUsername(mParticipantList)
+            val usernameList: List<String> = User.createUsernameList(mParticipantList)
             if (mPositionSpinnerPaidBy == -1) mPositionSpinnerPaidBy = User.getPaidBy(usernameList, mParticipantList, mLineCommonPot)
             create_spent_payed_by_spinner.keyListener = null
             create_spent_payed_by_spinner.text = SpannableStringBuilder(usernameList[mPositionSpinnerPaidBy])

@@ -57,8 +57,8 @@ class CreateSpentActivity: BaseSpentActivity() {
     private fun getParticipant(){
         mCreateSpentViewModel.getParticipantCommonPot(mCommonPotId).observe(this, Observer {
             mParticipantList = it
-            if (mParticipantSelectedMap.isEmpty()) mParticipantSelectedMap = User.createMapParticipant(it)
-            this.configureSpinner(User.createListUsername(it))
+            if (mParticipantSelectedMap.isEmpty()) mParticipantSelectedMap = User.createParticipantMap(it)
+            this.configureSpinner(User.createUsernameList(it))
             this.mAdapter.updateData(it, mParticipantSelectedMap)
         })
     }

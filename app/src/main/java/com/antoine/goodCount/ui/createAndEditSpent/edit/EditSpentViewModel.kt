@@ -41,7 +41,7 @@ class EditSpentViewModel: ViewModel() {
         return mParticipantList
     }
 
-    fun createMapParticipant(participantList: List<Participant>, lineCommonPotId: String): MutableLiveData<HashMap<String, Boolean>> {
+    fun createParticipantMap(participantList: List<Participant>, lineCommonPotId: String): MutableLiveData<HashMap<String, Boolean>> {
         val participantSelectedMap = HashMap<String, Boolean>()
         for (participant in participantList){
             participantSelectedMap[participant.id] = false

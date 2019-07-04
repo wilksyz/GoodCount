@@ -4,7 +4,7 @@ import com.antoine.goodCount.models.LineCommonPot
 import com.antoine.goodCount.models.Participant
 
 object User {
-    fun createListUsername(participantList: List<Participant>): ArrayList<String> {
+    fun createUsernameList(participantList: List<Participant>): ArrayList<String> {
         val usernameList = ArrayList<String>()
         for (participant in participantList){
             usernameList.add(participant.username)
@@ -12,7 +12,7 @@ object User {
         return usernameList
     }
 
-    fun createMapParticipant(participantList: List<Participant>): HashMap<String, Boolean> {
+    fun createParticipantMap(participantList: List<Participant>): HashMap<String, Boolean> {
         val participantSelectedMap = HashMap<String, Boolean>()
         for (participant in participantList){
             participantSelectedMap[participant.id] = true
