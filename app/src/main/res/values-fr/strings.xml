@@ -44,4 +44,8 @@
     <string name="failed_to_delete_your_list">Échec de la suppression de votre liste</string>
     <string name="remove_from_your_list">Good Count supprimer de votre liste</string>
     <string name="ask_your_friends_for_the_pot_sharing_code">Demandez à vos amis le lien du Good Count</string>
+    <string name="click_on_to_add_an_spent">Cliquez sur + pour ajouter une dépense</string>
+    <string name="no_spent">Aucune dépense</string>
+    <string name="no_good_count">Aucun Good Count</string>
+    <string name="click_to_create_a_good_count">Cliquez sur + pour créer un Good Count</string>
 </resources>

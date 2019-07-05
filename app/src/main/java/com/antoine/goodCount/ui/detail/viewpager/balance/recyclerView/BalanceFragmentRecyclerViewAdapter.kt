@@ -11,6 +11,7 @@ class BalanceFragmentRecyclerViewAdapter: RecyclerView.Adapter<BalanceFragmentRe
     private var mParticipantSpentMap: HashMap<String, Double> = HashMap()
     private var mParticipantList = ArrayList<Participant>()
     private var mCurrency = ""
+    private var mUserId = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BalanceFragmentRecyclerViewHolder {
         val context = parent.context
@@ -24,12 +25,13 @@ class BalanceFragmentRecyclerViewAdapter: RecyclerView.Adapter<BalanceFragmentRe
     }
 
     override fun onBindViewHolder(balanceFragmentRecyclerViewHolder: BalanceFragmentRecyclerViewHolder, position: Int) {
-        return balanceFragmentRecyclerViewHolder.updateUI(mParticipantList[position], mParticipantSpentMap[mParticipantList[position].id], mCurrency)
+        return balanceFragmentRecyclerViewHolder.updateUI(mParticipantList[position], mParticipantSpentMap[mParticipantList[position].id], mCurrency, mUserId)
     }
 
-    fun updateData(participantSpentMap: HashMap<String, Double>, participantList: ArrayList<Participant>){
+    fun updateData(participantSpentMap: HashMap<String, Double>, participantList: ArrayList<Participant>, userId: String){
         mParticipantSpentMap = participantSpentMap
         mParticipantList = participantList
+        mUserId = userId
         this.notifyDataSetChanged()
     }
 

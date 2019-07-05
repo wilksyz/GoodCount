@@ -1,5 +1,7 @@
 package com.antoine.goodCount.ui.detail.viewpager.balance
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,8 @@ import com.antoine.goodCount.ui.detail.viewpager.balance.recyclerView.BalanceFra
 import kotlinx.android.synthetic.main.fragment_balance.view.*
 
 private const val COMMON_POT_ID = "common pot id"
+private const val USER = "user"
+private const val USER_ID = "user id"
 class BalanceFragment : Fragment() {
 
     private lateinit var mViewOfLayout: View
@@ -46,7 +50,7 @@ class BalanceFragment : Fragment() {
 
     private fun getParticipantBalance(){
         mBalanceFragmentViewModel.getParticipant(mCommonPotId).observe(this, Observer {
-            mAdapter.updateData(it, mBalanceFragmentViewModel.mParticipantList)
+            mAdapter.updateData(it, mBalanceFragmentViewModel.mParticipantList, getUserId())
         })
     }
 
@@ -54,6 +58,12 @@ class BalanceFragment : Fragment() {
         mBalanceFragmentViewModel.getCommonPot(mCommonPotId).observe(this, Observer { commonPot ->
             mAdapter.updateCurrency(commonPot.currency)
         })
+    }
+
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    private fun getUserId(): String {
+        val sharedPref: SharedPreferences = context!!.getSharedPreferences(USER, Context.MODE_PRIVATE)
+        return sharedPref.getString(USER_ID, null)
     }
 
     companion object {

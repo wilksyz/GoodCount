@@ -49,5 +49,9 @@
     <string name="remove_from_your_list">Good Count remove from your list</string>
     <string name="failed_to_delete_your_list">Failed to delete your list</string>
     <string name="ask_your_friends_for_the_pot_sharing_code">Ask your friends for the pot sharing code</string>
+    <string name="click_on_to_add_an_spent">Click on + to add an spent</string>
+    <string name="no_spent">No spent</string>
+    <string name="click_to_create_a_good_count">Click + to create a Good Count</string>
+    <string name="no_good_count">No Good Count</string>
 
 </resources>

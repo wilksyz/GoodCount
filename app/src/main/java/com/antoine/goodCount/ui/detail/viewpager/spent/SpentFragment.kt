@@ -224,6 +224,13 @@ class SpentFragment : Fragment(), SpentClickListener {
     private fun getLineCommonPot(){
         mSpentFragmentViewModel.getLineCommonPot(mCommonPotId).observe(this, Observer { list ->
             mLineCommonPotList = list
+            if (list.size == 0){
+                mViewOfLayout.spent_fragment_no_spent_textView.visibility = View.VISIBLE
+                mViewOfLayout.spent_fragment_no_spent_add_textView.visibility = View.VISIBLE
+            }else{
+                mViewOfLayout.spent_fragment_no_spent_textView.visibility = View.INVISIBLE
+                mViewOfLayout.spent_fragment_no_spent_add_textView.visibility = View.INVISIBLE
+            }
             this.mAdapter.updateData(list)
             this.getTotalCost()
             this.getPersonalCost()

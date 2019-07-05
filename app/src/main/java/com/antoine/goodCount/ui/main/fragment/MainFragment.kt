@@ -268,6 +268,11 @@ class MainFragment : Fragment(), ClickListener {
         mMainFragmentViewModel.getParticipantCommonPot(userId).observe(this, Observer {
             if (it.isNotEmpty()){
                 mAdapter.updateData(it as MutableList<CommonPot>)
+                mViewOfLayout.main_fragment_no_good_count_textView.visibility = View.INVISIBLE
+                mViewOfLayout.main_fragment_no_good_count_add_textView.visibility = View.INVISIBLE
+            }else{
+                mViewOfLayout.main_fragment_no_good_count_textView.visibility = View.VISIBLE
+                mViewOfLayout.main_fragment_no_good_count_add_textView.visibility = View.VISIBLE
             }
         })
     }

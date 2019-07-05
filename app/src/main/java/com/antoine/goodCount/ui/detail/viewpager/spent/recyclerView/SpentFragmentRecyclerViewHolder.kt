@@ -61,7 +61,7 @@ class SpentFragmentRecyclerViewHolder(itemView: View, private var clickListener:
 
     private fun formatPaidBy(payerName: String, username: HashMap<String, Participant>){
         val paidBy: String = if (payerName == username[USER_APP]?.id){
-            "${itemView.context.resources.getString(R.string.payed_by)} ${itemView.context.resources.getString(R.string.me)}"
+            "${itemView.context.resources.getString(R.string.payed_by)} ${username[USER_APP]?.username} (${itemView.context.resources.getString(R.string.me)})"
         }else {
             "${itemView.context.resources.getString(R.string.payed_by)} ${username[payerName]?.username}"
         }
