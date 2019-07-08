@@ -29,6 +29,7 @@ class BalanceFragmentViewModel: ViewModel() {
     val mParticipantList = ArrayList<Participant>()
     private var mCommonPot: MutableLiveData<CommonPot> = MutableLiveData()
 
+    // Get LineCommonPot in database
     private fun getLineCommonPot(commonPotId: String) {
         mLineCommonPotRepository.getLineCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
             if (e != null) {
@@ -37,6 +38,9 @@ class BalanceFragmentViewModel: ViewModel() {
             }
             if (value != null) {
                 mLineCommonPotList.clear()
+                for (key in mParticipantSpentMap){
+                    key.setValue(0.0)
+                }
                 for (document in value) {
                     val lineCommonPot = document.toObject(LineCommonPot::class.java)
                     mLineCommonPotList.add(lineCommonPot)
@@ -46,6 +50,7 @@ class BalanceFragmentViewModel: ViewModel() {
         })
     }
 
+    // Get ParticipantSpent in database and determine the balance of each user
     private fun getParticipantSpent(lineCommonPot: LineCommonPot) {
         val amountPay = mParticipantSpentMap[lineCommonPot.paidBy]?.plus(lineCommonPot.amount)
         if (amountPay != null) {
@@ -69,6 +74,7 @@ class BalanceFragmentViewModel: ViewModel() {
         }
     }
 
+    // Get Participant in database and create a map with the id of Participants
     fun getParticipant(commonPotId: String): MutableLiveData<HashMap<String, Double>> {
         mParticipantRepository.getParticipantCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
             if (e != null){
@@ -91,6 +97,7 @@ class BalanceFragmentViewModel: ViewModel() {
         return mParticipantSpentMapMutable
     }
 
+    // Get CommonPot in database to get the currency used and the current user
     fun getCommonPot(commonPotId: String): MutableLiveData<CommonPot> {
         mCommonPotRepository.getCommonPot(commonPotId).addSnapshotListener(EventListener<DocumentSnapshot>{ document, e ->
             if (e != null) {

@@ -42,6 +42,7 @@ abstract class BaseCommonPotActivity: AppCompatActivity() {
         })
     }
 
+    // Set the spinner and listen the click on an item
     protected fun settingUpSpinner(){
         create_activity_spinner.keyListener = null
         val adapter = ArrayAdapter(this, R.layout.dropdown_menu_popup_item, mCurrencyList)
@@ -51,6 +52,7 @@ abstract class BaseCommonPotActivity: AppCompatActivity() {
         }
     }
 
+    // Control events in editText
     private fun checkInformationIsEntered(signInCode: Int){
         val title = create_activity_title_editext.text.toString().isNotEmpty()
         val name = create_activity_your_name_editext.text.toString().isNotEmpty()

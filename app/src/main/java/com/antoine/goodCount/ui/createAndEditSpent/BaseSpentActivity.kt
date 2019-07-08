@@ -60,6 +60,7 @@ abstract class BaseSpentActivity: AppCompatActivity(), ClickListener {
         }
     }
 
+    // Control events in editText
     private fun checkInformationIsEntered(signInCode: Int){
         val title = create_spent_title_editext.text.toString().isNotEmpty()
         val amount = create_spent_amount_editext.text.toString().isNotEmpty()

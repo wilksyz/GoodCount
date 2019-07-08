@@ -70,6 +70,7 @@ class EditSpentActivity: BaseSpentActivity() {
             this.configureDateTextView()
             this.configureSpinner()
             this.updateTitleAndAmount(lineCommonPot)
+            this.title = "${getString(R.string.edit)} ${lineCommonPot.title}"
         })
     }
 

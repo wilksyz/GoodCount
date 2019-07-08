@@ -31,6 +31,7 @@ class CreateSpentActivity: BaseSpentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mCommonPotId = intent.getStringExtra(COMMON_POT_ID)
+        this.title = getString(R.string.create)
         this.configureViewModel()
         configureRecyclerView()
         this.getParticipant()
@@ -44,6 +45,7 @@ class CreateSpentActivity: BaseSpentActivity() {
         mCreateSpentViewModel = ViewModelProviders.of(this).get(CreateSpentViewModel::class.java)
     }
 
+    // Configure the date picker and listen the click
     private fun configureDateTextView(){
         create_spent_date_spinner.keyListener = null
         create_spent_date_spinner.text = SpannableStringBuilder(mCreateSpentViewModel.formatDate())
@@ -54,6 +56,7 @@ class CreateSpentActivity: BaseSpentActivity() {
         }
     }
 
+    // Get the Participant of the CommonPot
     private fun getParticipant(){
         mCreateSpentViewModel.getParticipantCommonPot(mCommonPotId).observe(this, Observer {
             mParticipantList = it
@@ -63,6 +66,7 @@ class CreateSpentActivity: BaseSpentActivity() {
         })
     }
 
+    // Set the spinner and listen the click on an item
     private fun configureSpinner(usernameList: List<String>){
         if (mPositionSpinnerPaidBy == -1) mPositionSpinnerPaidBy = 0
         create_spent_payed_by_spinner.keyListener = null
@@ -74,6 +78,7 @@ class CreateSpentActivity: BaseSpentActivity() {
         }
     }
 
+    // Displays the date picker on the screen
     private fun displayDatePicker(){
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -91,6 +96,7 @@ class CreateSpentActivity: BaseSpentActivity() {
         }
     }
 
+    // Displays the time picker on the screen
     private fun displayTimePicker(calendar: Calendar){
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
@@ -111,6 +117,7 @@ class CreateSpentActivity: BaseSpentActivity() {
         mParticipantSelectedMap[participantId] = isChecked
     }
 
+    // Get the information entered to create the LineCommonPot and ParticipantSpent
     private fun retrieveInformationEntered(){
         val participantSpentList = ArrayList<ParticipantSpent>()
         if (mParticipantSelectedMap.containsValue(true)){

@@ -50,16 +50,19 @@ class EditCommonPotActivity: BaseCommonPotActivity() {
         settingUpSpinner()
     }
 
+    // Get the CommonPot to edit
     private fun getCommonPot(){
         mEditViewModel.getCommonPot(mCommonPotId).observe(this, Observer {
             if (it != null){
                 mCommonPot = it
                 this.updateUI()
                 this.configureSpinner(mCurrencyList, mCommonPot.currency)
+                this.title = "${getString(R.string.edit)} ${it.title}"
             }
         })
     }
 
+    // Update the UI with the information obtained
     private fun updateUI() {
         if (create_activity_title_editext.text.toString().isEmpty()){
             create_activity_title_editext.text = SpannableStringBuilder(mCommonPot.title)
@@ -70,6 +73,7 @@ class EditCommonPotActivity: BaseCommonPotActivity() {
         create_activity_add_common_pot_button.text = getString(R.string.validate_the_change)
     }
 
+    // Get the username of the current user
     private fun getUsername(userId: String, mCommonPotId: String) {
         mEditViewModel.getUsername(userId, mCommonPotId).observe(this, Observer {
             if (it != null){
@@ -79,6 +83,7 @@ class EditCommonPotActivity: BaseCommonPotActivity() {
         })
     }
 
+    // Get the information entered before update CommonPot
     private fun retrieveInformation() {
         mCommonPot.title = create_activity_title_editext.text.toString()
         mCommonPot.description = create_activity_description_editext.text.toString()
@@ -100,6 +105,7 @@ class EditCommonPotActivity: BaseCommonPotActivity() {
         }
     }
 
+    // Display the alert when the user click on the delete button
     private fun displayAlertDialog(){
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.delete_good_count))
@@ -112,6 +118,7 @@ class EditCommonPotActivity: BaseCommonPotActivity() {
         builder.show()
     }
 
+    // Get the id of everything that is to delete in database
     private fun getTheIdToDelete(){
         mEditViewModel.getParticipantId(mCommonPotId).observe(this, Observer {hashMapId ->
             if (hashMapId != null){

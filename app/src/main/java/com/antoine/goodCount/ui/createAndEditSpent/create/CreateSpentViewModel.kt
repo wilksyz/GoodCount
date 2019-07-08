@@ -20,6 +20,7 @@ class CreateSpentViewModel: ViewModel() {
     private val mParticipantList: MutableLiveData<List<Participant>> = MutableLiveData()
     var mDateOfSpent: Date = Date()
 
+    // Get the Participants to the CommonPot
     fun getParticipantCommonPot(commonPotId: String): MutableLiveData<List<Participant>> {
         val participantList = ArrayList<Participant>()
         mParticipantRepository.getParticipantCommonPot(commonPotId).get().addOnSuccessListener { documents ->
@@ -34,6 +35,7 @@ class CreateSpentViewModel: ViewModel() {
         return mParticipantList
     }
 
+    // Get the date in the right format
     fun formatDate(): String {
         val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.getDefault())
         return dateFormat.format(mDateOfSpent)

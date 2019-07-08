@@ -30,9 +30,11 @@ abstract class BaseActivity: AppCompatActivity() {
                         .build()
                     val googleSignInClient = GoogleSignIn.getClient(this, gso)
                     googleSignInClient.revokeAccess()
-                    startSignInActivity(null)
+                    this.startSignInActivity(null)
                 }
             }
+        }else {
+            this.startSignInActivity(null)
         }
     }
 

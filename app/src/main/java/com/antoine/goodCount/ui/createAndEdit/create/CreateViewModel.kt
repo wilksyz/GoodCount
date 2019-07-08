@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Task
 
 class CreateViewModel: ViewModel() {
 
+    // Create CommonPot and Participant in database
     fun createCommonPot(commonPot: CommonPot, participant: Participant): Task<Void> {
         return CommonPotRepository().createCommonPot(commonPot, participant)
     }

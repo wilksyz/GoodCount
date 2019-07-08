@@ -24,6 +24,7 @@ class EditViewModel: ViewModel() {
     private val mMapId = HashMap<String, MutableList<String>>()
     private var mCounter: Int = 0
 
+    // Get the CommonPot to edit
     fun getCommonPot(mCommonPotId: String): MutableLiveData<CommonPot> {
         mCommonPotRepository.getCommonPot(mCommonPotId).get().addOnSuccessListener { documentSnapshot ->
             val commonPot = documentSnapshot.toObject(CommonPot::class.java)
@@ -34,6 +35,7 @@ class EditViewModel: ViewModel() {
         return mCommonPot
     }
 
+    // Get the username of current user
     fun getUsername(userId: String, mCommonPotId: String): MutableLiveData<Participant> {
         mParticipantRepository.getParticipant(userId, mCommonPotId).get().addOnSuccessListener { value ->
             if (value != null){
@@ -45,10 +47,12 @@ class EditViewModel: ViewModel() {
         return mParticipant
     }
 
+    // Update CommonPot in database
     fun updateCommonPot(mCommonPot: CommonPot, mParticipant: Participant): Task<Void> {
         return mCommonPotRepository.updateCommonPot(mCommonPot, mParticipant)
     }
 
+    // Get Participant id for delete
     fun getParticipantId(commonPotId: String): MutableLiveData<HashMap<String, MutableList<String>>> {
         mMapId["participant"] = ArrayList<String>()
         mMapId["lineCommonPot"] = ArrayList<String>()
@@ -66,6 +70,7 @@ class EditViewModel: ViewModel() {
         return mLiveDataMapId
     }
 
+    // Get LineCommonPot id for delete
     private fun getLineCommonPOtId(commonPotId: String) {
         mLineCommonPotRepository.getLineCommonPot(commonPotId).get().addOnSuccessListener { value ->
             if (value != null){
@@ -84,6 +89,7 @@ class EditViewModel: ViewModel() {
         }
     }
 
+    // Get ParticipantSpent id for delete
     private fun getParticipantSpentId(lineCommonPotId: String, numberOfLineCommonPot: Int) {
         mParticipantSpentRepository.getParticipantSpent(lineCommonPotId).get().addOnSuccessListener { value ->
             if (value != null){

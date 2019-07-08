@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import androidx.lifecycle.ViewModelProviders
+import com.antoine.goodCount.R
 import com.antoine.goodCount.models.CommonPot
 import com.antoine.goodCount.models.Participant
 import com.antoine.goodCount.ui.createAndEdit.BaseCommonPotActivity
@@ -18,6 +19,7 @@ class CreateCommonPotActivity: BaseCommonPotActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.title = getString(R.string.create)
         this.configureViewModel()
         this.configureSpinner()
 
@@ -36,6 +38,7 @@ class CreateCommonPotActivity: BaseCommonPotActivity() {
         settingUpSpinner()
     }
 
+    // Get the information entered to create the CommonPot
     private fun retrieveInformation(){
         val title = create_activity_title_editext.text.toString()
         val description = create_activity_description_editext.text.toString()
