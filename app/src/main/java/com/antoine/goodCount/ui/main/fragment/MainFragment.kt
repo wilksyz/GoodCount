@@ -235,6 +235,7 @@ class MainFragment : Fragment(), ClickListener {
         })
     }
 
+    // Configure the animation of two extra buttons
     private fun configureAnimation(){
         mFabClose = AnimationUtils.loadAnimation(context, R.anim.fab_close)
         mFabOpen = AnimationUtils.loadAnimation(context, R.anim.fab_open)
@@ -242,6 +243,7 @@ class MainFragment : Fragment(), ClickListener {
         mFabAntiClock = AnimationUtils.loadAnimation(context, R.anim.fab_rotate_anticlock)
     }
 
+    // Shows or removes the two extra buttons
     private fun setContextualMenu(){
         if (mIsOpen) {
             main_fragment_create_CardView.visibility = View.INVISIBLE
@@ -293,6 +295,7 @@ class MainFragment : Fragment(), ClickListener {
         }
     }
 
+    // Displays a message in a snackBar according to the return of activities
     private fun displaySnackBar(code: Int) {
         when(code){
             0 -> {
@@ -316,13 +319,15 @@ class MainFragment : Fragment(), ClickListener {
         }
     }
 
+    // When the user clicks on an item the onClick method is called and starts the DetailActivity
     override fun onClick(position: Int) {
         val detailActivityIntent = Intent(context, DetailActivity::class.java)
         detailActivityIntent.putExtra(COMMON_POT_ID, mAdapter.getCommonPotId(position))
         startActivityForResult(detailActivityIntent, ANSWER_REQUEST)
     }
 
-    override fun onUndoClick(commonPot: CommonPot) {
+    // When the user drag an item to delete it and the 3 seconds to cancel are passed the onSwipeDelete method is called to remove the common pot from your list
+    override fun onDeleteSwipe(commonPot: CommonPot) {
         mMainFragmentViewModel.takeOffParticipant(commonPot, mUserId).observe(this, Observer {indicator ->
             if (indicator != null){
                 if (indicator){

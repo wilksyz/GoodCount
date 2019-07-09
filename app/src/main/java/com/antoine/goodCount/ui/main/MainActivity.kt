@@ -73,6 +73,7 @@ class MainActivity : BaseActivity() {
         fragmentTransaction.commit()
     }
 
+    // Get the dynamic link when the user clicks on it
     private fun receiveDynamicLinks() {
         FirebaseDynamicLinks.getInstance()
             .getDynamicLink(intent)
@@ -89,6 +90,7 @@ class MainActivity : BaseActivity() {
             }
     }
 
+    // Check if you are sign in and if a participant already exists for this common pot with your id
     private fun accessToNewCount(commonPotId: String) {
         if (FirebaseAuth.getInstance().currentUser != null){
             mUserId?.let { mMainActivityViewModel.checkParticipantCommonPot(commonPotId, it) }?.observe(this, Observer {
@@ -115,6 +117,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    // Display an alertDialog to ask for your username
     @SuppressLint("InflateParams")
     private fun requestUsername(commonPotId: String) {
         val builder = AlertDialog.Builder(this)
@@ -139,6 +142,7 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    // Create a new Participant in database
     private fun createParticipant(username: String, commonPotId: String) {
         val participant = mUserId?.let { Participant("", commonPotId, it, username, true) }
         mMainActivityViewModel.createParticipant(participant)?.addOnSuccessListener {

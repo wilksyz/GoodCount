@@ -27,6 +27,7 @@ class EditSpentViewModel: ViewModel() {
     private val mParticipantSpentIdList = ArrayList<String>()
     var mDateOfSpent: Date? = null
 
+    // Get the Participants to the CommonPot
     fun getParticipantCommonPot(commonPotId: String): MutableLiveData<List<Participant>> {
         val participantList = ArrayList<Participant>()
         mParticipantRepository.getParticipantCommonPot(commonPotId).get().addOnSuccessListener { documents ->
@@ -41,6 +42,7 @@ class EditSpentViewModel: ViewModel() {
         return mParticipantList
     }
 
+    // Create a participant map to determine who participates in the expense
     fun createParticipantMap(participantList: List<Participant>, lineCommonPotId: String): MutableLiveData<HashMap<String, Boolean>> {
         val participantSelectedMap = HashMap<String, Boolean>()
         for (participant in participantList){
@@ -50,6 +52,7 @@ class EditSpentViewModel: ViewModel() {
         return mParticipantSelectedMap
     }
 
+    // Get the ParticipantSpent to edit
     private fun getParticipantSpent(participantSelectedMap: HashMap<String, Boolean>, lineCommonPotId: String) {
         mParticipantSpentRepository.getParticipantSpent(lineCommonPotId).get().addOnSuccessListener { value ->
             mParticipantSpentIdList.clear()
@@ -64,6 +67,7 @@ class EditSpentViewModel: ViewModel() {
         }
     }
 
+    // Get the LineCommonPot to edit
     fun getLineCommonPot(mLineCommonPotId: String): MutableLiveData<LineCommonPot> {
         mLineCommonPotRepository.getOneLineCommonPot(mLineCommonPotId).get().addOnSuccessListener {value ->
             mLineCommonPot.value = value.toObject(LineCommonPot::class.java)
@@ -73,6 +77,7 @@ class EditSpentViewModel: ViewModel() {
         return mLineCommonPot
     }
 
+    // Get the date in the right format
     fun formatDate(): String {
         val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.getDefault())
         return dateFormat.format(mDateOfSpent)

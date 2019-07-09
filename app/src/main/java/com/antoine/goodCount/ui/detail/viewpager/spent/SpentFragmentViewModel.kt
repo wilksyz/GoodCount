@@ -28,6 +28,7 @@ class SpentFragmentViewModel : ViewModel() {
     private var mParticipantMap: MutableLiveData<HashMap<String, Participant>> = MutableLiveData()
     private var mParticipantSpentIdList: MutableLiveData<List<String>> = MutableLiveData()
 
+    // Get LineCommonPot in database
     fun getLineCommonPot(commonPotId: String): MutableLiveData<MutableList<LineCommonPot>> {
         val lineCommonPotList = ArrayList<LineCommonPot>()
 
@@ -50,6 +51,7 @@ class SpentFragmentViewModel : ViewModel() {
         return mLineCommonPotList
     }
 
+    // Get CommonPot in database to get the currency used and the title
     fun getCommonPot(commonPotId: String): MutableLiveData<CommonPot> {
         mCommonPotRepository.getCommonPot(commonPotId).addSnapshotListener(EventListener<DocumentSnapshot>{ document, e ->
             if (e != null) {
@@ -64,6 +66,7 @@ class SpentFragmentViewModel : ViewModel() {
         return mCommonPot
     }
 
+    // Get the participants of the common pot
     fun getParticipant(userId: String, commonPotId: String): MutableLiveData<HashMap<String, Participant>> {
         val participantMap = HashMap<String, Participant>()
         mParticipantRepository.getParticipantCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot>{ value, e ->
@@ -84,6 +87,7 @@ class SpentFragmentViewModel : ViewModel() {
         return mParticipantMap
     }
 
+    // Determine the username of the current user
     private fun getKey(participant: Participant, userId: String): String {
         return if (participant.userId == userId){
             USER_APP
@@ -92,6 +96,7 @@ class SpentFragmentViewModel : ViewModel() {
         }
     }
 
+    // Get participants for each spent
     fun getParticipantSpentAtSpent(lineCommonPotId: String): MutableLiveData<List<String>> {
         val participantSpentIdList = ArrayList<String>()
         mParticipantSpentRepository.getParticipantSpent(lineCommonPotId).get().addOnSuccessListener { value ->

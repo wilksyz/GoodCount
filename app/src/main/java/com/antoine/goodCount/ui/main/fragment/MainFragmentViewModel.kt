@@ -19,6 +19,7 @@ class MainFragmentViewModel: ViewModel() {
     private val mCommonPotList: MutableLiveData<List<CommonPot>> = MutableLiveData()
     private val mIndicator: MutableLiveData<Boolean> = MutableLiveData()
 
+    // Get the common pot in which you participate
     fun getParticipantCommonPot(userId: String): LiveData<List<CommonPot>> {
         val commonPotIdList = ArrayList<String>()
 
@@ -66,6 +67,7 @@ class MainFragmentViewModel: ViewModel() {
         }
     }
 
+    // Makes the common pot invisible in your list
     fun takeOffParticipant(commonPot: CommonPot, userId: String): MutableLiveData<Boolean> {
         mParticipantRepository.getParticipant(userId, commonPot.id).get().addOnSuccessListener { value ->
             if (value != null){

@@ -86,7 +86,7 @@ class MainRecyclerViewAdapter(private val clickListener: ClickListener): Recycle
             commonPotPendingRemoval.remove(commonPot)
         }
         if (mCommonPotList.contains(commonPot)) {
-            clickListener.onUndoClick(mCommonPotList[position])
+            clickListener.onDeleteSwipe(mCommonPotList[position])
             mCommonPotList.removeAt(position)
             notifyItemRemoved(position)
         }

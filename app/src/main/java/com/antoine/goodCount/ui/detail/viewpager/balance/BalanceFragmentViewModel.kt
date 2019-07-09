@@ -97,7 +97,7 @@ class BalanceFragmentViewModel: ViewModel() {
         return mParticipantSpentMapMutable
     }
 
-    // Get CommonPot in database to get the currency used and the current user
+    // Get CommonPot in database to get the currency used
     fun getCommonPot(commonPotId: String): MutableLiveData<CommonPot> {
         mCommonPotRepository.getCommonPot(commonPotId).addSnapshotListener(EventListener<DocumentSnapshot>{ document, e ->
             if (e != null) {

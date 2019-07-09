@@ -14,6 +14,7 @@ class MainActivityViewModel: ViewModel() {
     private val mParticipantRepository = ParticipantRepository()
     private val mParticipantIsPresent: MutableLiveData<Boolean> = MutableLiveData()
 
+    // Check if a Participant exist with your id
     fun checkParticipantCommonPot(commonPotId: String, userId: String):LiveData<Boolean> {
         val participantList = ArrayList<Participant>()
         mParticipantRepository.getParticipant(userId, commonPotId).get().addOnSuccessListener { value ->
@@ -36,12 +37,14 @@ class MainActivityViewModel: ViewModel() {
         return mParticipantIsPresent
     }
 
+    // Change the visibility of common pot in your list
     private fun updateParticipant(participant: Participant) {
         mParticipantRepository.takeOnGoodCount(participant).addOnSuccessListener {
             Log.w(TAG, "Update successful")
         }
     }
 
+    // Create Participant in database
     fun createParticipant(participant: Participant?): Task<Void>? {
         return participant?.let { mParticipantRepository.createParticipant(it) }
     }

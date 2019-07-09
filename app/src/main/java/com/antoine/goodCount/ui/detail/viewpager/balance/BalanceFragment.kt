@@ -48,12 +48,14 @@ class BalanceFragment : Fragment() {
         mViewOfLayout.balance_fragment_recyclerview.layoutManager = LinearLayoutManager(this.context)
     }
 
+    // Get participants and their balance for this CommonPot
     private fun getParticipantBalance(){
         mBalanceFragmentViewModel.getParticipant(mCommonPotId).observe(this, Observer {
             mAdapter.updateData(it, mBalanceFragmentViewModel.mParticipantList, getUserId())
         })
     }
 
+    // Get CommonPot in database to get the currency used
     private fun getCommonPot(){
         mBalanceFragmentViewModel.getCommonPot(mCommonPotId).observe(this, Observer { commonPot ->
             mAdapter.updateCurrency(commonPot.currency)

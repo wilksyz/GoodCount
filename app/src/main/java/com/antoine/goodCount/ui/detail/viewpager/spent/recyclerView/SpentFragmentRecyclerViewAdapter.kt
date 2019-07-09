@@ -89,7 +89,7 @@ class SpentFragmentRecyclerViewAdapter(private val clickListener: SpentClickList
             mLineCommonPotPendingRemoval.remove(lineCommonPot)
         }
         if (mLineCommonPotList.contains(lineCommonPot)) {
-            clickListener.onUndoClick(lineCommonPot)
+            clickListener.onDeleteSwipe(lineCommonPot)
             notifyItemRemoved(position)
         }
     }

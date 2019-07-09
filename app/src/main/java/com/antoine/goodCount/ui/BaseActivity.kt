@@ -13,6 +13,7 @@ private const val COMMON_POT_ID = "common pot id"
 private const val ANSWER_REQUEST = 1919
 abstract class BaseActivity: AppCompatActivity() {
 
+    // Disconnect the user from the app
     protected fun disconnect(){
         val auth = FirebaseAuth.getInstance()
         val firebaseUser = auth.currentUser
@@ -38,6 +39,7 @@ abstract class BaseActivity: AppCompatActivity() {
         }
     }
 
+    // Start the sign in activity
     protected fun startSignInActivity(commonPotId: String?){
         val signInActivityIntent = Intent(this, SignInActivity::class.java)
         if (commonPotId != null){

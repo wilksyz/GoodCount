@@ -43,7 +43,7 @@ class DetailActivity : BaseActivity() {
             true
         }
         R.id.share_button -> {
-            mSectionsPagerAdapter.spentFragment.shareCommonPot()
+            mSectionsPagerAdapter.mSpentFragment.shareCommonPot()
             true
         }
         R.id.edit_button -> {
@@ -78,6 +78,7 @@ class DetailActivity : BaseActivity() {
         finish()
     }
 
+    // Displays a message in a snackBar according to the return of activities
     private fun displaySnackBar(code: Int) {
         when(code){
             0 -> {

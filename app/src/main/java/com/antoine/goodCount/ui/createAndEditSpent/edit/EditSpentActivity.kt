@@ -48,6 +48,7 @@ class EditSpentActivity: BaseSpentActivity() {
         mEditSpentViewModel = ViewModelProviders.of(this).get(EditSpentViewModel::class.java)
     }
 
+    // Get the Participant of the CommonPot
     private fun getParticipant(){
         mEditSpentViewModel.getParticipantCommonPot(mCommonPotId).observe(this, Observer { participantList ->
             mParticipantList = participantList
@@ -63,6 +64,7 @@ class EditSpentActivity: BaseSpentActivity() {
         })
     }
 
+    // Get the LineCommonPot to edit
     private fun getLineCommonPot(){
         mEditSpentViewModel.getLineCommonPot(mLineCommonPotId).observe(this, Observer {lineCommonPot ->
             mLineCommonPot = lineCommonPot
@@ -74,6 +76,7 @@ class EditSpentActivity: BaseSpentActivity() {
         })
     }
 
+    // Update the UI with the information obtained
     private fun updateTitleAndAmount(lineCommonPot: LineCommonPot){
         if (create_spent_title_editext.text.toString().isEmpty()){
             create_spent_title_editext.text = SpannableStringBuilder(lineCommonPot.title)
@@ -84,6 +87,7 @@ class EditSpentActivity: BaseSpentActivity() {
         create_spent_button.text = getString(R.string.validate_the_change)
     }
 
+    // Configure the date picker and listen the click
     private fun configureDateTextView(){
         create_spent_date_spinner.keyListener = null
         create_spent_date_spinner.text = SpannableStringBuilder(mEditSpentViewModel.formatDate())
@@ -94,6 +98,7 @@ class EditSpentActivity: BaseSpentActivity() {
         }
     }
 
+    // Set the spinner and listen the click on an item
     private fun configureSpinner(){
         if (mParticipantList.isNotEmpty() && mLineCommonPot != null){
             val usernameList: List<String> = User.createUsernameList(mParticipantList)
@@ -108,6 +113,7 @@ class EditSpentActivity: BaseSpentActivity() {
         }
     }
 
+    // Displays the date picker on the screen
     private fun displayDatePicker(){
         val calendar = Calendar.getInstance()
         calendar.time = mEditSpentViewModel.mDateOfSpent
@@ -126,6 +132,7 @@ class EditSpentActivity: BaseSpentActivity() {
         }
     }
 
+    // Displays the time picker on the screen
     private fun displayTimePicker(calendar: Calendar){
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
@@ -142,6 +149,7 @@ class EditSpentActivity: BaseSpentActivity() {
         }
     }
 
+    // Get the information entered to edit the LineCommonPot and ParticipantSpent
     private fun retrieveInformationEntered(){
         val participantSpentList = ArrayList<ParticipantSpent>()
         if (mParticipantSelectedMap.containsValue(true)){

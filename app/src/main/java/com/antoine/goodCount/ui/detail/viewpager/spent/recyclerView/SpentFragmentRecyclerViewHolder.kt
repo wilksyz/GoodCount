@@ -74,5 +74,5 @@ class SpentFragmentRecyclerViewHolder(itemView: View, private var clickListener:
 }
 interface SpentClickListener{
     fun onClick(lineCommonPotId: String)
-    fun onUndoClick(lineCommonPot: LineCommonPot)
+    fun onDeleteSwipe(lineCommonPot: LineCommonPot)
 }

@@ -221,6 +221,7 @@ class SpentFragment : Fragment(), SpentClickListener {
         })
     }
 
+    // Get the LineCommonPots of the file
     private fun getLineCommonPot(){
         mSpentFragmentViewModel.getLineCommonPot(mCommonPotId).observe(this, Observer { list ->
             mLineCommonPotList = list
@@ -237,6 +238,7 @@ class SpentFragment : Fragment(), SpentClickListener {
         })
     }
 
+    // Get the common pot for get the currency and display the title
     private fun getCommonPot(){
         mSpentFragmentViewModel.getCommonPot(mCommonPotId).observe(this, Observer { commonPot ->
             mCommonPot = commonPot
@@ -247,6 +249,7 @@ class SpentFragment : Fragment(), SpentClickListener {
         })
     }
 
+    // Get the username of the current user
     private fun getUsername(){
         mSpentFragmentViewModel.getParticipant(this.getUserId(), mCommonPotId).observe(this, Observer { participantList ->
             mUsername = participantList[USER_APP]?.id.toString()
@@ -255,6 +258,7 @@ class SpentFragment : Fragment(), SpentClickListener {
         })
     }
 
+    // Calculate the amount you have currently spent
     private fun getPersonalCost(){
         var personalCost = 0.0
         if (mLineCommonPotList.isNotEmpty() && mUsername.isNotEmpty()){
@@ -271,6 +275,7 @@ class SpentFragment : Fragment(), SpentClickListener {
         }
     }
 
+    // Calculates the total amount spent by all participants in the common pot
     private fun getTotalCost(){
         var totalCost = 0.0
         if (mLineCommonPotList.isNotEmpty()){
@@ -295,6 +300,7 @@ class SpentFragment : Fragment(), SpentClickListener {
         }
     }
 
+    // Displays a message in a snackBar according to the return of activities
     private fun displaySnackBar(code: Int) {
         when(code){
             0 -> {
@@ -318,6 +324,7 @@ class SpentFragment : Fragment(), SpentClickListener {
         }
     }
 
+    // When the user clicks on an item the onClick method is called and starts the EditSpentActivity
     override fun onClick(lineCommonPotId: String) {
         val editSpentIntent = Intent(context, EditSpentActivity::class.java)
         editSpentIntent.putExtra(COMMON_POT_ID, mCommonPotId)
@@ -325,7 +332,8 @@ class SpentFragment : Fragment(), SpentClickListener {
         startActivityForResult(editSpentIntent, ANSWER_REQUEST)
     }
 
-    override fun onUndoClick(lineCommonPot: LineCommonPot) {
+    // When the user drag an item to delete it and the 3 seconds to cancel are passed the onSwipeDelete method is called to remove the common pot spent
+    override fun onDeleteSwipe(lineCommonPot: LineCommonPot) {
         if (mLineCommonPotList.contains(lineCommonPot)){
             val index = mLineCommonPotList.indexOf(lineCommonPot)
             mLineCommonPotList.removeAt(index)
@@ -335,6 +343,7 @@ class SpentFragment : Fragment(), SpentClickListener {
         this.removeInDatabase(lineCommonPot.id)
     }
 
+    // Remove the spent in database
     private fun removeInDatabase(lineCommonPotId: String) {
         mSpentFragmentViewModel.getParticipantSpentAtSpent(lineCommonPotId).observe(this, Observer {participantSpentIdList ->
             mSpentFragmentViewModel.removeSpent(participantSpentIdList, lineCommonPotId).addOnSuccessListener {
@@ -351,6 +360,7 @@ class SpentFragment : Fragment(), SpentClickListener {
         return sharedPref.getString(USER_ID, null)
     }
 
+    // Share the dynamic link of the common pot with other users
     fun shareCommonPot(){
         val textSend = "${getString(R.string.join_me_on_good_count)} ${mCommonPot?.shareLink}"
         val shareIntent = Intent(Intent.ACTION_SEND)
