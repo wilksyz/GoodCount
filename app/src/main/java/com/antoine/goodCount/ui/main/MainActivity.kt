@@ -83,6 +83,8 @@ class MainActivity : BaseActivity() {
                     val deepLink: Uri = pendingDynamicLinkData.link
                     val commonPotId = deepLink.getQueryParameter("GoodCount")
                     if (commonPotId != null) this.accessToNewCount(commonPotId)
+                }else if (FirebaseAuth.getInstance().currentUser == null){
+                    startSignInActivity(null)
                 }
             }
             .addOnFailureListener(this) { e ->
