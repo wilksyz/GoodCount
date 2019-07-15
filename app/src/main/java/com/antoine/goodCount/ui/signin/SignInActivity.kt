@@ -143,6 +143,7 @@ class SignInActivity : AppCompatActivity() {
             }else{
                 val mainActivityIntent = Intent(this@SignInActivity, MainActivity::class.java)
                 startActivity(mainActivityIntent)
+                finish()
             }
         }
     }
