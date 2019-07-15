@@ -19,7 +19,7 @@ class CreateCommonPotActivityInstrumentTest {
     var mActivityRule: ActivityTestRule<CreateCommonPotActivity> = ActivityTestRule(CreateCommonPotActivity::class.java)
 
     @Test
-    fun editTextTest(){
+    fun interfaceTest(){
         onView(withId(R.id.create_activity_title_editext)).perform(ViewActions.typeText("Instrument test"))
         onView(withId(R.id.create_activity_title_editext)).check(matches(withText("Instrument test")))
 

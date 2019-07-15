@@ -38,7 +38,7 @@ class EditViewModel: ViewModel() {
     // Get the username of current user
     fun getUsername(userId: String, mCommonPotId: String): MutableLiveData<Participant> {
         mParticipantRepository.getParticipant(userId, mCommonPotId).get().addOnSuccessListener { value ->
-            if (value != null){
+            if (value != null && value.documents.isNotEmpty()){
                 mParticipant.value = value.documents[0].toObject(Participant::class.java)
             }
         }.addOnFailureListener { e ->
