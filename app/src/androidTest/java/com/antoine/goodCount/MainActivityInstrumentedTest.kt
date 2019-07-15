@@ -1,11 +1,9 @@
 package com.antoine.goodCount
 
 
-import android.os.SystemClock
 import androidx.core.view.isVisible
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
@@ -17,15 +15,14 @@ import org.junit.runner.RunWith
 import org.junit.Assert.*
 import org.junit.Rule
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.UiSelector
 import com.antoine.goodCount.ui.detail.DetailActivity
 import com.antoine.goodCount.ui.signin.SignInActivity
 import com.google.firebase.auth.FirebaseAuth
-import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.runners.MethodSorters
-
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -34,47 +31,58 @@ import org.junit.runners.MethodSorters
 @RunWith(AndroidJUnit4::class)
 class MainActivityInstrumentedTest {
 
-    private var mUiDevice: UiDevice? = null
-
     @get:Rule
-    var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+    var mActivityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
 
-    @Before
-    @Throws(Exception::class)
-    fun before() {
-        mUiDevice = UiDevice.getInstance(getInstrumentation())
-        if (FirebaseAuth.getInstance().currentUser == null){
-            onView(ViewMatchers.withId(R.id.google_sign_in_button)).perform(ViewActions.click())
-            SystemClock.sleep(1500)
-            mUiDevice?.findObject(UiSelector().text("Aiden PARIS"))?.click()
-            SystemClock.sleep(2500)
+    @Test
+    fun contextualMenuTest(){
+        if (FirebaseAuth.getInstance().currentUser != null){
+            onView(withId(R.id.main_fragment_floating_action_button)).perform(ViewActions.click())
+            onView(withId(R.id.main_fragment_recycler_view)).perform(ViewActions.click())
+            assertTrue(mActivityRule.activity.main_fragment_floating_action_button.isVisible)
+            assertFalse(mActivityRule.activity.main_fragment_button_add_common_pot.isVisible)
+            assertFalse(mActivityRule.activity.main_fragment_button_join_common_pot.isVisible)
         }
     }
 
     @Test
-    fun contextualMenuTest(){
-        onView(ViewMatchers.withId(R.id.main_fragment_floating_action_button)).perform(ViewActions.click())
-        onView(ViewMatchers.withId(R.id.main_fragment_recycler_view)).perform(ViewActions.click())
-        assertTrue(activityRule.activity.main_fragment_floating_action_button.isVisible)
-        assertFalse(activityRule.activity.main_fragment_button_add_common_pot.isVisible)
-        assertFalse(activityRule.activity.main_fragment_button_join_common_pot.isVisible)
-    }
-
-    @Test
     fun clickRecyclerViewTest(){
-        val activityMonitor = getInstrumentation().addMonitor(DetailActivity::class.java.name, null, false)
-        onView(ViewMatchers.withId(R.id.main_fragment_recycler_view)).perform(actionOnItemAtPosition<MainRecyclerViewHolder>(0, ViewActions.click()))
-        val nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000)
-        assertNotNull(nextActivity)
-        nextActivity .finish()
+        if (FirebaseAuth.getInstance().currentUser != null){
+            if (getRecyclerViewCount() > 0){
+                val activityMonitor = getInstrumentation().addMonitor(DetailActivity::class.java.name, null, false)
+                onView(withId(R.id.main_fragment_recycler_view)).perform(actionOnItemAtPosition<MainRecyclerViewHolder>(0, ViewActions.click()))
+                val nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000)
+                assertNotNull(nextActivity)
+                nextActivity .finish()
+            }
+        }
     }
 
     @Test
     fun exitButtonTest(){
-        val activityMonitor = getInstrumentation().addMonitor(SignInActivity::class.java.name, null, false)
-        onView(ViewMatchers.withId(R.id.disconnect_button)).perform(ViewActions.click())
-        val nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000)
-        assertNotNull(nextActivity)
-        nextActivity .finish()
+        if (FirebaseAuth.getInstance().currentUser != null){
+            val activityMonitor = getInstrumentation().addMonitor(SignInActivity::class.java.name, null, false)
+            onView(withId(R.id.disconnect_button)).perform(ViewActions.click())
+            val nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000)
+            assertNotNull(nextActivity)
+            nextActivity .finish()
+        }
+    }
+
+    @Test
+    fun checkDisplayedOnRecyclerView(){
+        if (FirebaseAuth.getInstance().currentUser != null){
+            if (getRecyclerViewCount() > 0){
+                onView(withId(R.id.main_view_holder_tittle_textView)).check(matches(isDisplayed()))
+                onView(withId(R.id.main_view_holder_description_textView)).check(matches(isDisplayed()))
+                onView(withId(R.id.view_holder_price_textView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+                onView(withId(R.id.view_holder_date_textView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+            }
+        }
+    }
+
+    private fun getRecyclerViewCount(): Int {
+        val recyclerView: RecyclerView = mActivityRule.activity.findViewById(R.id.main_fragment_recycler_view)
+        return recyclerView.adapter?.itemCount ?: 0
     }
 }
