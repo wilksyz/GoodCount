@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Good Count</string>
+    <string name="app_name">GoodCount</string>
 
     // Facebook
     <string name="facebook_app_id" translatable="false">360557888140915</string>
