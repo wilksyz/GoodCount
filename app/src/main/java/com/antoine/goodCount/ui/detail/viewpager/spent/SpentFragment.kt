@@ -224,17 +224,19 @@ class SpentFragment : Fragment(), SpentClickListener {
     // Get the LineCommonPots of the file
     private fun getLineCommonPot(){
         mSpentFragmentViewModel.getLineCommonPot(mCommonPotId).observe(this, Observer { list ->
-            mLineCommonPotList = list
-            if (list.size == 0){
-                mViewOfLayout.spent_fragment_no_spent_textView.visibility = View.VISIBLE
-                mViewOfLayout.spent_fragment_no_spent_add_textView.visibility = View.VISIBLE
-            }else{
-                mViewOfLayout.spent_fragment_no_spent_textView.visibility = View.INVISIBLE
-                mViewOfLayout.spent_fragment_no_spent_add_textView.visibility = View.INVISIBLE
+            if (list != null){
+                mLineCommonPotList = list
+                if (list.size == 0){
+                    mViewOfLayout.spent_fragment_no_spent_textView.visibility = View.VISIBLE
+                    mViewOfLayout.spent_fragment_no_spent_add_textView.visibility = View.VISIBLE
+                }else{
+                    mViewOfLayout.spent_fragment_no_spent_textView.visibility = View.INVISIBLE
+                    mViewOfLayout.spent_fragment_no_spent_add_textView.visibility = View.INVISIBLE
+                }
+                this.mAdapter.updateData(list)
+                this.getTotalCost()
+                this.getPersonalCost()
             }
-            this.mAdapter.updateData(list)
-            this.getTotalCost()
-            this.getPersonalCost()
         })
     }
 
@@ -367,6 +369,17 @@ class SpentFragment : Fragment(), SpentClickListener {
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_TEXT, textSend)
         startActivity(Intent.createChooser(shareIntent, getString(R.string.share)))
+    }
+
+    fun removeListener(){
+        try {
+            mSpentFragmentViewModel.removeListener()
+        }catch (e: Exception){ }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        this.removeListener()
     }
 
     companion object {

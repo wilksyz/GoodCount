@@ -39,6 +39,8 @@ class DetailActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
         R.id.disconnect_button -> {
+            mSectionsPagerAdapter.mSpentFragment.removeListener()
+            mSectionsPagerAdapter.mBalanceFragment.removeListener()
             disconnect()
             true
         }

@@ -2,27 +2,27 @@ package com.antoine.goodCount
 
 
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
+import com.antoine.goodCount.ui.detail.DetailActivity
 import com.antoine.goodCount.ui.main.MainActivity
 import com.antoine.goodCount.ui.main.recyclerView.MainRecyclerViewHolder
-import kotlinx.android.synthetic.main.fragment_main.*
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.Assert.*
-import org.junit.Rule
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import com.antoine.goodCount.ui.detail.DetailActivity
 import com.antoine.goodCount.ui.signin.SignInActivity
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.fragment_main.*
+import org.junit.Assert.*
 import org.junit.FixMethodOrder
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
-import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
 
 /**
  * Instrumented test, which will execute on an Android device.

@@ -268,13 +268,15 @@ class MainFragment : Fragment(), ClickListener {
 
     private fun getCommonPot(userId: String){
         mMainFragmentViewModel.getParticipantCommonPot(userId).observe(this, Observer {
-            if (it.isNotEmpty()){
-                mAdapter.updateData(it as MutableList<CommonPot>)
-                mViewOfLayout.main_fragment_no_good_count_textView.visibility = View.INVISIBLE
-                mViewOfLayout.main_fragment_no_good_count_add_textView.visibility = View.INVISIBLE
-            }else{
-                mViewOfLayout.main_fragment_no_good_count_textView.visibility = View.VISIBLE
-                mViewOfLayout.main_fragment_no_good_count_add_textView.visibility = View.VISIBLE
+            if (it != null){
+                if (it.isNotEmpty()){
+                    mAdapter.updateData(it as MutableList<CommonPot>)
+                    mViewOfLayout.main_fragment_no_good_count_textView.visibility = View.INVISIBLE
+                    mViewOfLayout.main_fragment_no_good_count_add_textView.visibility = View.INVISIBLE
+                }else{
+                    mViewOfLayout.main_fragment_no_good_count_textView.visibility = View.VISIBLE
+                    mViewOfLayout.main_fragment_no_good_count_add_textView.visibility = View.VISIBLE
+                }
             }
         })
     }
@@ -337,6 +339,15 @@ class MainFragment : Fragment(), ClickListener {
                 }
             }
         })
+    }
+
+    fun removeListener(){
+        mMainFragmentViewModel.removeListener()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        this.removeListener()
     }
 }
 

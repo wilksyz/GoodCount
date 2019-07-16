@@ -32,7 +32,9 @@ private const val TAG = "MAIN_ACTIVITY"
 class MainActivity : BaseActivity() {
 
     private lateinit var mMainActivityViewModel: MainActivityViewModel
+    private lateinit var mMainFragment: MainFragment
     private var mUserId: String? = null
+    var i = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,7 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
         R.id.disconnect_button -> {
+            mMainFragment.removeListener()
             disconnect()
             true
         }else -> {
@@ -67,9 +70,9 @@ class MainActivity : BaseActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         val args = Bundle()
         args.putString(USER_ID, userId)
-        val mainFragment = MainFragment()
-        mainFragment.arguments = args
-        fragmentTransaction.replace(R.id.fragment_main_container, mainFragment)
+        mMainFragment = MainFragment()
+        mMainFragment.arguments = args
+        fragmentTransaction.replace(R.id.fragment_main_container, mMainFragment)
         fragmentTransaction.commit()
     }
 

@@ -3,10 +3,13 @@ package com.antoine.goodCount
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.antoine.goodCount.ui.createAndEdit.create.CreateCommonPotActivity
+import kotlinx.android.synthetic.main.activity_create_common_pot.*
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,7 +34,7 @@ class CreateCommonPotActivityInstrumentTest {
         onView(withId(R.id.create_activity_your_name_editext)).perform(ViewActions.typeText("Scarface"))
         onView(withId(R.id.create_activity_your_name_editext)).check(matches(withText("Scarface")))
 
-        onView(withId(R.id.create_activity_add_common_pot_button)).check(matches(isDisplayed()))
+        Assert.assertTrue(mActivityRule.activity.create_activity_add_common_pot_button.isEnabled)
     }
 
     private fun getLocaleCurrency(): String {

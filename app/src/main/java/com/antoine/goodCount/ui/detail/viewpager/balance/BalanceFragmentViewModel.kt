@@ -13,6 +13,7 @@ import com.antoine.goodCount.repository.ParticipantRepository
 import com.antoine.goodCount.repository.ParticipantSpentRepository
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import kotlin.math.abs
 
@@ -28,12 +29,13 @@ class BalanceFragmentViewModel: ViewModel() {
     private val mParticipantSpentMap: HashMap<String, Double> = HashMap()
     val mParticipantList = ArrayList<Participant>()
     private var mCommonPot: MutableLiveData<CommonPot> = MutableLiveData()
+    private var mListenerList = ArrayList<ListenerRegistration>()
 
     // Get LineCommonPot in database
     private fun getLineCommonPot(commonPotId: String) {
-        mLineCommonPotRepository.getLineCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+        mListenerList.add(mLineCommonPotRepository.getLineCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
             if (e != null) {
-                Log.w(TAG, "Listen failed.", e)
+                Log.w(TAG, "Listen failed LineCommonPot.")
                 return@EventListener
             }
             if (value != null) {
@@ -47,7 +49,7 @@ class BalanceFragmentViewModel: ViewModel() {
                     this.getParticipantSpent(lineCommonPot)
                 }
             }
-        })
+        }))
     }
 
     // Get ParticipantSpent in database and determine the balance of each user
@@ -76,9 +78,9 @@ class BalanceFragmentViewModel: ViewModel() {
 
     // Get Participant in database and create a map with the id of Participants
     fun getParticipant(commonPotId: String): MutableLiveData<HashMap<String, Double>> {
-        mParticipantRepository.getParticipantCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+        mListenerList.add(mParticipantRepository.getParticipantCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
             if (e != null){
-                Log.w(TAG, "Listen failed.", e)
+                Log.w(TAG, "Listen failed Participant.")
                 mParticipantSpentMapMutable.value = null
                 return@EventListener
             }
@@ -93,21 +95,28 @@ class BalanceFragmentViewModel: ViewModel() {
                 mParticipantSpentMapMutable.value = mParticipantSpentMap
                 getLineCommonPot(commonPotId)
             }
-        })
+        }))
         return mParticipantSpentMapMutable
     }
 
     // Get CommonPot in database to get the currency used
     fun getCommonPot(commonPotId: String): MutableLiveData<CommonPot> {
-        mCommonPotRepository.getCommonPot(commonPotId).addSnapshotListener(EventListener<DocumentSnapshot>{ document, e ->
+        mListenerList.add(mCommonPotRepository.getCommonPot(commonPotId).addSnapshotListener(EventListener<DocumentSnapshot>{ document, e ->
             if (e != null) {
-                Log.w(TAG, "Listen failed.", e)
+                Log.w(TAG, "Listen failed CommonPot.")
                 return@EventListener
             }
             if (document != null && document.exists()) {
                 mCommonPot.value =  document.toObject(CommonPot::class.java)
             }
-        })
+        }))
         return mCommonPot
+    }
+
+    fun removeListener(){
+        for (listener in mListenerList){
+            listener.remove()
+        }
+        mListenerList.clear()
     }
 }

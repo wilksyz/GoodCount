@@ -17,7 +17,7 @@ private val TAB_TITLES = arrayOf(R.string.tab_title_1, R.string.tab_title_2)
 class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, commonPotId: String) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     var mSpentFragment: SpentFragment = SpentFragment.newInstance(commonPotId)
-    private var mBalanceFragment: BalanceFragment = BalanceFragment.newInstance(commonPotId)
+    var mBalanceFragment: BalanceFragment = BalanceFragment.newInstance(commonPotId)
 
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.

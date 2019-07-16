@@ -51,7 +51,9 @@ class BalanceFragment : Fragment() {
     // Get participants and their balance for this CommonPot
     private fun getParticipantBalance(){
         mBalanceFragmentViewModel.getParticipant(mCommonPotId).observe(this, Observer {
-            mAdapter.updateData(it, mBalanceFragmentViewModel.mParticipantList, getUserId())
+            if (it != null){
+                mAdapter.updateData(it, mBalanceFragmentViewModel.mParticipantList, getUserId())
+            }
         })
     }
 
@@ -66,6 +68,17 @@ class BalanceFragment : Fragment() {
     private fun getUserId(): String {
         val sharedPref: SharedPreferences = context!!.getSharedPreferences(USER, Context.MODE_PRIVATE)
         return sharedPref.getString(USER_ID, null)
+    }
+
+    fun removeListener(){
+        try {
+            mBalanceFragmentViewModel.removeListener()
+        }catch (e: Exception){ }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        this.removeListener()
     }
 
     companion object {

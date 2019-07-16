@@ -20,7 +20,7 @@
             android:textColor="@color/common_google_signin_btn_text_light"
             app:cornerRadius="15dp"
             app:icon="@drawable/googleg_standard_color_18"
-            app:backgroundTint="@color/common_google_signin_btn_text_dark"
+            app:backgroundTint="@android:color/white"
             android:layout_marginStart="32dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="24dp"

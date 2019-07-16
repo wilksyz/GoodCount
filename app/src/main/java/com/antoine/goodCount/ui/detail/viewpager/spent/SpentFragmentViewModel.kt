@@ -13,6 +13,7 @@ import com.antoine.goodCount.repository.ParticipantSpentRepository
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 
 private const val USER_APP = "user app"
@@ -27,14 +28,15 @@ class SpentFragmentViewModel : ViewModel() {
     private var mCommonPot: MutableLiveData<CommonPot> = MutableLiveData()
     private var mParticipantMap: MutableLiveData<HashMap<String, Participant>> = MutableLiveData()
     private var mParticipantSpentIdList: MutableLiveData<List<String>> = MutableLiveData()
+    private var mListenerList = ArrayList<ListenerRegistration>()
 
     // Get LineCommonPot in database
     fun getLineCommonPot(commonPotId: String): MutableLiveData<MutableList<LineCommonPot>> {
         val lineCommonPotList = ArrayList<LineCommonPot>()
 
-        mLineCommonPotRepository.getLineCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+        mListenerList.add(mLineCommonPotRepository.getLineCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
             if (e != null) {
-                Log.w(TAG, "Listen failed.", e)
+                Log.w(TAG, "Listen failed LineCommonPot.")
                 mLineCommonPotList.value = null
                 return@EventListener
             }
@@ -47,31 +49,31 @@ class SpentFragmentViewModel : ViewModel() {
                 }
                 mLineCommonPotList.value = lineCommonPotList
             }
-        })
+        }))
         return mLineCommonPotList
     }
 
     // Get CommonPot in database to get the currency used and the title
     fun getCommonPot(commonPotId: String): MutableLiveData<CommonPot> {
-        mCommonPotRepository.getCommonPot(commonPotId).addSnapshotListener(EventListener<DocumentSnapshot>{ document, e ->
+        mListenerList.add(mCommonPotRepository.getCommonPot(commonPotId).addSnapshotListener(EventListener<DocumentSnapshot>{ document, e ->
             if (e != null) {
-                Log.w(TAG, "Listen failed.", e)
+                Log.w(TAG, "Listen failed CommonPot.")
                 return@EventListener
             }
 
             if (document != null && document.exists()) {
                 mCommonPot.value =  document.toObject(CommonPot::class.java)
             }
-        })
+        }))
         return mCommonPot
     }
 
     // Get the participants of the common pot
     fun getParticipant(userId: String, commonPotId: String): MutableLiveData<HashMap<String, Participant>> {
         val participantMap = HashMap<String, Participant>()
-        mParticipantRepository.getParticipantCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot>{ value, e ->
+        mListenerList.add(mParticipantRepository.getParticipantCommonPot(commonPotId).addSnapshotListener(EventListener<QuerySnapshot>{ value, e ->
             if (e != null) {
-                Log.w(TAG, "Listen failed.", e)
+                Log.w(TAG, "Listen failed Participant.")
                 return@EventListener
             }
 
@@ -83,7 +85,7 @@ class SpentFragmentViewModel : ViewModel() {
                 }
                 mParticipantMap.value = participantMap
             }
-        })
+        }))
         return mParticipantMap
     }
 
@@ -114,5 +116,12 @@ class SpentFragmentViewModel : ViewModel() {
 
     fun removeSpent(participantSpentIdList: List<String>, lineCommonPotId: String): Task<Void> {
         return mLineCommonPotRepository.removeLineCommonPot(participantSpentIdList, lineCommonPotId)
+    }
+
+    fun removeListener(){
+        for (listener in mListenerList){
+            listener.remove()
+        }
+        mListenerList.clear()
     }
 }

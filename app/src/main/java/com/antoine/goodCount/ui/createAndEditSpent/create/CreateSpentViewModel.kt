@@ -11,7 +11,6 @@ import com.google.android.gms.tasks.Task
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class CreateSpentViewModel: ViewModel() {
 
