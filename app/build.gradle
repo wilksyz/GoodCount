@@ -21,10 +21,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    signingConfigs {
+        release {
+            storeFile file(project.file("GoodCountKeyStore.jks"))
+            storePassword "Montreal"
+            keyAlias "GoodCount"
+            keyPassword "Montreal"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -58,7 +67,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-dynamic-links:18.0.0'
 
     // Facebook login
-    implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
+    implementation 'com.facebook.android:facebook-android-sdk:5.1.1'
 
     // Material Design
     implementation 'com.google.android.material:material:1.1.0-alpha08'
